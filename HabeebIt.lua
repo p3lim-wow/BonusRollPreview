@@ -109,9 +109,8 @@ local function GetItemLine(name, texture, slot, itemClass, itemID, itemLink)
 end
 
 local function PopulateList()
-	local _, _, difficulty = GetInstanceInfo()
 	EJ_SelectInstance(EJ_GetCurrentInstance())
-	EJ_SetDifficulty(GetDungeonDifficultyID() - 3)
+	EJ_SetDifficulty(GetRaidDifficultyID() - 2)
 
 	local _, _, classID = UnitClass('player')
 	EJ_SetLootFilter(classID, (GetSpecializationInfoForClassID(classID, GetSpecialization())) or 0)
