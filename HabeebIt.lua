@@ -172,6 +172,7 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 
 		self:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
 		self:SetWidth(338)
+		self:SetHeight(76)
 		self:Hide()
 
 		self:SetBackdrop(backdrop)
