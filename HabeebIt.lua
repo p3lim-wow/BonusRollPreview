@@ -122,6 +122,12 @@ local function PopulateList()
 	end
 
 	Frame:SetHeight(math.max(76, 12 + (numItems * 48)))
+
+	if(numItems > 0) then
+		Frame.Empty:Hide()
+	else
+		Frame.Empty:Show()
+	end
 end
 
 local function InitializeList()
@@ -171,6 +177,11 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		self:SetBackdrop(backdrop)
 		self:SetBackdropColor(0, 0, 0, 0.8)
 		self:SetBackdropBorderColor(0.6, 0.6, 0.6)
+
+		local Empty = self:CreateFontString(nil, 'ARTWORK', 'GameFontHighlight')
+		Empty:SetPoint('CENTER')
+		Empty:SetText('This encounter has no possible items for\nyour current class and/or specialization')
+		self.Empty = Empty
 	end
 end)
 
