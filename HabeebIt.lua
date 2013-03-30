@@ -109,23 +109,37 @@ local function GetItemLine(name, texture, slot, itemClass, itemID, itemLink)
 end
 
 local function PopulateList()
-	EJ_SelectInstance(EJ_GetCurrentInstance())
-	EJ_SetDifficulty(GetRaidDifficultyID() - 2)
-
-	local _, _, classID = UnitClass('player')
-	EJ_SetLootFilter(classID, (GetSpecializationInfoForClassID(classID, GetSpecialization())) or 0)
-
-	local numItems = EJ_GetNumLoot()
-	for index = 1, numItems do
+	local numItems = 0
+	for index = 1, EJ_GetNumLoot() do
 		local name, texture, slot, itemClass, itemID, itemLink, encounterID = EJ_GetLootInfoByIndex(index)
 		if(encounterID == currentEncounterID) then
 			local Item = GetItemLine(name, texture, slot, itemClass, itemID, itemLink)
-			Item:SetPoint('BOTTOM', 0, 6 + ((index - 1) * 48))
+			Item:SetPoint('BOTTOM', 0, 6 + ((numItems) * 48))
 			Item:Show()
+
+			numItems = numItems + 1
 		end
 	end
 
-	Frame:SetHeight(12 + (numItems * 48))
+	Frame:SetHeight(math.max(76, 12 + (numItems * 48)))
+end
+
+local function InitializeList()
+	for button in pairs(items) do
+		items[button] = false
+		button:Hide()
+	end
+
+	collapsed = false
+	Handle:GetScript('OnClick')(Handle)
+
+	EJ_SelectInstance(EJ_GetCurrentInstance() or 322)
+	EJ_SetDifficulty(GetRaidDifficultyID() - 2 or 1)
+
+	local _, _, classID = UnitClass('player')
+	EJ_SetLootFilter(classID, GetSpecializationInfo(GetSpecialization() or 1) or 0)
+
+	PopulateList()
 end
 
 Frame:RegisterEvent('PLAYER_LOGIN')
@@ -135,21 +149,13 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		if(confirmType == CONFIRMATION_PROMPT_BONUS_ROLL) then
 			currentEncounterID = ns.GetEncounterID(spellID)
 			if(currentEncounterID) then
-				PopulateList()
+				InitializeList()
 			end
 		end
 	elseif(event == 'SPELL_CONFIRMATION_TIMEOUT') then
 		local _, confirmType = ...
 		if(confirmType == CONFIRMATION_PROMPT_BONUS_ROLL) then
-			for button in pairs(items) do
-				items[button] = false
-				button:Hide()
-			end
-
 			currentEncounterID = nil
-
-			collapsed = false
-			Handle:GetScript('OnClick')()
 		end
 	elseif(event == 'EJ_LOOT_DATA_RECEIVED' and currentEncounterID) then
 		PopulateList()
