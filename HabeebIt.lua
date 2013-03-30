@@ -1,6 +1,7 @@
 local _, ns = ...
 
 local items = {}
+local specializations = {}
 local collapsed = true
 local currentEncounterID
 
@@ -130,22 +131,53 @@ local function PopulateList()
 	end
 end
 
-local function InitializeList()
+local function InitializeList(specific)
 	for button in pairs(items) do
 		items[button] = false
 		button:Hide()
 	end
 
-	collapsed = false
-	Handle:GetScript('OnClick')(Handle)
+	if(not specific) then
+		collapsed = false
+		Handle:GetScript('OnClick')(Handle)
+	end
 
-	EJ_SelectInstance(EJ_GetCurrentInstance() or 322)
+	local currentInstance = EJ_GetCurrentInstance()
+	EJ_SelectInstance(currentInstance > 0 and currentInstance or 322)
 	EJ_SetDifficulty(GetRaidDifficultyID() - 2 or 1)
 
 	local _, _, classID = UnitClass('player')
-	EJ_SetLootFilter(classID, GetSpecializationInfo(GetSpecialization() or 1) or 0)
+	local specialization = GetSpecialization()
+	if(specific or specialization) then
+		EJ_SetLootFilter(classID, GetSpecializationInfo(specific or specialization))
+	else
+		EJ_SetLootFilter(classID, 0)
+	end
 
 	PopulateList()
+end
+
+local function UpdateSpecializations(currentIndex)
+	for index, button in pairs(specializations) do
+		if(currentIndex == index) then
+			button.LeftBorder:SetVertexColor(1, 0, 0)
+			button.RightBorder:SetVertexColor(1, 0, 0)
+		else
+			button.LeftBorder:SetVertexColor(1, 1, 1)
+			button.RightBorder:SetVertexColor(1, 1, 1)
+		end
+	end
+end
+
+local function SpecializationClick(self)
+	UpdateSpecializations(self.index)
+	InitializeList(self.index)
+end
+
+local function SpecializationEnter(self)
+	GameTooltip:SetOwner(self, 'ANCHOR_TOPRIGHT')
+	GameTooltip:AddLine(self.name, 1, 1, 1)
+	GameTooltip:Show()
 end
 
 Frame:RegisterEvent('PLAYER_LOGIN')
@@ -171,8 +203,7 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		self:RegisterEvent('EJ_LOOT_DATA_RECEIVED')
 
 		self:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
-		self:SetWidth(338)
-		self:SetHeight(76)
+		self:SetSize(338, 76)
 		self:Hide()
 
 		self:SetBackdrop(backdrop)
@@ -183,6 +214,47 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		Empty:SetPoint('CENTER')
 		Empty:SetText('This encounter has no possible items for\nyour current class and/or specialization')
 		self.Empty = Empty
+
+		for index = 1, GetNumSpecializations() do
+			local SpecButton = CreateFrame('Button', nil, self)
+			SpecButton:SetSize(24, 16)
+			SpecButton:SetScript('OnClick', SpecializationClick)
+			SpecButton:SetScript('OnEnter', SpecializationEnter)
+			SpecButton:SetScript('OnLeave', GameTooltip_Hide)
+
+			local _, name, _, texture = GetSpecializationInfo(index)
+			SpecButton.index = index
+			SpecButton.name = name
+
+			local SpecBackground = SpecButton:CreateTexture(nil, 'BACKGROUND')
+			SpecBackground:SetAllPoints()
+			SpecBackground:SetTexture(texture)
+			SpecBackground:SetTexCoord(0, 1, 0.2, 0.8)
+
+			local SpecLeft = SpecButton:CreateTexture(nil, 'BORDER')
+			SpecLeft:SetPoint('BOTTOMLEFT', -6, -7)
+			SpecLeft:SetSize(18, 24)
+			SpecLeft:SetTexture([[Interface\RaidFrame\RaidPanel-BottomLeft]])
+			SpecLeft:SetTexCoord(0, 0.8, 0, 1)
+			SpecButton.LeftBorder = SpecLeft
+
+			local SpecRight = SpecButton:CreateTexture(nil, 'BORDER')
+			SpecRight:SetPoint('BOTTOMRIGHT', 6, -7)
+			SpecRight:SetSize(18, 24)
+			SpecRight:SetTexture([[Interface\RaidFrame\RaidPanel-BottomRight]])
+			SpecRight:SetTexCoord(0.2, 1, 0, 1)
+			SpecButton.RightBorder = SpecRight
+
+			if(index == 1) then
+				SpecButton:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 20, 2)
+			else
+				SpecButton:SetPoint('LEFT', specializations[index - 1], 'RIGHT', 15, 0)
+			end
+
+			specializations[index] = SpecButton
+		end
+
+		UpdateSpecializations(GetSpecialization())
 	end
 end)
 
@@ -190,11 +262,11 @@ Handle:SetScript('OnClick', function(self)
 	self:ClearAllPoints()
 
 	if(collapsed) then
-		self:SetPoint('BOTTOMRIGHT', Frame, 14, 4)
+		self:SetPoint('BOTTOMRIGHT', Frame, 16, 4)
 		self:GetNormalTexture():SetTexCoord(1/2, 1, 0, 1)
 		Frame:Show()
 	else
-		self:SetPoint('BOTTOMRIGHT', BonusRollFrame, 14, 4)
+		self:SetPoint('BOTTOMRIGHT', BonusRollFrame, 16, 4)
 		self:GetNormalTexture():SetTexCoord(0, 1/2, 0, 1)
 		Frame:Hide()
 	end
@@ -202,14 +274,14 @@ Handle:SetScript('OnClick', function(self)
 	collapsed = not collapsed
 end)
 
-Handle:SetPoint('BOTTOMRIGHT', 14, 4)
+Handle:SetPoint('BOTTOMRIGHT', 16, 4)
 Handle:SetSize(16, 64)
 Handle:SetNormalTexture([[Interface\RaidFrame\RaidPanel-Toggle]])
 Handle:GetNormalTexture():SetTexCoord(0, 1/2, 0, 1)
-Handle:SetFrameStrata('BACKGROUND')
 
 local HandleBackground = Handle:CreateTexture(nil, 'BACKGROUND')
-HandleBackground:SetAllPoints()
+HandleBackground:SetPoint('BOTTOMLEFT', -2, 0)
+HandleBackground:SetPoint('TOPRIGHT')
 HandleBackground:SetTexture(0, 0, 0, 0.8)
 
 local BorderBottom = Handle:CreateTexture(nil, 'BORDER')
