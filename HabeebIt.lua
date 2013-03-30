@@ -204,6 +204,7 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 
 		self:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
 		self:SetSize(338, 76)
+		self:SetFrameLevel(10)
 		self:Hide()
 
 		self:SetBackdrop(backdrop)
@@ -221,6 +222,7 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 			SpecButton:SetScript('OnClick', SpecializationClick)
 			SpecButton:SetScript('OnEnter', SpecializationEnter)
 			SpecButton:SetScript('OnLeave', GameTooltip_Hide)
+			SpecButton:SetFrameLevel(6)
 
 			local _, name, _, texture = GetSpecializationInfo(index)
 			SpecButton.index = index
@@ -278,6 +280,7 @@ Handle:SetPoint('BOTTOMRIGHT', 16, 4)
 Handle:SetSize(16, 64)
 Handle:SetNormalTexture([[Interface\RaidFrame\RaidPanel-Toggle]])
 Handle:GetNormalTexture():SetTexCoord(0, 1/2, 0, 1)
+Handle:SetFrameLevel(6)
 
 local HandleBackground = Handle:CreateTexture(nil, 'BACKGROUND')
 HandleBackground:SetPoint('BOTTOMLEFT', -2, 0)
