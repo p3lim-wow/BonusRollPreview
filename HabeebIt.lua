@@ -144,7 +144,9 @@ local function InitializeList(specific)
 
 	local currentInstance = EJ_GetCurrentInstance()
 	EJ_SelectInstance(currentInstance > 0 and currentInstance or 322)
-	EJ_SetDifficulty(GetRaidDifficultyID() - 2 or 1)
+
+	local _, _, difficulty = GetInstanceInfo()
+	EJ_SetDifficulty(difficulty > 2 and (difficulty - 2) or 1)
 
 	local _, _, classID = UnitClass('player')
 	local specialization = GetSpecialization()
