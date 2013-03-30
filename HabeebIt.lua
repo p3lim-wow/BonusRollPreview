@@ -93,8 +93,6 @@ local function GetItemLine(name, texture, slot, itemClass, itemID, itemLink)
 		Item:SetScript('OnClick', OnClick)
 		Item:SetScript('OnEnter', OnEnter)
 		Item:SetScript('OnLeave', OnLeave)
-
-		items[Item] = true
 	end
 
 	Item.Icon:SetTexture(texture)
@@ -104,6 +102,8 @@ local function GetItemLine(name, texture, slot, itemClass, itemID, itemLink)
 
 	Item.itemID = itemID
 	Item.itemLink = itemLink
+
+	items[Item] = true
 
 	return Item
 end
