@@ -255,6 +255,32 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		Empty:SetPoint('CENTER')
 		Empty:SetText('This encounter has no possible items for\nyour current class and/or specialization')
 		self.Empty = Empty
+
+		Handle:SetPoint('BOTTOMRIGHT', 16, 4)
+		Handle:SetSize(16, 64)
+		Handle:SetNormalTexture([[Interface\RaidFrame\RaidPanel-Toggle]])
+		Handle:GetNormalTexture():SetTexCoord(0, 1/2, 0, 1)
+		Handle:SetFrameLevel(6)
+
+		local HandleBackground = Handle:CreateTexture(nil, 'BACKGROUND')
+		HandleBackground:SetPoint('BOTTOMLEFT', -2, 0)
+		HandleBackground:SetPoint('TOPRIGHT')
+		HandleBackground:SetTexture(0, 0, 0, 0.8)
+
+		local BorderBottom = Handle:CreateTexture(nil, 'BORDER')
+		BorderBottom:SetPoint('BOTTOMRIGHT', 6, -3)
+		BorderBottom:SetSize(24, 24)
+		BorderBottom:SetTexture([[Interface\RaidFrame\RaidPanel-BottomRight]])
+
+		local BorderRight = Handle:CreateTexture(nil, 'BORDER')
+		BorderRight:SetPoint('RIGHT', 7.5, 0)
+		BorderRight:SetSize(12, 24)
+		BorderRight:SetTexture([[Interface\RaidFrame\RaidPanel-Right]])
+
+		local BorderTop = Handle:CreateTexture(nil, 'BORDER')
+		BorderTop:SetPoint('TOPRIGHT', 6, 3)
+		BorderTop:SetSize(24, 24)
+		BorderTop:SetTexture([[Interface\RaidFrame\RaidPanel-UpperRight]])
 	end
 end)
 
@@ -273,29 +299,3 @@ Handle:SetScript('OnClick', function(self)
 
 	collapsed = not collapsed
 end)
-
-Handle:SetPoint('BOTTOMRIGHT', 16, 4)
-Handle:SetSize(16, 64)
-Handle:SetNormalTexture([[Interface\RaidFrame\RaidPanel-Toggle]])
-Handle:GetNormalTexture():SetTexCoord(0, 1/2, 0, 1)
-Handle:SetFrameLevel(6)
-
-local HandleBackground = Handle:CreateTexture(nil, 'BACKGROUND')
-HandleBackground:SetPoint('BOTTOMLEFT', -2, 0)
-HandleBackground:SetPoint('TOPRIGHT')
-HandleBackground:SetTexture(0, 0, 0, 0.8)
-
-local BorderBottom = Handle:CreateTexture(nil, 'BORDER')
-BorderBottom:SetPoint('BOTTOMRIGHT', 6, -3)
-BorderBottom:SetSize(24, 24)
-BorderBottom:SetTexture([[Interface\RaidFrame\RaidPanel-BottomRight]])
-
-local BorderRight = Handle:CreateTexture(nil, 'BORDER')
-BorderRight:SetPoint('RIGHT', 7.5, 0)
-BorderRight:SetSize(12, 24)
-BorderRight:SetTexture([[Interface\RaidFrame\RaidPanel-Right]])
-
-local BorderTop = Handle:CreateTexture(nil, 'BORDER')
-BorderTop:SetPoint('TOPRIGHT', 6, 3)
-BorderTop:SetSize(24, 24)
-BorderTop:SetTexture([[Interface\RaidFrame\RaidPanel-UpperRight]])
