@@ -49,16 +49,11 @@ local function OnClick(self)
 	HandleModifiedItemClick(self.itemLink)
 end
 
-local function GetItemLine(name, texture, slot, itemClass, itemID, itemLink)
-	local Item
-	for button, used in pairs(items) do
-		if(not used) then
-			Item = button
-		end
-	end
-
+local function GetItemLine(index)
+	local Item = items[index]
 	if(not Item) then
 		Item = CreateFrame('Button', nil, Frame)
+		Item:SetPoint('BOTTOM', 0, 6 + ((index - 1) * 48))
 		Item:SetSize(321, 45)
 
 		local Icon = Item:CreateTexture(nil, 'BACKGROUND')
@@ -94,17 +89,9 @@ local function GetItemLine(name, texture, slot, itemClass, itemID, itemLink)
 		Item:SetScript('OnClick', OnClick)
 		Item:SetScript('OnEnter', OnEnter)
 		Item:SetScript('OnLeave', OnLeave)
+
+		items[index] = Item
 	end
-
-	Item.Icon:SetTexture(texture)
-	Item.Name:SetText(name)
-	Item.Slot:SetText(slot)
-	Item.Class:SetText(itemClass)
-
-	Item.itemID = itemID
-	Item.itemLink = itemLink
-
-	items[Item] = true
 
 	return Item
 end
@@ -114,11 +101,18 @@ local function PopulateList()
 	for index = 1, EJ_GetNumLoot() do
 		local name, texture, slot, itemClass, itemID, itemLink, encounterID = EJ_GetLootInfoByIndex(index)
 		if(encounterID == currentEncounterID) then
-			local Item = GetItemLine(name, texture, slot, itemClass, itemID, itemLink)
-			Item:SetPoint('BOTTOM', 0, 6 + ((numItems) * 48))
-			Item:Show()
-
 			numItems = numItems + 1
+
+			local Item = GetItemLine(numItems)
+			Item.Icon:SetTexture(texture)
+			Item.Name:SetText(name)
+			Item.Slot:SetText(slot)
+			Item.Class:SetText(itemClass)
+
+			Item.itemID = itemID
+			Item.itemLink = itemLink
+
+			Item:Show()
 		end
 	end
 
