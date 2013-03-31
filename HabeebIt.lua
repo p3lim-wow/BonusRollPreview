@@ -232,6 +232,8 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 				end
 
 				InitializeList()
+			else
+				print('|cffff8080HabeebIt:|r Found an unused spell [' .. spellID .. ']. Please report this!')
 			end
 		end
 	elseif(event == 'SPELL_CONFIRMATION_TIMEOUT') then
