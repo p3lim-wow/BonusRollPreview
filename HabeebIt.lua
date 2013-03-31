@@ -176,6 +176,50 @@ local function SpecializationEnter(self)
 	GameTooltip:Show()
 end
 
+local function CreateSpecializationTabs(self)
+	for index = 1, GetNumSpecializations() do
+		local SpecButton = CreateFrame('Button', nil, self)
+		SpecButton:SetSize(24, 16)
+		SpecButton:SetScript('OnClick', SpecializationClick)
+		SpecButton:SetScript('OnEnter', SpecializationEnter)
+		SpecButton:SetScript('OnLeave', GameTooltip_Hide)
+		SpecButton:SetFrameLevel(6)
+
+		local _, name, _, texture = GetSpecializationInfo(index)
+		SpecButton.index = index
+		SpecButton.name = name
+
+		local SpecBackground = SpecButton:CreateTexture(nil, 'BACKGROUND')
+		SpecBackground:SetAllPoints()
+		SpecBackground:SetTexture(texture)
+		SpecBackground:SetTexCoord(0, 1, 0.2, 0.8)
+
+		local SpecLeft = SpecButton:CreateTexture(nil, 'BORDER')
+		SpecLeft:SetPoint('BOTTOMLEFT', -6, -7)
+		SpecLeft:SetSize(18, 24)
+		SpecLeft:SetTexture([[Interface\RaidFrame\RaidPanel-BottomLeft]])
+		SpecLeft:SetTexCoord(0, 0.8, 0, 1)
+		SpecButton.LeftBorder = SpecLeft
+
+		local SpecRight = SpecButton:CreateTexture(nil, 'BORDER')
+		SpecRight:SetPoint('BOTTOMRIGHT', 6, -7)
+		SpecRight:SetSize(18, 24)
+		SpecRight:SetTexture([[Interface\RaidFrame\RaidPanel-BottomRight]])
+		SpecRight:SetTexCoord(0.2, 1, 0, 1)
+		SpecButton.RightBorder = SpecRight
+
+		if(index == 1) then
+			SpecButton:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 20, 2)
+		else
+			SpecButton:SetPoint('LEFT', specializations[index - 1], 'RIGHT', 15, 0)
+		end
+
+		specializations[index] = SpecButton
+	end
+
+	UpdateSpecializations(GetSpecialization())
+end
+
 Frame:RegisterEvent('PLAYER_LOGIN')
 Frame:SetScript('OnEvent', function(self, event, ...)
 	if(event == 'SPELL_CONFIRMATION_PROMPT') then
@@ -183,6 +227,10 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		if(confirmType == CONFIRMATION_PROMPT_BONUS_ROLL) then
 			currentEncounterID = ns.GetEncounterID(spellID)
 			if(currentEncounterID) then
+				if(#specializations == 0) then
+					CreateSpecializationTabs(self)
+				end
+
 				InitializeList()
 			end
 		end
@@ -211,48 +259,6 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		Empty:SetPoint('CENTER')
 		Empty:SetText('This encounter has no possible items for\nyour current class and/or specialization')
 		self.Empty = Empty
-
-		for index = 1, GetNumSpecializations() do
-			local SpecButton = CreateFrame('Button', nil, self)
-			SpecButton:SetSize(24, 16)
-			SpecButton:SetScript('OnClick', SpecializationClick)
-			SpecButton:SetScript('OnEnter', SpecializationEnter)
-			SpecButton:SetScript('OnLeave', GameTooltip_Hide)
-			SpecButton:SetFrameLevel(6)
-
-			local _, name, _, texture = GetSpecializationInfo(index)
-			SpecButton.index = index
-			SpecButton.name = name
-
-			local SpecBackground = SpecButton:CreateTexture(nil, 'BACKGROUND')
-			SpecBackground:SetAllPoints()
-			SpecBackground:SetTexture(texture)
-			SpecBackground:SetTexCoord(0, 1, 0.2, 0.8)
-
-			local SpecLeft = SpecButton:CreateTexture(nil, 'BORDER')
-			SpecLeft:SetPoint('BOTTOMLEFT', -6, -7)
-			SpecLeft:SetSize(18, 24)
-			SpecLeft:SetTexture([[Interface\RaidFrame\RaidPanel-BottomLeft]])
-			SpecLeft:SetTexCoord(0, 0.8, 0, 1)
-			SpecButton.LeftBorder = SpecLeft
-
-			local SpecRight = SpecButton:CreateTexture(nil, 'BORDER')
-			SpecRight:SetPoint('BOTTOMRIGHT', 6, -7)
-			SpecRight:SetSize(18, 24)
-			SpecRight:SetTexture([[Interface\RaidFrame\RaidPanel-BottomRight]])
-			SpecRight:SetTexCoord(0.2, 1, 0, 1)
-			SpecButton.RightBorder = SpecRight
-
-			if(index == 1) then
-				SpecButton:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 20, 2)
-			else
-				SpecButton:SetPoint('LEFT', specializations[index - 1], 'RIGHT', 15, 0)
-			end
-
-			specializations[index] = SpecButton
-		end
-
-		UpdateSpecializations(GetSpecialization())
 	end
 end)
 
