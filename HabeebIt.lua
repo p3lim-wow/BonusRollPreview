@@ -5,8 +5,6 @@ local specializations = {}
 local collapsed = true
 local currentEncounterID
 
-local populateDown
-
 local Frame = CreateFrame('Frame', 'HabeebItFrame', BonusRollFrame)
 local Handle = CreateFrame('Button', 'HabeebItHandle', BonusRollFrame)
 
@@ -95,6 +93,26 @@ local function GetItemLine(index)
 	return Item
 end
 
+local function UpdatePosition()
+	local populateDown = Frame:GetBottom() > (UIParent:GetHeight() / 1.5)
+
+	Frame:ClearAllPoints()
+	if(populateDown) then
+		Frame:SetPoint('TOPLEFT', BonusRollFrame, 'TOPRIGHT')
+	else
+		Frame:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
+	end
+
+	for index, button in pairs(items) do
+		button:ClearAllPoints()
+		if(populateDown) then
+			button:SetPoint('TOP', 0, (6 + ((index - 1) * 48)) * -1)
+		else
+			button:SetPoint('BOTTOM', 0, 6 + ((index - 1) * 48))
+		end
+	end
+end
+
 local function PopulateList()
 	local numItems = 0
 	for index = 1, EJ_GetNumLoot() do
@@ -107,13 +125,6 @@ local function PopulateList()
 			Item.Name:SetText(name)
 			Item.Slot:SetText(slot)
 			Item.Class:SetText(itemClass)
-
-			Item:ClearAllPoints()
-			if(populateDown) then
-				Item:SetPoint('TOP', 0, (6 + ((numItems - 1) * 48)) * -1)
-			else
-				Item:SetPoint('BOTTOM', 0, 6 + ((numItems - 1) * 48))
-			end
 
 			Item.itemID = itemID
 			Item.itemLink = itemLink
@@ -128,6 +139,10 @@ local function PopulateList()
 		Frame.Empty:Hide()
 	else
 		Frame.Empty:Show()
+	end
+
+	if(Frame:IsShown()) then
+		UpdatePosition()
 	end
 end
 
@@ -233,15 +248,6 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 					CreateSpecializationTabs(self)
 				end
 
-				populateDown = self:GetBottom() > (UIParent:GetHeight() / 1.5)
-
-				self:ClearAllPoints()
-				if(populateDown) then
-					self:SetPoint('TOPLEFT', BonusRollFrame, 'TOPRIGHT')
-				else
-					self:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
-				end
-
 				InitializeList(GetSpecialization())
 			else
 				print('|cffff8080HabeebIt:|r Found an unknown spell [' .. spellID .. ']. Please report this!')
@@ -256,6 +262,8 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
 		self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
 
+		self:SetScript('OnShow', UpdatePosition)
+		self:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
 		self:SetSize(338, 76)
 		self:SetFrameLevel(10)
 		self:Hide()
