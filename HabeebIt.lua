@@ -144,6 +144,11 @@ local function PopulateList()
 	if(Frame:IsShown()) then
 		UpdatePosition()
 	end
+
+	if(EncounterJournal) then
+		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
+		EncounterJournal:RegisterEvent('EJ_DIFFICULTY_UPDATE')
+	end
 end
 
 local function UpdateSpecializations(currentIndex)
@@ -159,6 +164,10 @@ local function UpdateSpecializations(currentIndex)
 end
 
 local function InitializeList(specialization, shown)
+	if(EncounterJournal) then
+		EncounterJournal:UnregisterEvent('EJ_DIFFICULTY_UPDATE')
+	end
+
 	for index, button in pairs(items) do
 		button:Hide()
 	end
@@ -257,6 +266,10 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		currentEncounterID = nil
 	elseif(event == 'EJ_LOOT_DATA_RECIEVED' and currentEncounterID) then
 		PopulateList()
+
+		if(EncounterJournal) then
+			EncounterJournal:UnregisterEvent(event)
+		end
 	elseif(event == 'PLAYER_LOGIN') then
 		self:RegisterEvent('SPELL_CONFIRMATION_PROMPT')
 		self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
