@@ -5,8 +5,8 @@ local specializations = {}
 local collapsed = true
 local currentEncounterID
 
-local Frame = CreateFrame('Frame', nil, BonusRollFrame)
-local Handle = CreateFrame('Button', nil, BonusRollFrame)
+local Frame = CreateFrame('Frame', 'HabeebItFrame', BonusRollFrame)
+local Handle = CreateFrame('Button', 'HabeebItHandle', BonusRollFrame)
 
 local backdrop = {
 	bgFile = [[Interface\ChatFrame\ChatFrameBackground]], tile = true, tileSize = 16,
