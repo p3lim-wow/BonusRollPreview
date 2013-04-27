@@ -31,7 +31,7 @@ local function OnUpdate(self, elapsed)
 end
 
 local function OnEnter(self)
-	GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
+	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT')
 	GameTooltip:SetItemByID(self.itemID)
 
 	self:SetScript('OnUpdate', OnUpdate)
