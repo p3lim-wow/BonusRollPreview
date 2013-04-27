@@ -34,14 +34,12 @@ local function OnEnter(self)
 	GameTooltip:SetOwner(self, 'ANCHOR_RIGHT')
 	GameTooltip:SetItemByID(self.itemID)
 
-	self.showingTooltip = true
 	self:SetScript('OnUpdate', OnUpdate)
 end
 
 local function OnLeave(self)
 	GameTooltip:Hide()
 
-	self.showingTooltip = false
 	self:SetScript('OnUpdate', nil)
 end
 
