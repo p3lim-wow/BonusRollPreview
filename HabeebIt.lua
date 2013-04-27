@@ -123,12 +123,12 @@ local function PopulateList()
 	end
 end
 
-local function InitializeList(specific)
+local function InitializeList(specialization, shown)
 	for index, button in pairs(items) do
 		button:Hide()
 	end
 
-	if(not specific) then
+	if(not shown) then
 		collapsed = false
 		Handle:GetScript('OnClick')(Handle)
 	end
@@ -140,12 +140,7 @@ local function InitializeList(specific)
 	EJ_SetDifficulty(difficulty > 2 and (difficulty - 2) or 1)
 
 	local _, _, classID = UnitClass('player')
-	local specialization = GetSpecialization()
-	if(specific or specialization) then
-		EJ_SetLootFilter(classID, GetSpecializationInfo(specific or specialization))
-	else
-		EJ_SetLootFilter(classID, 0)
-	end
+	EJ_SetLootFilter(classID, specialization and GetSpecializationInfo(specialization) or 0)
 
 	PopulateList()
 end
@@ -164,7 +159,7 @@ end
 
 local function SpecializationClick(self)
 	UpdateSpecializations(self.index)
-	InitializeList(self.index)
+	InitializeList(self.index, true)
 end
 
 local function SpecializationEnter(self)
@@ -228,7 +223,7 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 					CreateSpecializationTabs(self)
 				end
 
-				InitializeList()
+				InitializeList(GetSpecialization())
 			else
 				print('|cffff8080HabeebIt:|r Found an unused spell [' .. spellID .. ']. Please report this!')
 			end
