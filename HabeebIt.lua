@@ -154,12 +154,12 @@ local function InitializeList(specialization, shown)
 		UpdateSpecializations(specialization)
 	end
 
+	local _, _, difficulty = GetInstanceInfo()
+	EJ_SetDifficulty(difficulty > 2 and (difficulty - 2) or 1)
+
 	local currentInstance = EJ_GetCurrentInstance()
 	EJ_SelectInstance(currentInstance > 0 and currentInstance or 322)
 	EJ_SelectEncounter(currentEncounterID)
-
-	local _, _, difficulty = GetInstanceInfo()
-	EJ_SetDifficulty(difficulty > 2 and (difficulty - 2) or 1)
 
 	local _, _, classID = UnitClass('player')
 	EJ_SetLootFilter(classID, specialization and GetSpecializationInfo(specialization) or 0)
