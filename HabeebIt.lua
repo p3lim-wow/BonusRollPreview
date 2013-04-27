@@ -135,6 +135,7 @@ local function InitializeList(specialization, shown)
 
 	local currentInstance = EJ_GetCurrentInstance()
 	EJ_SelectInstance(currentInstance > 0 and currentInstance or 322)
+	EJ_SelectEncounter(currentEncounterID)
 
 	local _, _, difficulty = GetInstanceInfo()
 	EJ_SetDifficulty(difficulty > 2 and (difficulty - 2) or 1)
