@@ -228,11 +228,11 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 				print('|cffff8080HabeebIt:|r Found an unused spell [' .. spellID .. ']. Please report this!')
 			end
 		end
-	elseif(event == 'EJ_LOOT_DATA_RECEIVED' and currentEncounterID) then
+	elseif(event == 'EJ_LOOT_DATA_RECIEVED' and currentEncounterID) then
 		PopulateList()
 	elseif(event == 'PLAYER_LOGIN') then
 		self:RegisterEvent('SPELL_CONFIRMATION_PROMPT')
-		self:RegisterEvent('EJ_LOOT_DATA_RECEIVED')
+		self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
 
 		self:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
 		self:SetSize(338, 76)
