@@ -124,8 +124,7 @@ local function PopulateList()
 end
 
 local function InitializeList(specific)
-	for button in pairs(items) do
-		items[button] = false
+	for index, button in pairs(items) do
 		button:Hide()
 	end
 
