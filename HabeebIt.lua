@@ -5,6 +5,8 @@ local specializations = {}
 local collapsed = true
 local currentEncounterID
 
+local populateDown
+
 local Frame = CreateFrame('Frame', 'HabeebItFrame', BonusRollFrame)
 local Handle = CreateFrame('Button', 'HabeebItHandle', BonusRollFrame)
 
@@ -51,7 +53,6 @@ local function GetItemLine(index)
 	local Item = items[index]
 	if(not Item) then
 		Item = CreateFrame('Button', nil, Frame)
-		Item:SetPoint('BOTTOM', 0, 6 + ((index - 1) * 48))
 		Item:SetSize(321, 45)
 
 		local Icon = Item:CreateTexture(nil, 'BACKGROUND')
@@ -106,6 +107,13 @@ local function PopulateList()
 			Item.Name:SetText(name)
 			Item.Slot:SetText(slot)
 			Item.Class:SetText(itemClass)
+
+			Item:ClearAllPoints()
+			if(populateDown) then
+				Item:SetPoint('TOP', 0, (6 + ((numItems - 1) * 48)) * -1)
+			else
+				Item:SetPoint('BOTTOM', 0, 6 + ((numItems - 1) * 48))
+			end
 
 			Item.itemID = itemID
 			Item.itemLink = itemLink
@@ -225,6 +233,15 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 					CreateSpecializationTabs(self)
 				end
 
+				populateDown = self:GetBottom() > (UIParent:GetHeight() / 1.5)
+
+				self:ClearAllPoints()
+				if(populateDown) then
+					self:SetPoint('TOPLEFT', BonusRollFrame, 'TOPRIGHT')
+				else
+					self:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
+				end
+
 				InitializeList(GetSpecialization())
 			else
 				print('|cffff8080HabeebIt:|r Found an unknown spell [' .. spellID .. ']. Please report this!')
@@ -239,7 +256,6 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 		self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
 		self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
 
-		self:SetPoint('BOTTOMLEFT', BonusRollFrame, 'BOTTOMRIGHT')
 		self:SetSize(338, 76)
 		self:SetFrameLevel(10)
 		self:Hide()
