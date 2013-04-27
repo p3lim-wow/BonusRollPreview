@@ -114,7 +114,7 @@ local function PopulateList()
 		end
 	end
 
-	Frame:SetHeight(math.max(76, 12 + (numItems * 48)))
+	Frame:SetHeight(math.max(76, 8 + (numItems * 48)))
 
 	if(numItems > 0) then
 		Frame.Empty:Hide()
