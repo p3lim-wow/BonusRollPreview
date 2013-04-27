@@ -123,6 +123,18 @@ local function PopulateList()
 	end
 end
 
+local function UpdateSpecializations(currentIndex)
+	for index, button in pairs(specializations) do
+		if(currentIndex == index) then
+			button.LeftBorder:SetVertexColor(1, 0, 0)
+			button.RightBorder:SetVertexColor(1, 0, 0)
+		else
+			button.LeftBorder:SetVertexColor(1, 1, 1)
+			button.RightBorder:SetVertexColor(1, 1, 1)
+		end
+	end
+end
+
 local function InitializeList(specialization, shown)
 	for index, button in pairs(items) do
 		button:Hide()
@@ -131,6 +143,7 @@ local function InitializeList(specialization, shown)
 	if(not shown) then
 		collapsed = false
 		Handle:GetScript('OnClick')(Handle)
+		UpdateSpecializations(specialization)
 	end
 
 	local currentInstance = EJ_GetCurrentInstance()
@@ -144,18 +157,6 @@ local function InitializeList(specialization, shown)
 	EJ_SetLootFilter(classID, specialization and GetSpecializationInfo(specialization) or 0)
 
 	PopulateList()
-end
-
-local function UpdateSpecializations(currentIndex)
-	for index, button in pairs(specializations) do
-		if(currentIndex == index) then
-			button.LeftBorder:SetVertexColor(1, 0, 0)
-			button.RightBorder:SetVertexColor(1, 0, 0)
-		else
-			button.LeftBorder:SetVertexColor(1, 1, 1)
-			button.RightBorder:SetVertexColor(1, 1, 1)
-		end
-	end
 end
 
 local function SpecializationClick(self)
