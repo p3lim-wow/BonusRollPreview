@@ -3,7 +3,7 @@ local _, ns = ...
 local encounters = {
     -- Pandaria
     [132205] = 691, -- Sha of Anger
-    [132196] = 725, -- Salyis' Warband
+    [132206] = 725, -- Salyis' Warband
     [136381] = 814, -- Nalak, The Storm God
     [137554] = 826, -- Oondasta
 
