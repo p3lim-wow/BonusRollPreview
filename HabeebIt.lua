@@ -1,5 +1,7 @@
 local _, ns = ...
 
+local patch50300 = select(4, GetBuildInfo()) == 50300
+
 local items = {}
 local specializations = {}
 local collapsed = true
@@ -243,7 +245,12 @@ local function CreateSpecializationTabs(self)
 		specializations[index] = SpecButton
 	end
 
-	UpdateSpecializations(GetSpecialization())
+	if(patch50300) then
+		local loot = GetLootSpecialization()
+		UpdateSpecializations((loot and loot ~= 0 and loot) or GetSpecialization())
+	else
+		UpdateSpecializations(GetSpecialization())
+	end
 end
 
 Frame:RegisterEvent('PLAYER_LOGIN')
@@ -257,7 +264,12 @@ Frame:SetScript('OnEvent', function(self, event, ...)
 					CreateSpecializationTabs(self)
 				end
 
-				InitializeList(GetSpecialization())
+				if(patch50300) then
+					local loot = GetLootSpecialization()
+					UpdateSpecializations((loot and loot ~= 0 and loot) or GetSpecialization())
+				else
+					InitializeList(GetSpecialization())
+				end
 			else
 				print('|cffff8080HabeebIt:|r Found an unknown spell [' .. spellID .. ']. Please report this!')
 			end
