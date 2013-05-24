@@ -1,8 +1,10 @@
-## Interface: 50200
+## Interface: 50300
 ## Author: p3lim
 ## Version: @project-version@
 ## Title: Habeeb It
 ## Notes: Easily see what the bonus loot roll can yield
+## SavedVariables: HabeebItDB
 
+Config.lua
 Encounters.lua
 HabeebIt.lua
