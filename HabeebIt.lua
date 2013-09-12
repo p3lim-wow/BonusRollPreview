@@ -146,7 +146,7 @@ local function HookStartRoll()
 end
 
 local function ItemButtonUpdate(self, elapsed)
-	if(IsModifiedClick('COMPAREITEMS')) then
+	if(IsModifiedClick('COMPAREITEMS') or (GetCVarBool('alwaysCompareItems') and not IsEquippedItem(self.itemID))) then
 		GameTooltip_ShowCompareItem()
 	else
 		ShoppingTooltip1:Hide()
