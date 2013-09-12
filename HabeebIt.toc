@@ -1,7 +1,7 @@
 ## Interface: 50300
 ## Author: p3lim
 ## Version: @project-version@
-## Title: Habeeb It
+## Title: HabeebIt
 ## Notes: Easily see what the bonus loot roll can yield
 ## SavedVariables: HabeebItDB
 
