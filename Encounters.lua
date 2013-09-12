@@ -50,6 +50,7 @@ local encounters = {
 	[139691] = 832, -- Lei Shen, The Thunder King
 	[139692] = 831, -- Ra-den
 
+	-- Siege of Orgrimmar
 	[145909] = 852, -- Immerseus
 	[145910] = 849, -- The Fallen Protectors
 	[145911] = 866, -- Norushen
