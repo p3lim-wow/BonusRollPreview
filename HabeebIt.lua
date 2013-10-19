@@ -284,7 +284,7 @@ function Container:Update()
 		for _, value in pairs(currentEncounterID) do
 			EJ_SelectEncounter(value)
 
-			if(EJ_GetNumLoot > 0) then
+			if(EJ_GetNumLoot() > 0) then
 				currentEncounterID = value
 				break
 			end
