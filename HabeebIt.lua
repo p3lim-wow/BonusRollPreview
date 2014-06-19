@@ -279,19 +279,7 @@ function Container:Update()
 
 	local currentInstance = EJ_GetCurrentInstance()
 	EJ_SelectInstance(currentInstance > 0 and currentInstance or 322)
-
-	if(type(currentEncounterID) == 'table') then
-		for _, value in pairs(currentEncounterID) do
-			EJ_SelectEncounter(value)
-
-			if(EJ_GetNumLoot() > 0) then
-				currentEncounterID = value
-				break
-			end
-		end
-	else
-		EJ_SelectEncounter(currentEncounterID)
-	end
+	EJ_SelectEncounter(currentEncounterID)
 
 	local _, _, classID = UnitClass('player')
 	EJ_SetLootFilter(classID, GetLootSpecialization() or GetSpecializationInfo(GetSpecialization() or 0) or 0)
