@@ -55,7 +55,7 @@ local encounters = {
 	[145910] = 849, -- The Fallen Protectors
 	[145911] = 866, -- Norushen
 	[145912] = 867, -- Sha of Pride
-	[145913] = 881, -- Galakras
+	-- See below for Galakras
 	[145914] = 864, -- Iron Juggernaut
 	[145915] = 856, -- Kor'kron Dark Shaman
 	[145916] = 850, -- General Nazgrim
@@ -70,3 +70,8 @@ local encounters = {
 function ns.GetEncounterID(spellID)
 	return encounters[spellID]
 end
+
+-- Galakras is all kinds of weird, the encounterID is different for some people
+-- Grab the encounterID manually for him
+EJ_SelectInstance(369)
+encounters[145913] = select(3, EJ_GetEncounterInfoByIndex(5))
