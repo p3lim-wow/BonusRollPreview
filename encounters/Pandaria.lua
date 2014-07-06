@@ -1,10 +1,11 @@
 
 local encounterIDs = select(2, ...)
 
+-- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:5
 for spellID, encounterID in pairs({
 	-- World
 	[132205] = 691, -- Sha of Anger
-	[132206] = 725, -- Salyis' Warband
+	[132206] = 725, -- Salyis' Warband (Galleon)
 	[136381] = 814, -- Nalak, The Storm God
 	[137554] = 826, -- Oondasta
 	[148317] = 857, -- Celestials (also encounterIDs 858, 859 and 860)
@@ -45,7 +46,7 @@ for spellID, encounterID in pairs({
 	[139687] = 820, -- Primordious
 	[139688] = 824, -- Dark Animus
 	[139689] = 817, -- Iron Qon
-	[139690] = 829, -- Twin Consorts
+	[139690] = 829, -- Twin Consorts (Empyreal Queens)
 	[139691] = 832, -- Lei Shen, The Thunder King
 	[139692] = 831, -- Ra-den
 
