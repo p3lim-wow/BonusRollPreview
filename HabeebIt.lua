@@ -181,8 +181,10 @@ end
 local function GetItemLine(index)
 	local ItemButton = itemButtons[index]
 	if(not ItemButton) then
-		ItemButton = CreateFrame('Button', nil, Container)
-		ItemButton:SetSize(276, 38)
+		ItemButton = CreateFrame('Button', nil, Container.ScrollChild)
+		ItemButton:SetPoint('TOPLEFT', 6, (index - 1) * -40)
+		ItemButton:SetPoint('TOPRIGHT', -22, (index - 1) * -40)
+		ItemButton:SetHeight(38)
 
 		local Icon = ItemButton:CreateTexture(nil, 'BACKGROUND')
 		Icon:SetPoint('TOPLEFT', 1, -1)
@@ -203,7 +205,7 @@ local function GetItemLine(index)
 		ItemButton.Name = Name
 
 		local Class = ItemButton:CreateFontString(nil, 'ARTWORK', 'GameFontHighlight')
-		Class:SetPoint('BOTTOMRIGHT', Name, 'TOPLEFT', 224, -28)
+		Class:SetPoint('BOTTOMRIGHT', -6, 5)
 		Class:SetSize(0, 12)
 		Class:SetJustifyH('RIGHT')
 		ItemButton.Class = Class
@@ -241,19 +243,27 @@ function Container:Populate()
 			ItemButton.itemID = itemID
 			ItemButton.itemLink = itemLink
 
-			if(HabeebItDB.position == 'BOTTOM') then
-				ItemButton:SetPoint('TOP', 0, (6 + ((numItems - 1) * 40)) * -1)
-			else
-				ItemButton:SetPoint('BOTTOM', 0, 6 + ((numItems - 1) * 40))
-			end
-
 			ItemButton:Show()
 		end
 	end
 
-	self:SetHeight(math.max(50, 10 + (numItems * 40)))
+	self:SetHeight(math.min(330, math.max(50, 10 + (numItems * 40))))
 
 	if(numItems > 0) then
+		local height = (10 + (numItems * 40)) - self:GetHeight()
+		self.Slider:SetMinMaxValues(0, height > 0 and height or 0)
+		self.Slider:SetValue(0)
+
+		if(numItems > 8) then
+			self:EnableMouseWheel(true)
+			self.Slider:Show()
+			self.ScrollChild:SetWidth(286)
+		else
+			self:EnableMouseWheel(false)
+			self.Slider:Hide()
+			self.ScrollChild:SetWidth(302)
+		end
+
 		self.Empty:Hide()
 	else
 		self.Empty:Show()
@@ -337,14 +347,89 @@ function Container:PLAYER_LOGIN()
 		Handle:SetPoint('BOTTOM', BonusRollFrame, 'TOP', 0, -2)
 	end
 
+	local ScrollChild = CreateFrame('Frame', nil, self)
+	ScrollChild:SetHeight(1) -- Completely ignores this value, bug?
+	self.ScrollChild = ScrollChild
+
+	local Scroll = CreateFrame('ScrollFrame', nil, self)
+	Scroll:SetPoint('TOPLEFT', 0, -6)
+	Scroll:SetPoint('BOTTOMRIGHT', 0, 6)
+	Scroll:SetScrollChild(ScrollChild)
+
 	self:SetWidth(286)
 	self:SetFrameLevel(self:GetParent():GetFrameLevel() - 2)
 	self:SetBackdrop(BACKDROP)
 	self:SetBackdropColor(0, 0, 0, 0.8)
 	self:SetBackdropBorderColor(2/3, 2/3, 2/3)
+	self:EnableMouseWheel(true)
 
-	self:RegisterEvent('SPELL_CONFIRMATION_PROMPT')
-	self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
+	local Slider = CreateFrame('Slider', nil, Scroll)
+	Slider:SetPoint('TOPRIGHT', -5, -16)
+	Slider:SetPoint('BOTTOMRIGHT', -5, 14)
+	Slider:SetWidth(16)
+	Slider:SetFrameLevel(self:GetFrameLevel() + 10)
+	Slider:SetThumbTexture([=[Interface\Buttons\UI-ScrollBar-Knob]=])
+	self.Slider = Slider
+
+	local Thumb = Slider:GetThumbTexture()
+	Thumb:SetSize(16, 24)
+	Thumb:SetTexCoord(1/4, 3/4, 1/8, 7/8)
+
+	local Up = CreateFrame('Button', nil, Slider)
+	Up:SetPoint('BOTTOM', Slider, 'TOP')
+	Up:SetSize(16, 16)
+	Up:SetNormalTexture([=[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Up]=])
+	Up:SetDisabledTexture([=[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Disabled]=])
+	Up:SetHighlightTexture([=[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Highlight]=])
+	Up:GetNormalTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
+	Up:GetDisabledTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
+	Up:GetHighlightTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
+	Up:GetHighlightTexture():SetBlendMode('ADD')
+	Up:SetScript('OnClick', function()
+		Slider:SetValue(Slider:GetValue() - Slider:GetHeight() / 3)
+	end)
+
+	local Down = CreateFrame('Button', nil, Slider)
+	Down:SetPoint('TOP', Slider, 'BOTTOM')
+	Down:SetSize(16, 16)
+	Down:SetScript('OnClick', ScrollClick)
+	Down:SetNormalTexture([=[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Up]=])
+	Down:SetDisabledTexture([=[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Disabled]=])
+	Down:SetHighlightTexture([=[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Highlight]=])
+	Down:GetNormalTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
+	Down:GetDisabledTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
+	Down:GetHighlightTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
+	Down:GetHighlightTexture():SetBlendMode('ADD')
+	Down:SetScript('OnClick', function()
+		Slider:SetValue(Slider:GetValue() + Slider:GetHeight() / 3)
+	end)
+
+	Slider:SetScript('OnValueChanged', function(self, value)
+		local min, max = self:GetMinMaxValues()
+		if(value == min) then
+			Up:Disable()
+		else
+			Up:Enable()
+		end
+
+		if(value == max) then
+			Down:Disable()
+		else
+			Down:Enable()
+		end
+
+		local Parent = self:GetParent()
+		Parent:SetVerticalScroll(value)
+		ScrollChild:SetPoint('TOP', 0, value)
+	end)
+
+	Scroll:SetScript('OnMouseWheel', function(self, alpha)
+		if(alpha > 0) then
+			Slider:SetValue(Slider:GetValue() - Slider:GetHeight() / 3)
+		else
+			Slider:SetValue(Slider:GetValue() + Slider:GetHeight() / 3)
+		end
+	end)
 
 	local Empty = self:CreateFontString(nil, 'ARTWORK', 'GameFontHighlight')
 	Empty:SetPoint('CENTER')
@@ -408,6 +493,9 @@ function Container:PLAYER_LOGIN()
 
 	Buttons:SetPoint('LEFT', 4, 4)
 	Buttons:SetScript('OnLeave', ButtonsLeave)
+
+	self:RegisterEvent('SPELL_CONFIRMATION_PROMPT')
+	self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
 
 	hooksecurefunc('BonusRollFrame_StartBonusRoll', HookStartRoll)
 end
