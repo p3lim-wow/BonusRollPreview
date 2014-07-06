@@ -1,3 +1,4 @@
+
 local encounterIDs = select(2, ...)
 
 for spellID, encounterID in pairs({
@@ -6,9 +7,7 @@ for spellID, encounterID in pairs({
 	[132206] = 725, -- Salyis' Warband
 	[136381] = 814, -- Nalak, The Storm God
 	[137554] = 826, -- Oondasta
-	[148317] = 857, -- Chi-Ji, The Red Crane
-	[148317] = 858, -- Yu'lon, The Jade Serpent
-	[148317] = 859, -- Niuzao, The Black Ox
+	[148317] = 857, -- Celestials (also encounterIDs 858, 859 and 860)
 	[148317] = 860, -- Xuen, The White Tiger
 	[148316] = 861, -- Ordos, Fire-God of the Yaungol
 
