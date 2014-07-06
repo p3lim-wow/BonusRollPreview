@@ -55,7 +55,6 @@ for spellID, encounterID in pairs({
 	[145910] = 849, -- The Fallen Protectors
 	[145911] = 866, -- Norushen
 	[145912] = 867, -- Sha of Pride
-	-- See below for Galakras
 	[145914] = 864, -- Iron Juggernaut
 	[145915] = 856, -- Kor'kron Dark Shaman
 	[145916] = 850, -- General Nazgrim
@@ -69,7 +68,10 @@ for spellID, encounterID in pairs({
 	encounterIDs[spellID] = encounterID
 end
 
--- Galakras is all kinds of weird, the encounterID is different for some people
--- Grab the encounterID manually for him
-EJ_SelectInstance(369)
-encounterIDs[145913] = select(3, EJ_GetEncounterInfoByIndex(5))
+-- I told you I hate this guy, didn't I?
+local Handler = CreateFrame('Frame')
+Handler:RegisterEvent('PLAYER_LOGIN')
+Handler:SetScript('OnEvent', function()
+	EJ_SelectInstance(369)
+	encounterIDs[145913] = (select(3, EJ_GetEncounterInfoByIndex(5)))
+end)
