@@ -1,4 +1,4 @@
-local _, ns = ...
+local encounterIDs = select(2, ...)
 
 local currentEncounterID
 local itemButtons = {}
@@ -308,7 +308,7 @@ end
 
 function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType)
 	if(confirmType == CONFIRMATION_PROMPT_BONUS_ROLL) then
-		currentEncounterID = ns.GetEncounterID(spellID)
+		currentEncounterID = encounterIDs[spellID]
 
 		if(currentEncounterID) then
 			self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')

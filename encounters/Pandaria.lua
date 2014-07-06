@@ -1,7 +1,7 @@
-local _, ns = ...
+local encounterIDs = select(2, ...)
 
-local encounters = {
-	-- Pandaria
+for spellID, encounterID in pairs({
+	-- World
 	[132205] = 691, -- Sha of Anger
 	[132206] = 725, -- Salyis' Warband
 	[136381] = 814, -- Nalak, The Storm God
@@ -64,14 +64,12 @@ local encounters = {
 	[145920] = 851, -- Thok the Bloodthirsty
 	[145918] = 865, -- Siegecrafter Blackfuse
 	[145921] = 853, -- Paragons of the Klaxxi
-	[145922] = 869, -- Garrosh Hellscream
-}
-
-function ns.GetEncounterID(spellID)
-	return encounters[spellID]
+	[145922] = 869  -- Garrosh Hellscream
+}) do
+	encounterIDs[spellID] = encounterID
 end
 
 -- Galakras is all kinds of weird, the encounterID is different for some people
 -- Grab the encounterID manually for him
 EJ_SelectInstance(369)
-encounters[145913] = select(3, EJ_GetEncounterInfoByIndex(5))
+encounterIDs[145913] = select(3, EJ_GetEncounterInfoByIndex(5))

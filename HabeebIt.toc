@@ -5,6 +5,7 @@
 ## Notes: Easily see what the bonus loot roll can yield
 ## SavedVariables: HabeebItDB
 
+encounters\Pandaria.lua
+
 Config.lua
-Encounters.lua
 HabeebIt.lua
