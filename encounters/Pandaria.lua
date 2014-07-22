@@ -2,7 +2,7 @@
 local encounterIDs = select(2, ...)
 
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:5
-for spellID, encounterID in pairs({
+for spellID, encounterID in next, {
 	-- World
 	[132205] = 691, -- Sha of Anger
 	[132206] = 725, -- Salyis' Warband (Galleon)
@@ -64,11 +64,11 @@ for spellID, encounterID in pairs({
 	[145918] = 865, -- Siegecrafter Blackfuse
 	[145921] = 853, -- Paragons of the Klaxxi
 	[145922] = 869  -- Garrosh Hellscream
-}) do
+} do
 	encounterIDs[spellID] = encounterID
 end
 
--- I told you I hate this guy, didn't I?
+-- Galakras has two IDs, pick whatever the client uses
 local Handler = CreateFrame('Frame')
 Handler:RegisterEvent('PLAYER_LOGIN')
 Handler:SetScript('OnEvent', function()

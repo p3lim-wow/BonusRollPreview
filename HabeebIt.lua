@@ -280,7 +280,7 @@ function Container:Update()
 		EncounterJournal:UnregisterEvent('EJ_DIFFICULTY_UPDATE')
 	end
 
-	for index, button in pairs(itemButtons) do
+	for index, button in next, itemButtons do
 		button:Hide()
 	end
 

@@ -15,7 +15,7 @@ Panel:RegisterEvent('PLAYER_LOGIN')
 Panel:SetScript('OnEvent', function()
 	HabeebItDB = HabeebItDB or defaults
 
-	for key, value in pairs(defaults) do
+	for key, value in next, defaults do
 		if(HabeebItDB[key] == nil) then
 			HabeebItDB[key] = value
 		end
@@ -25,7 +25,7 @@ Panel:SetScript('OnEvent', function()
 end)
 
 function Panel:okay()
-	for key, value in pairs(temporary) do
+	for key, value in next, temporary do
 		HabeebItDB[key] = value
 	end
 
@@ -38,7 +38,7 @@ function Panel:default()
 end
 
 function Panel:refresh()
-	for key, button in pairs(buttons) do
+	for key, button in next, buttons do
 		if(button:IsObjectType('Button')) then
 			UIDropDownMenu_SetSelectedValue(button, HabeebItDB[key])
 
