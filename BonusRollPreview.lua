@@ -9,11 +9,11 @@ local BACKDROP = {
 	insets = {left = 4, right = 4, top = 4, bottom = 4}
 }
 
-local Container = CreateFrame('Frame', 'HabeebItContainer', BonusRollFrame)
-local Handle = CreateFrame('Button', 'HabeebItHandle', BonusRollFrame)
+local Container = CreateFrame('Frame', 'BonusRollPreviewContainer', BonusRollFrame)
+local Handle = CreateFrame('Button', 'BonusRollPreviewHandle', BonusRollFrame)
 
 local Hotspot = CreateFrame('Frame', nil, BonusRollFrame)
-local Buttons = CreateFrame('Frame', 'HabeebItSpecButtons', Hotspot)
+local Buttons = CreateFrame('Frame', 'BonusRollPreviewSpecButtons', Hotspot)
 
 local function SpecButtonClick(self)
 	SetLootSpecialization(self.specID)
@@ -85,7 +85,7 @@ local function HandleClick()
 	Handle:ClearAllPoints()
 
 	if(collapsed) then
-		if(HabeebItDB.position == 'BOTTOM') then
+		if(BonusRollPreviewDB.position == 'BOTTOM') then
 			Handle.Arrow:SetTexCoord(1/2, 1, 1, 1, 1/2, 0, 1, 0)
 			Handle:SetPoint('BOTTOM', Container, 0, -14)
 		else
@@ -95,7 +95,7 @@ local function HandleClick()
 
 		Container:Show()
 	else
-		if(HabeebItDB.position == 'BOTTOM') then
+		if(BonusRollPreviewDB.position == 'BOTTOM') then
 			Handle.Arrow:SetTexCoord(0, 0, 1/2, 0, 0, 1, 1/2, 1)
 			Handle:SetPoint('TOP', BonusRollFrame, 'BOTTOM', 0, 2)
 		else
@@ -112,7 +112,7 @@ end
 function Container:HandleUpdate()
 	self:ClearAllPoints()
 
-	if(HabeebItDB.position == 'BOTTOM') then
+	if(BonusRollPreviewDB.position == 'BOTTOM') then
 		self:SetPoint('TOP', BonusRollFrame, 'BOTTOM')
 
 		Handle.Arrow:SetTexCoord(0, 0, 1/2, 0, 0, 1, 1/2, 1)
@@ -326,7 +326,7 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType)
 
 			self:Initialize()
 		else
-			print('|cffff8080HabeebIt:|r Found an unknown spell [' .. spellID .. ']. Please report this!')
+			print('|cffff8080BonusRollPreview:|r Found an unknown spell [' .. spellID .. ']. Please report this!')
 		end
 	end
 end
@@ -339,7 +339,7 @@ function Container:SPELL_CONFIRMATION_TIMEOUT()
 end
 
 function Container:PLAYER_LOGIN()
-	if(HabeebItDB.position == 'BOTTOM') then
+	if(BonusRollPreviewDB.position == 'BOTTOM') then
 		self:SetPoint('TOP', BonusRollFrame, 'BOTTOM')
 		Handle:SetPoint('TOP', BonusRollFrame, 'BOTTOM', 0, 2)
 	else

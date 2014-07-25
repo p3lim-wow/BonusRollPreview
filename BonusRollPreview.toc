@@ -1,11 +1,11 @@
 ## Interface: 50400
 ## Author: p3lim
 ## Version: @project-version@
-## Title: HabeebIt
+## Title: Bonus Roll Preview
 ## Notes: Easily see what the bonus loot roll can yield
-## SavedVariables: HabeebItDB
+## SavedVariables: BonusRollPreviewDB
 
 encounters\Pandaria.lua
 
 Config.lua
-HabeebIt.lua
+BonusRollPreview.lua

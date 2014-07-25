@@ -13,37 +13,37 @@ Panel:Hide()
 
 Panel:RegisterEvent('PLAYER_LOGIN')
 Panel:SetScript('OnEvent', function()
-	HabeebItDB = HabeebItDB or defaults
+	BonusRollPreviewDB = BonusRollPreviewDB or defaults
 
 	for key, value in next, defaults do
-		if(HabeebItDB[key] == nil) then
-			HabeebItDB[key] = value
+		if(BonusRollPreviewDB[key] == nil) then
+			BonusRollPreviewDB[key] = value
 		end
 	end
 
-	HabeebItContainer:PLAYER_LOGIN()
+	BonusRollPreviewContainer:PLAYER_LOGIN()
 end)
 
 function Panel:okay()
 	for key, value in next, temporary do
-		HabeebItDB[key] = value
+		BonusRollPreviewDB[key] = value
 	end
 
-	HabeebItContainer:HandleUpdate()
+	BonusRollPreviewContainer:HandleUpdate()
 end
 
 function Panel:default()
-	HabeebItDB = defaults
+	BonusRollPreviewDB = defaults
 	table.wipe(temporary)
 end
 
 function Panel:refresh()
 	for key, button in next, buttons do
 		if(button:IsObjectType('Button')) then
-			UIDropDownMenu_SetSelectedValue(button, HabeebItDB[key])
+			UIDropDownMenu_SetSelectedValue(button, BonusRollPreviewDB[key])
 
 			-- This is for some reason needed, gotta take a look into it later
-			UIDropDownMenu_SetText(button, _G[HabeebItDB[key] .. '_KEY'])
+			UIDropDownMenu_SetText(button, _G[BonusRollPreviewDB[key] .. '_KEY'])
 		end
 	end
 end
@@ -61,7 +61,7 @@ do
 		Dropdown.key = key
 
 		UIDropDownMenu_SetWidth(Dropdown, 90)
-		UIDropDownMenu_SetSelectedValue(Dropdown, HabeebItDB[key])
+		UIDropDownMenu_SetSelectedValue(Dropdown, BonusRollPreviewDB[key])
 		UIDropDownMenu_Initialize(Dropdown, func)
 
 		local Text = Dropdown:CreateFontString(nil, nil, 'GameFontHighlight')
@@ -108,7 +108,8 @@ end)
 
 InterfaceOptions_AddCategory(Panel)
 
-SLASH_HabeebIt1 = '/habeebit'
+SLASH_BonusRollPreview1 = '/brp'
+SLASH_BonusRollPreview1 = '/bonusrollpreview'
 SlashCmdList[addonName] = function()
 	InterfaceOptionsFrame_OpenToCategory(addonName)
 end
