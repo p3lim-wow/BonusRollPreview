@@ -1,3 +1,4 @@
+
 local encounterIDs = select(2, ...)
 
 local currentEncounterID
