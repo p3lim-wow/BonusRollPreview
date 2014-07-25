@@ -112,4 +112,5 @@ SLASH_BonusRollPreview1 = '/brp'
 SLASH_BonusRollPreview1 = '/bonusrollpreview'
 SlashCmdList[addonName] = function()
 	InterfaceOptionsFrame_OpenToCategory(addonName)
+	InterfaceOptionsFrame_OpenToCategory(addonName)
 end
