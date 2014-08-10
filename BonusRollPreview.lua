@@ -81,12 +81,16 @@ local function ButtonsLeave(self)
 	end
 end
 
+local function PositionDownwards()
+	return (GetScreenHeight() - BonusRollFrame:GetTop()) < 330
+end
+
 local collapsed = true
 local function HandleClick()
 	Handle:ClearAllPoints()
 
 	if(collapsed) then
-		if(BonusRollPreviewDB.position == 'BOTTOM') then
+		if(PositionDownwards()) then
 			Handle.Arrow:SetTexCoord(1/2, 1, 1, 1, 1/2, 0, 1, 0)
 			Handle:SetPoint('BOTTOM', Container, 0, -14)
 		else
@@ -96,7 +100,7 @@ local function HandleClick()
 
 		Container:Show()
 	else
-		if(BonusRollPreviewDB.position == 'BOTTOM') then
+		if(PositionDownwards()) then
 			Handle.Arrow:SetTexCoord(0, 0, 1/2, 0, 0, 1, 1/2, 1)
 			Handle:SetPoint('TOP', BonusRollFrame, 'BOTTOM', 0, 2)
 		else
@@ -108,35 +112,6 @@ local function HandleClick()
 	end
 
 	collapsed = not collapsed
-end
-
-function Container:HandleUpdate()
-	self:ClearAllPoints()
-
-	if(BonusRollPreviewDB.position == 'BOTTOM') then
-		self:SetPoint('TOP', BonusRollFrame, 'BOTTOM')
-
-		Handle.Arrow:SetTexCoord(0, 0, 1/2, 0, 0, 1, 1/2, 1)
-		Handle.TopCenter:Hide()
-		Handle.TopRight:Hide()
-		Handle.TopLeft:Hide()
-		Handle.BottomCenter:Show()
-		Handle.BottomRight:Show()
-		Handle.BottomLeft:Show()
-	else
-		self:SetPoint('BOTTOM', BonusRollFrame, 'TOP')
-
-		Handle.Arrow:SetTexCoord(1/2, 1, 0, 1, 1/2, 0, 0, 0)
-		Handle.TopCenter:Show()
-		Handle.TopRight:Show()
-		Handle.TopLeft:Show()
-		Handle.BottomCenter:Hide()
-		Handle.BottomRight:Hide()
-		Handle.BottomLeft:Hide()
-	end
-
-	self:Hide()
-	collapsed = true
 end
 
 local function HookStartRoll()
@@ -274,6 +249,33 @@ function Container:Populate()
 		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
 		EncounterJournal:RegisterEvent('EJ_DIFFICULTY_UPDATE')
 	end
+
+	self:ClearAllPoints()
+	self:Hide()
+
+	if(PositionDownwards()) then
+		self:SetPoint('TOP', BonusRollFrame, 'BOTTOM')
+
+		Handle.Arrow:SetTexCoord(0, 0, 1/2, 0, 0, 1, 1/2, 1)
+		Handle.TopCenter:Hide()
+		Handle.TopRight:Hide()
+		Handle.TopLeft:Hide()
+		Handle.BottomCenter:Show()
+		Handle.BottomRight:Show()
+		Handle.BottomLeft:Show()
+	else
+		self:SetPoint('BOTTOM', BonusRollFrame, 'TOP')
+
+		Handle.Arrow:SetTexCoord(1/2, 1, 0, 1, 1/2, 0, 0, 0)
+		Handle.TopCenter:Show()
+		Handle.TopRight:Show()
+		Handle.TopLeft:Show()
+		Handle.BottomCenter:Hide()
+		Handle.BottomRight:Hide()
+		Handle.BottomLeft:Hide()
+	end
+
+	collapsed = true
 end
 
 function Container:Update()
@@ -340,14 +342,6 @@ function Container:SPELL_CONFIRMATION_TIMEOUT()
 end
 
 function Container:PLAYER_LOGIN()
-	if(BonusRollPreviewDB.position == 'BOTTOM') then
-		self:SetPoint('TOP', BonusRollFrame, 'BOTTOM')
-		Handle:SetPoint('TOP', BonusRollFrame, 'BOTTOM', 0, 2)
-	else
-		self:SetPoint('BOTTOM', BonusRollFrame, 'TOP')
-		Handle:SetPoint('BOTTOM', BonusRollFrame, 'TOP', 0, -2)
-	end
-
 	local ScrollChild = CreateFrame('Frame', nil, self)
 	ScrollChild:SetHeight(1) -- Completely ignores this value, bug?
 	self.ScrollChild = ScrollChild
@@ -486,8 +480,6 @@ function Container:PLAYER_LOGIN()
 	BottomLeft:SetTexCoord(0, 1, 0.1, 1)
 	Handle.BottomLeft = BottomLeft
 
-	self:HandleUpdate()
-
 	Hotspot:SetAllPoints(BonusRollFrame.SpecIcon)
 	Hotspot:SetScript('OnEnter', HotspotEnter)
 	Hotspot:SetScript('OnLeave', HotspotLeave)
@@ -502,3 +494,4 @@ function Container:PLAYER_LOGIN()
 end
 
 Container:SetScript('OnEvent', function(self, event, ...) self[event](self, event, ...) end)
+Container:RegisterEvent('PLAYER_LOGIN')
