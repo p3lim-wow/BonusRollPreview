@@ -1,6 +1,6 @@
 local addonName, ns = ...
 
-local buttons = {}
+local objects = {}
 local temporary = {}
 
 local defaults = {
@@ -38,37 +38,140 @@ function Panel:default()
 end
 
 function Panel:refresh()
-	for key, button in next, buttons do
-		if(button:IsObjectType('Button')) then
-			UIDropDownMenu_SetSelectedValue(button, BonusRollPreviewDB[key])
-
-			-- This is for some reason needed, gotta take a look into it later
-			UIDropDownMenu_SetText(button, _G[BonusRollPreviewDB[key] .. '_KEY'])
+	for key, object in next, objects do
+		if(object:IsObjectType('Frame')) then
+			object.Label:SetText(object.keys[BonusRollPreviewDB[key]])
 		end
 	end
 end
 
 local CreateDropdown
 do
-	local function OnClick(self)
-		UIDropDownMenu_SetSelectedValue(self:GetParent().dropdown, self.value)
-		temporary[self:GetParent().dropdown.key] = self.value
+	local BACKDROP = {
+		bgFile = [[Interface\DialogFrame\UI-DialogBox-Background-Dark]],
+		edgeFile = [[Interface\DialogFrame\UI-DialogBox-Border]], edgeSize = 32,
+		insets = {top = 12, bottom = 9, left = 11, right = 12}
+	}
+
+	local function OnHide(self)
+		self.Menu:Hide()
 	end
 
-	function CreateDropdown(parent, key, func)
-		local Dropdown = CreateFrame('Button', addonName .. 'DropDown_' .. GetTime(), parent, 'UIDropDownMenuTemplate')
-		Dropdown.OnClick = OnClick
-		Dropdown.key = key
+	local function MenuClick(self)
+		local Menu = self:GetParent().Menu
+		if(Menu:IsShown()) then
+			Menu:Hide()
+		else
+			for key, Item in next, Menu.items do
+				Item.Button:SetChecked(key == (temporary[Menu.key] or QuickQuestDB[Menu.key]))
+			end
 
-		UIDropDownMenu_SetWidth(Dropdown, 90)
-		UIDropDownMenu_SetSelectedValue(Dropdown, BonusRollPreviewDB[key])
-		UIDropDownMenu_Initialize(Dropdown, func)
+			Menu:Show()
+		end
+
+		PlaySound('igMainMenuOptionCheckBoxOn')
+	end
+
+	local function ItemClick(self)
+		local Menu = self:GetParent()
+		temporary[Menu.key] = self.value
+
+		Menu:Hide()
+		Menu:GetParent().Label:SetText(self:GetText())
+	end
+
+	function CreateDropdown(parent, key, items)
+		local Dropdown = CreateFrame('Frame', nil, parent)
+		Dropdown:SetSize(110, 32)
+		Dropdown:SetScript('OnHide', OnHide)
+		Dropdown.keys = items
+
+		local LeftTexture = Dropdown:CreateTexture(nil, 'ARTWORK')
+		LeftTexture:SetPoint('TOPLEFT', -14, 17)
+		LeftTexture:SetSize(25, 64)
+		LeftTexture:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]])
+		LeftTexture:SetTexCoord(0, 0.1953125, 0, 1)
+
+		local RightTexture = Dropdown:CreateTexture(nil, 'ARTWORK')
+		RightTexture:SetPoint('TOPRIGHT', 14, 17)
+		RightTexture:SetSize(25, 64)
+		RightTexture:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]])
+		RightTexture:SetTexCoord(0.8046875, 1, 0, 1)
+
+		local MiddleTexture = Dropdown:CreateTexture(nil, 'ARTWORK')
+		MiddleTexture:SetPoint('TOPLEFT', LeftTexture, 'TOPRIGHT')
+		MiddleTexture:SetPoint('TOPRIGHT', RightTexture, 'TOPLEFT')
+		MiddleTexture:SetTexture([[Interface\Glues\CharacterCreate\CharacterCreate-LabelFrame]])
+		MiddleTexture:SetTexCoord(0.1953125, 0.8046875, 0, 1)
+
+		local Button = CreateFrame('Button', nil, Dropdown)
+		Button:SetPoint('TOPRIGHT', RightTexture, -16, -18)
+		Button:SetSize(24, 24)
+		Button:SetNormalTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Up]])
+		Button:SetPushedTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Down]])
+		Button:SetDisabledTexture([[Interface\ChatFrame\UI-ChatIcon-ScrollDown-Disabled]])
+		Button:SetHighlightTexture([[Interface\Buttons\UI-Common-MouseHilight]])
+		Button:GetHighlightTexture():SetBlendMode('ADD')
+		Button:SetScript('OnClick', MenuClick)
+		Dropdown.Button = Button
+
+		local Label = Dropdown:CreateFontString(nil, nil, 'GameFontHighlightSmall')
+		Label:SetPoint('RIGHT', Button, 'LEFT')
+		Label:SetSize(0, 10)
+		Dropdown.Label = Label
+
+		local Menu = CreateFrame('Frame', nil, Dropdown)
+		Menu:SetPoint('TOPLEFT', Dropdown, 'BOTTOMLEFT', 0, 4)
+		Menu:SetBackdrop(BACKDROP)
+		Menu:Hide()
+		Menu.key = key
+		Menu.items = {}
+		Dropdown.Menu = Menu
+
+		local index, maxWidth = 0, 0
+		for value, name in next, items do
+			local Item = CreateFrame('Button', nil, Menu)
+			Item:SetPoint('TOPLEFT', 14, -(14 + (18 * index)))
+			Item:SetHighlightTexture([[Interface\QuestFrame\UI-QuestTitleHighlight]])
+			Item:GetHighlightTexture():SetBlendMode('ADD')
+			Item:SetScript('OnClick', ItemClick)
+			Item.value = value
+
+			local ItemButton = CreateFrame('CheckButton', nil, Item)
+			ItemButton:SetPoint('LEFT')
+			ItemButton:SetSize(16, 16)
+			ItemButton:SetNormalTexture([[Interface\Common\UI-DropDownRadioChecks]])
+			ItemButton:GetNormalTexture():SetTexCoord(0.5, 1, 0.5, 1)
+			ItemButton:SetCheckedTexture([[Interface\Common\UI-DropDownRadioChecks]])
+			ItemButton:GetCheckedTexture():SetTexCoord(0, 0.5, 0.5, 1)
+			ItemButton:EnableMouse(false)
+			Item.Button = ItemButton
+
+			local ItemLabel = Item:CreateFontString(nil, nil, 'GameFontHighlightSmall')
+			ItemLabel:SetPoint('LEFT', ItemButton, 'RIGHT', 4, -1)
+			ItemLabel:SetText(name)
+			Item:SetFontString(ItemLabel)
+
+			local width = ItemLabel:GetWidth()
+			if(width > maxWidth) then
+				maxWidth = width
+			end
+
+			Menu.items[value] = Item
+			index = index + 1
+		end
+
+		for _, Item in next, Menu.items do
+			Item:SetSize(32 + maxWidth, 18)
+		end
+
+		Menu:SetSize(60 + maxWidth, 28 + 18 * index)
 
 		local Text = Dropdown:CreateFontString(nil, nil, 'GameFontHighlight')
-		Text:SetPoint('LEFT', Dropdown, 'RIGHT', -1, 2)
+		Text:SetPoint('LEFT', Dropdown, 'RIGHT', 3, 2)
 		Dropdown.Text = Text
 
-		buttons[key] = Dropdown
+		objects[key] = Dropdown
 
 		return Dropdown
 	end
@@ -86,23 +189,14 @@ Panel:SetScript('OnShow', function(self)
 	Description:SetText('Quick access to your upcoming loot!')
 	self.Description = Description
 
-	local Position = CreateDropdown(self, 'position', function(self)
-		local selected = UIDropDownMenu_GetSelectedValue(self)
-		local info = UIDropDownMenu_CreateInfo()
-		info.text = 'Bottom'
-		info.value = 'BOTTOM'
-		info.func = self.OnClick
-		info.checked = selected == info.value
-		UIDropDownMenu_AddButton(info)
-
-		info.text = 'Top'
-		info.value = 'TOP'
-		info.checked = selected == info.value
-		UIDropDownMenu_AddButton(info)
-	end)
-	Position:SetPoint('TOPLEFT', Description, 'BOTTOMLEFT', -13, -14)
+	local Position = CreateDropdown(self, 'position', {
+		BOTTOM = 'Bottom',
+		TOP = 'Top'
+	})
+	Position:SetPoint('TOPLEFT', Description, 'BOTTOMLEFT', 0, -14)
 	Position.Text:SetText('Position of the list')
 
+	Panel:refresh()
 	self:SetScript('OnShow', nil)
 end)
 
