@@ -5,8 +5,8 @@ local currentEncounterID
 local itemButtons = {}
 
 local BACKDROP = {
-	bgFile = [=[Interface\ChatFrame\ChatFrameBackground]=], tile = true, tileSize = 16,
-	edgeFile = [=[Interface\Tooltips\UI-Tooltip-Border]=], edgeSize = 16,
+	bgFile = [[Interface\ChatFrame\ChatFrameBackground]], tile = true, tileSize = 16,
+	edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]], edgeSize = 16,
 	insets = {left = 4, right = 4, top = 4, bottom = 4}
 }
 
@@ -53,7 +53,7 @@ local function HotspotEnter()
 				local Ring = SpecButton:CreateTexture(nil, 'OVERLAY', nil, 2)
 				Ring:SetPoint('TOPLEFT', -6, 6)
 				Ring:SetSize(58, 58)
-				Ring:SetTexture([=[Interface\Minimap\Minimap-TrackingBorder]=])
+				Ring:SetTexture([[Interface\Minimap\Minimap-TrackingBorder]])
 			end
 
 			Buttons:SetSize(numSpecs * 28 + 34, 38)
@@ -363,7 +363,7 @@ function Container:PLAYER_LOGIN()
 	Slider:SetPoint('BOTTOMRIGHT', -5, 14)
 	Slider:SetWidth(16)
 	Slider:SetFrameLevel(self:GetFrameLevel() + 10)
-	Slider:SetThumbTexture([=[Interface\Buttons\UI-ScrollBar-Knob]=])
+	Slider:SetThumbTexture([[Interface\Buttons\UI-ScrollBar-Knob]])
 	self.Slider = Slider
 
 	local Thumb = Slider:GetThumbTexture()
@@ -373,9 +373,9 @@ function Container:PLAYER_LOGIN()
 	local Up = CreateFrame('Button', nil, Slider)
 	Up:SetPoint('BOTTOM', Slider, 'TOP')
 	Up:SetSize(16, 16)
-	Up:SetNormalTexture([=[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Up]=])
-	Up:SetDisabledTexture([=[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Disabled]=])
-	Up:SetHighlightTexture([=[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Highlight]=])
+	Up:SetNormalTexture([[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Up]])
+	Up:SetDisabledTexture([[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Disabled]])
+	Up:SetHighlightTexture([[Interface\Buttons\UI-ScrollBar-ScrollUpButton-Highlight]])
 	Up:GetNormalTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
 	Up:GetDisabledTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
 	Up:GetHighlightTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
@@ -388,9 +388,9 @@ function Container:PLAYER_LOGIN()
 	Down:SetPoint('TOP', Slider, 'BOTTOM')
 	Down:SetSize(16, 16)
 	Down:SetScript('OnClick', ScrollClick)
-	Down:SetNormalTexture([=[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Up]=])
-	Down:SetDisabledTexture([=[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Disabled]=])
-	Down:SetHighlightTexture([=[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Highlight]=])
+	Down:SetNormalTexture([[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Up]])
+	Down:SetDisabledTexture([[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Disabled]])
+	Down:SetHighlightTexture([[Interface\Buttons\UI-ScrollBar-ScrollDownButton-Highlight]])
 	Down:GetNormalTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
 	Down:GetDisabledTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
 	Down:GetHighlightTexture():SetTexCoord(1/4, 3/4, 1/4, 3/4)
@@ -432,7 +432,7 @@ function Container:PLAYER_LOGIN()
 	self.Empty = Empty
 
 	Handle:SetSize(64, 16)
-	Handle:SetNormalTexture([=[Interface\RaidFrame\RaidPanel-Toggle]=])
+	Handle:SetNormalTexture([[Interface\RaidFrame\RaidPanel-Toggle]])
 	Handle:SetScript('OnClick', HandleClick)
 	Handle.Arrow = Handle:GetNormalTexture()
 
@@ -443,40 +443,40 @@ function Container:PLAYER_LOGIN()
 	local TopCenter = Handle:CreateTexture(nil, 'BORDER')
 	TopCenter:SetPoint('TOP', 0, 4.5)
 	TopCenter:SetSize(24, 12)
-	TopCenter:SetTexture([=[Interface\RaidFrame\RaidPanel-UpperMiddle]=])
+	TopCenter:SetTexture([[Interface\RaidFrame\RaidPanel-UpperMiddle]])
 	Handle.TopCenter = TopCenter
 
 	local TopRight = Handle:CreateTexture(nil, 'BORDER')
 	TopRight:SetPoint('TOPRIGHT', 4, 4)
 	TopRight:SetSize(24, 20)
-	TopRight:SetTexture([=[Interface\RaidFrame\RaidPanel-UpperRight]=])
+	TopRight:SetTexture([[Interface\RaidFrame\RaidPanel-UpperRight]])
 	TopRight:SetTexCoord(0, 1, 0, 0.8)
 	Handle.TopRight = TopRight
 
 	local TopLeft = Handle:CreateTexture(nil, 'BORDER')
 	TopLeft:SetPoint('TOPLEFT', -4, 4)
 	TopLeft:SetSize(24, 20)
-	TopLeft:SetTexture([=[Interface\RaidFrame\RaidPanel-UpperLeft]=])
+	TopLeft:SetTexture([[Interface\RaidFrame\RaidPanel-UpperLeft]])
 	TopLeft:SetTexCoord(0, 1, 0, 0.8)
 	Handle.TopLeft = TopLeft
 
 	local BottomCenter = Handle:CreateTexture(nil, 'BORDER')
 	BottomCenter:SetPoint('BOTTOM', 0, -9)
 	BottomCenter:SetSize(24, 12)
-	BottomCenter:SetTexture([=[Interface\RaidFrame\RaidPanel-BottomMiddle]=])
+	BottomCenter:SetTexture([[Interface\RaidFrame\RaidPanel-BottomMiddle]])
 	Handle.BottomCenter = BottomCenter
 
 	local BottomRight = Handle:CreateTexture(nil, 'BORDER')
 	BottomRight:SetPoint('BOTTOMRIGHT', 4, -6)
 	BottomRight:SetSize(24, 22)
-	BottomRight:SetTexture([=[Interface\RaidFrame\RaidPanel-BottomRight]=])
+	BottomRight:SetTexture([[Interface\RaidFrame\RaidPanel-BottomRight]])
 	BottomRight:SetTexCoord(0, 1, 0.1, 1)
 	Handle.BottomRight = BottomRight
 
 	local BottomLeft = Handle:CreateTexture(nil, 'BORDER')
 	BottomLeft:SetPoint('BOTTOMLEFT', -4, -6)
 	BottomLeft:SetSize(24, 22)
-	BottomLeft:SetTexture([=[Interface\RaidFrame\RaidPanel-BottomLeft]=])
+	BottomLeft:SetTexture([[Interface\RaidFrame\RaidPanel-BottomLeft]])
 	BottomLeft:SetTexCoord(0, 1, 0.1, 1)
 	Handle.BottomLeft = BottomLeft
 
