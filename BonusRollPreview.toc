@@ -3,9 +3,7 @@
 ## Version: @project-version@
 ## Title: Bonus Roll Preview
 ## Notes: Easily see what the bonus loot roll can yield
-## SavedVariables: BonusRollPreviewDB
 
 encounters\Pandaria.lua
 
-Config.lua
 BonusRollPreview.lua
