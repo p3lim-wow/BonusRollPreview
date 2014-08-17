@@ -81,25 +81,27 @@ local function ButtonsLeave(self)
 	end
 end
 
+local function HookStartRoll(self, frame)
+	local specID = GetLootSpecialization()
+	if(not specID or specID == 0) then
+		SetLootSpecialization(GetSpecializationInfo(GetSpecialization()))
+	end
+end
+
 local function PositionDownwards()
 	return (GetScreenHeight() - BonusRollFrame:GetTop()) < 330
 end
 
-local collapsed = true
-local function HandleClick()
-	Handle:ClearAllPoints()
-
-	if(collapsed) then
-		if(PositionDownwards()) then
-			Handle.Arrow:SetTexCoord(1/2, 1, 1, 1, 1/2, 0, 1, 0)
-			Handle:SetPoint('BOTTOM', Container, 0, -14)
-		else
-			Handle.Arrow:SetTexCoord(1, 0, 1/2, 0, 1, 1, 1/2, 1)
-			Handle:SetPoint('TOP', Container, 0, 14)
-		end
-
-		Container:Show()
+local collapsed
+local function HandleClick(self)
+	if(self) then
+		collapsed = not collapsed
 	else
+		collapsed = true
+	end
+
+	Handle:ClearAllPoints()
+	if(collapsed) then
 		if(PositionDownwards()) then
 			Handle.Arrow:SetTexCoord(0, 0, 1/2, 0, 0, 1, 1/2, 1)
 			Handle:SetPoint('TOP', BonusRollFrame, 'BOTTOM', 0, 2)
@@ -109,16 +111,43 @@ local function HandleClick()
 		end
 
 		Container:Hide()
-	end
+	else
+		if(PositionDownwards()) then
+			Handle.Arrow:SetTexCoord(1/2, 1, 1, 1, 1/2, 0, 1, 0)
+			Handle:SetPoint('BOTTOM', Container, 0, -14)
+		else
+			Handle.Arrow:SetTexCoord(1, 0, 1/2, 0, 1, 1, 1/2, 1)
+			Handle:SetPoint('TOP', Container, 0, 14)
+		end
 
-	collapsed = not collapsed
+		Container:Show()
+	end
 end
 
-local function HookStartRoll()
-	local specID = GetLootSpecialization()
-	if(not specID or specID == 0) then
-		SetLootSpecialization(GetSpecializationInfo(GetSpecialization()))
+local function HandlePosition()
+	if(PositionDownwards()) then
+		Container:SetPoint('TOP', BonusRollFrame, 'BOTTOM')
+
+		Handle.Arrow:SetTexCoord(0, 0, 1/2, 0, 0, 1, 1/2, 1)
+		Handle.TopCenter:Hide()
+		Handle.TopRight:Hide()
+		Handle.TopLeft:Hide()
+		Handle.BottomCenter:Show()
+		Handle.BottomRight:Show()
+		Handle.BottomLeft:Show()
+	else
+		Container:SetPoint('BOTTOM', BonusRollFrame, 'TOP')
+
+		Handle.Arrow:SetTexCoord(1/2, 1, 0, 1, 1/2, 0, 0, 0)
+		Handle.TopCenter:Show()
+		Handle.TopRight:Show()
+		Handle.TopLeft:Show()
+		Handle.BottomCenter:Hide()
+		Handle.BottomRight:Hide()
+		Handle.BottomLeft:Hide()
 	end
+
+	HandleClick()
 end
 
 local function ItemButtonUpdate(self, elapsed)
@@ -252,30 +281,6 @@ function Container:Populate()
 
 	self:ClearAllPoints()
 	self:Hide()
-
-	if(PositionDownwards()) then
-		self:SetPoint('TOP', BonusRollFrame, 'BOTTOM')
-
-		Handle.Arrow:SetTexCoord(0, 0, 1/2, 0, 0, 1, 1/2, 1)
-		Handle.TopCenter:Hide()
-		Handle.TopRight:Hide()
-		Handle.TopLeft:Hide()
-		Handle.BottomCenter:Show()
-		Handle.BottomRight:Show()
-		Handle.BottomLeft:Show()
-	else
-		self:SetPoint('BOTTOM', BonusRollFrame, 'TOP')
-
-		Handle.Arrow:SetTexCoord(1/2, 1, 0, 1, 1/2, 0, 0, 0)
-		Handle.TopCenter:Show()
-		Handle.TopRight:Show()
-		Handle.TopLeft:Show()
-		Handle.BottomCenter:Hide()
-		Handle.BottomRight:Hide()
-		Handle.BottomLeft:Hide()
-	end
-
-	collapsed = true
 end
 
 function Container:Update()
@@ -300,13 +305,6 @@ function Container:Update()
 	self:Populate()
 end
 
-function Container:Initialize()
-	collapsed = false
-	HandleClick()
-
-	Container:Update()
-end
-
 function Container:EJ_LOOT_DATA_RECIEVED(event)
 	if(EncounterJournal) then
 		EncounterJournal:UnregisterEvent(event)
@@ -317,6 +315,7 @@ end
 
 function Container:PLAYER_LOOT_SPEC_UPDATED(event)
 	self:Update()
+	HandlePosition()
 end
 
 function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType)
@@ -327,7 +326,7 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType)
 			self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
 			self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
 
-			self:Initialize()
+			self:Update()
 		else
 			print('|cffff8080BonusRollPreview:|r Found an unknown spell [' .. spellID .. ']. Please report this!')
 		end
@@ -497,6 +496,7 @@ function Container:PLAYER_LOGIN()
 	self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
 
 	hooksecurefunc('BonusRollFrame_StartBonusRoll', HookStartRoll)
+	hooksecurefunc(BonusRollFrame, 'SetPoint', HandlePosition)
 end
 
 Container:SetScript('OnEvent', function(self, event, ...) self[event](self, event, ...) end)
