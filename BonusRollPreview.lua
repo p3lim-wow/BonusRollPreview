@@ -344,7 +344,7 @@ function Container:PLAYER_LOGIN()
 	local oldName = 'HabeebIt'
 	if(IsAddOnLoaded(oldName)) then
 		DisableAddOn(oldName)
-		print('|cffff8080BonusRollPreview:|r', string.format(L['You\'re running a conflicting addon (%s), type /reload to resolve'], oldName))
+		print('|cffff8080BonusRollPreview:|r You\'re running a conflicting addon, type /reload to resolve')
 	end
 
 	local ScrollChild = CreateFrame('Frame', nil, self)
