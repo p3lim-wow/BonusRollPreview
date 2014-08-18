@@ -1,5 +1,6 @@
-
-local encounterIDs = select(2, ...)
+local _, ns = ...
+local encounterIDs = ns.encounterIDs
+local itemBlacklist = ns.itemBlacklist
 
 local currentEncounterID
 local itemButtons = {}
@@ -236,7 +237,7 @@ function Container:Populate()
 	local numItems = 0
 	for index = 1, EJ_GetNumLoot() do
 		local name, texture, slot, itemClass, itemID, itemLink, encounterID = EJ_GetLootInfoByIndex(index)
-		if(encounterID == currentEncounterID) then
+		if(encounterID == currentEncounterID and not itemBlacklist[itemID]) then
 			numItems = numItems + 1
 
 			local ItemButton = GetItemLine(numItems)

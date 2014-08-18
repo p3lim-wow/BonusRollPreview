@@ -1,5 +1,6 @@
 
-local encounterIDs = select(2, ...)
+local _, ns = ...
+ns.encounterIDs = {}
 
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:5
 for spellID, encounterID in next, {
@@ -65,7 +66,7 @@ for spellID, encounterID in next, {
 	[145921] = 853, -- Paragons of the Klaxxi
 	[145922] = 869  -- Garrosh Hellscream
 } do
-	encounterIDs[spellID] = encounterID
+	ns.encounterIDs[spellID] = encounterID
 end
 
 -- Galakras has two IDs, pick whatever the client uses
@@ -73,5 +74,16 @@ local Handler = CreateFrame('Frame')
 Handler:RegisterEvent('PLAYER_LOGIN')
 Handler:SetScript('OnEvent', function()
 	EJ_SelectInstance(369)
-	encounterIDs[145913] = (select(3, EJ_GetEncounterInfoByIndex(5)))
+	ns.encounterIDs[145913] = (select(3, EJ_GetEncounterInfoByIndex(5)))
 end)
+
+ns.itemBlacklist = {}
+for _, itemID in next, {
+	-- Mounts
+	87777, -- Reins of the Astral Cloud Serpent
+	93666, -- Spawn of Horridon
+	95059, -- Cluth of Ji-Kun
+	104253, -- Kor'kron Juggernaut
+} do
+	ns.itemBlacklist[itemID] = true
+end
