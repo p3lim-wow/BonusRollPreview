@@ -84,6 +84,19 @@ for _, itemID in next, {
 	93666, -- Spawn of Horridon
 	95059, -- Cluth of Ji-Kun
 	104253, -- Kor'kron Juggernaut
+
+	-- Garrosh Heirlooms (Flex, Normal, Heroic)
+	105674, 104409, 105687, -- Hellscream's Barrier
+	105672, 104404, 105685, -- Hellscream's Cleaver
+	105679, 104405, 105692, -- Hellscream's Decapitator
+	105678, 104401, 105691, -- Hellscream's Doomblade
+	105673, 104403, 105686, -- Hellscream's Pig Sticker
+	105671, 104400, 105684, -- Hellscream's Razor
+	105680, 104407, 105693, -- Hellscream's Shield Wall
+	105676, 104408, 105689, -- Hellscream's Tome of Destruction
+	105677, 104406, 105690, -- Hellscream's War Staff
+	105670, 104399, 105683, -- Hellscream's Warbow
+	105675, 104402, 105688, -- Hellscream's Warmace
 } do
 	ns.itemBlacklist[itemID] = true
 end
