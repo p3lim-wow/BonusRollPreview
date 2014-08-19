@@ -1,3 +1,5 @@
+local WoD = select(4, GetBuildInfo()) >= 6e4
+
 local _, ns = ...
 local encounterIDs = ns.encounterIDs
 local itemBlacklist = ns.itemBlacklist
@@ -157,7 +159,10 @@ local function ItemButtonUpdate(self, elapsed)
 	else
 		ShoppingTooltip1:Hide()
 		ShoppingTooltip2:Hide()
-		ShoppingTooltip3:Hide()
+
+		if(not WoD) then
+			ShoppingTooltip3:Hide()
+		end
 	end
 
 	if(IsModifiedClick('DRESSUP')) then
