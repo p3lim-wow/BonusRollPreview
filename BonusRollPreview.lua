@@ -46,6 +46,7 @@ local function HotspotEnter()
 				SpecButton:SetScript('OnClick', SpecButtonClick)
 				SpecButton:SetScript('OnEnter', SpecButtonEnter)
 				SpecButton:SetScript('OnLeave', GameTooltip_Hide)
+				SpecButton:SetHighlightTexture([[Interface\Minimap\UI-Minimap-ZoomButton-Highlight]])
 
 				SpecButton.specID = specID
 				SpecButton.name = name
