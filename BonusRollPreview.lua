@@ -18,6 +18,7 @@ local Handle = CreateFrame('Button', 'BonusRollPreviewHandle', BonusRollFrame)
 
 local Hotspot = CreateFrame('Frame', nil, BonusRollFrame)
 local Buttons = CreateFrame('Frame', 'BonusRollPreviewSpecButtons', Hotspot)
+Buttons:Hide()
 
 local function SpecButtonClick(self)
 	SetLootSpecialization(self.specID)
