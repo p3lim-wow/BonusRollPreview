@@ -128,6 +128,7 @@ local function HandleClick(self)
 end
 
 local function HandlePosition()
+	Container:ClearAllPoints()
 	if(PositionDownwards()) then
 		Container:SetPoint('TOP', BonusRollFrame, 'BOTTOM')
 
@@ -258,6 +259,7 @@ function Container:Populate()
 		end
 	end
 
+	self:Hide()
 	self:SetHeight(math.min(330, math.max(50, 10 + (numItems * 40))))
 
 	if(numItems > 0) then
@@ -284,9 +286,6 @@ function Container:Populate()
 		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
 		EncounterJournal:RegisterEvent('EJ_DIFFICULTY_UPDATE')
 	end
-
-	self:ClearAllPoints()
-	self:Hide()
 end
 
 function Container:Update()
