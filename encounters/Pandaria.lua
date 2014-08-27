@@ -12,7 +12,6 @@ for spellID, encounterID in next, {
 	[136381] = 814, -- Nalak, The Storm God
 	[137554] = 826, -- Oondasta
 	[148317] = 857, -- Celestials (also encounterIDs 858, 859 and 860)
-	[148317] = 860, -- Xuen, The White Tiger
 	[148316] = 861, -- Ordos, Fire-God of the Yaungol
 
 	-- Mogu'Shan Vaults
