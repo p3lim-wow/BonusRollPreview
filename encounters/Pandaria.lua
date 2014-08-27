@@ -6,7 +6,7 @@ ns.continents = ns.continents or {}
 
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:5
 for spellID, encounterID in next, {
-	-- World
+	-- World - 322
 	[132205] = 691, -- Sha of Anger
 	[132206] = 725, -- Salyis' Warband (Galleon)
 	[136381] = 814, -- Nalak, The Storm God
@@ -14,7 +14,7 @@ for spellID, encounterID in next, {
 	[148317] = 857, -- Celestials (also encounterIDs 858, 859 and 860)
 	[148316] = 861, -- Ordos, Fire-God of the Yaungol
 
-	-- Mogu'Shan Vaults
+	-- Mogu'Shan Vaults - 317
 	[125144] = 679, -- The Stone Guard
 	[132189] = 689, -- Feng the Accursed
 	[132190] = 682, -- Gara'jal the Spiritbinder
@@ -22,7 +22,7 @@ for spellID, encounterID in next, {
 	[132192] = 726, -- Elegon
 	[132193] = 677, -- Will of the Emperor
 
-	-- Heart of Fear
+	-- Heart of Fear - 330
 	[132194] = 745, -- Imperial Vizier Zor'lok
 	[132195] = 744, -- Blade Lord Tay'ak
 	[132196] = 713, -- Garalon
@@ -30,14 +30,14 @@ for spellID, encounterID in next, {
 	[132198] = 737, -- Amber-Shaper Un'sok
 	[132199] = 743, -- Grand Empress Shek'zeer
 
-	-- Terrace of Endless Spring
+	-- Terrace of Endless Spring - 320
 	[132200] = 683, -- Protectors of the Endless
 	[132204] = 683, -- Protectors of the Endless (Elite)
 	[132201] = 742, -- Tsulong
 	[132202] = 729, -- Lei Shi
 	[132203] = 709, -- Sha of Fear
 
-	-- Throne of Thunder
+	-- Throne of Thunder - 362
 	[139674] = 827, -- Jin'rokh the Breaker
 	[139677] = 819, -- Horridon
 	[139679] = 816, -- Council of Elders
@@ -52,7 +52,7 @@ for spellID, encounterID in next, {
 	[139691] = 832, -- Lei Shen, The Thunder King
 	[139692] = 831, -- Ra-den
 
-	-- Siege of Orgrimmar
+	-- Siege of Orgrimmar - 369
 	[145909] = 852, -- Immerseus
 	[145910] = 849, -- The Fallen Protectors
 	[145911] = 866, -- Norushen
