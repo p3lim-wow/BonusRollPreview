@@ -1,6 +1,8 @@
 
 local _, ns = ...
-ns.encounterIDs = {}
+ns.encounterIDs = ns.encounterIDs or {}
+ns.itemBlacklist = ns.itemBlacklist or {}
+ns.continents = ns.continents or {}
 
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:5
 for spellID, encounterID in next, {
@@ -77,7 +79,6 @@ Handler:SetScript('OnEvent', function()
 	ns.encounterIDs[145913] = (select(3, EJ_GetEncounterInfoByIndex(5)))
 end)
 
-ns.itemBlacklist = {}
 for _, itemID in next, {
 	-- Mounts
 	87777, -- Reins of the Astral Cloud Serpent
@@ -100,3 +101,5 @@ for _, itemID in next, {
 } do
 	ns.itemBlacklist[itemID] = true
 end
+
+ns.continents[6] = 322

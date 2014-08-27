@@ -1,9 +1,6 @@
 local WoD = select(4, GetBuildInfo()) >= 6e4
 
 local _, ns = ...
-local encounterIDs = ns.encounterIDs
-local itemBlacklist = ns.itemBlacklist
-
 local currentEncounterID
 local itemButtons = {}
 
@@ -245,7 +242,7 @@ function Container:Populate()
 	local numItems = 0
 	for index = 1, EJ_GetNumLoot() do
 		local name, texture, slot, itemClass, itemID, itemLink, encounterID = EJ_GetLootInfoByIndex(index)
-		if(encounterID == currentEncounterID and not itemBlacklist[itemID]) then
+		if(encounterID == currentEncounterID and not ns.itemBlacklist[itemID]) then
 			numItems = numItems + 1
 
 			local ItemButton = GetItemLine(numItems)
@@ -303,7 +300,14 @@ function Container:Update()
 	EJ_SetDifficulty(difficulty > 0 and difficulty or 4)
 
 	local currentInstance = EJ_GetCurrentInstance()
-	EJ_SelectInstance(currentInstance > 0 and currentInstance or 322)
+	if(not currentInstance or currentInstance == 0) then
+		local oldMap = GetCurrentMapAreaID()
+		SetMapToCurrentZone()
+		currentInstance = ns.continents[GetCurrentMapContinent()]
+		SetMapByID(oldMap)
+	end
+
+	EJ_SelectInstance(currentInstance)
 	EJ_SelectEncounter(currentEncounterID)
 
 	local _, _, classID = UnitClass('player')
@@ -327,7 +331,7 @@ end
 
 function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType)
 	if(confirmType == CONFIRMATION_PROMPT_BONUS_ROLL) then
-		currentEncounterID = encounterIDs[spellID]
+		currentEncounterID = ns.encounterIDs[spellID]
 
 		if(currentEncounterID) then
 			self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
