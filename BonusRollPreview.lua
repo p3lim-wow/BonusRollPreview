@@ -3,6 +3,7 @@ local WoD = select(4, GetBuildInfo()) >= 6e4
 local _, ns = ...
 local currentEncounterID
 local itemButtons = {}
+ns.WoD = WoD
 
 local BACKDROP = {
 	bgFile = [[Interface\ChatFrame\ChatFrameBackground]], tile = true, tileSize = 16,
