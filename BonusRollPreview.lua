@@ -330,15 +330,17 @@ function Container:PLAYER_LOOT_SPEC_UPDATED(event)
 	HandlePosition()
 end
 
-function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType)
+function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, currencyID)
 	if(confirmType == CONFIRMATION_PROMPT_BONUS_ROLL) then
 		currentEncounterID = ns.encounterIDs[spellID]
 
 		if(currentEncounterID) then
-			self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
-			self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
-
-			self:Update()
+			local _, count = GetCurrencyInfo(currencyID)
+			if(count > 0) then
+				self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
+				self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
+				self:Update()
+			end
 		else
 			print('|cffff8080BonusRollPreview:|r Found an unknown spell [' .. spellID .. ']. Please report this!')
 		end
