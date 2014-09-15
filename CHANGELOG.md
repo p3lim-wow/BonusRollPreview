@@ -1,3 +1,9 @@
+## Changes in 50400.19-Release:
+
+- Added: Prelimiary work on "Warlords of Draenor" raid bosses
+- Added: Changelog file
+- Fixed: Arithmatic errors when the player doesn't have the currency to initiate a bonus roll
+
 ## Changes in 50400.18-Release:
 
 - Added: Blacklist for raid mounts and Garrosh heirlooms as they cannot be rewarded by a bonus roll
