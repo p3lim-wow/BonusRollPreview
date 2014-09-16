@@ -92,7 +92,7 @@ local function HookStartRoll(self, frame)
 end
 
 local function PositionDownwards()
-	return (GetScreenHeight() - BonusRollFrame:GetTop()) < 345
+	return (GetScreenHeight() - (BonusRollFrame:GetTop() or 200)) < 345
 end
 
 local collapsed
