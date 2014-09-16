@@ -1,3 +1,7 @@
+## Changes in 50400.20-Release:
+
+- Fixed: The arithmetic errors, hopefully
+
 ## Changes in 50400.19-Release:
 
 - Added: Prelimiary work on "Warlords of Draenor" raid bosses
