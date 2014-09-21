@@ -11,25 +11,25 @@ if(ns.WoD) then
 		[-1] = 1262, -- Rukhmar
 
 		-- Highmaul - 477
-		[-1] = 1128, -- Kargath Bladefist
-		[-1] = 971, -- The Butcher
-		[-1] = 1195, -- Tectus
-		[-1] = 1196, -- Brackenspore
-		[-1] = 1148, -- Twin Ogron
-		[-1] = 1153, -- Ko'ragh
-		[-1] = 1197, -- Imperator Mar'gok
+		[177521] = 1128, -- Kargath Bladefist
+		[177522] = 971, -- The Butcher
+		[177523] = 1195, -- Tectus
+		[177524] = 1196, -- Brackenspore
+		[177525] = 1148, -- Twin Ogron
+		[177526] = 1153, -- Ko'ragh
+		[177528] = 1197, -- Imperator Mar'gok
 
 		-- Blackrock Foundry - 457
-		[-1] = 1161, -- Gruul
-		[-1] = 1202, -- Oregorger
-		[-1] = 1122, -- Beastlord Darmac
-		[-1] = 1123, -- Flamebender Ka'graz
-		[-1] = 1155, -- Hans'gar and Franzok
-		[-1] = 1147, -- Operator Thogar
-		[-1] = 1154, -- The Blast Furnace
-		[-1] = 1162, -- Kromog
-		[-1] = 1203, -- The Iron Maidens
-		[-1] = 959   -- Blackhand
+		[177529] = 1161, -- Gruul
+		[177530] = 1202, -- Oregorger
+		[177536] = 1122, -- Beastlord Darmac
+		[177534] = 1123, -- Flamebender Ka'graz
+		[177533] = 1155, -- Hans'gar and Franzok
+		[177537] = 1147, -- Operator Thogar
+		[177531] = 1154, -- The Blast Furnace
+		[177535] = 1162, -- Kromog
+		[177538] = 1203, -- The Iron Maidens
+		[177539] = 959   -- Blackhand
 	} do
 		ns.encounterIDs[spellID] = encounterID
 	end
