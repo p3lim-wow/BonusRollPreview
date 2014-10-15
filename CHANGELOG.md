@@ -1,3 +1,8 @@
+## Changes in 60000.21-Release:
+
+- Added: Support for "Warlords of Draenor" raid encounters
+- Removed: Compatability code for "Mists of Pandaria"
+
 ## Changes in 50400.20-Release:
 
 - Fixed: The arithmetic errors, hopefully
