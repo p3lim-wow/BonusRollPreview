@@ -1,5 +1,6 @@
 local _, ns = ...
 ns.encounterIDs = ns.encounterIDs or {}
+ns.itemBlacklist = ns.itemBlacklist or {}
 ns.continents = ns.continents or {}
 
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:6
@@ -31,6 +32,13 @@ for spellID, encounterID in next, {
 	[177539] = 959   -- Blackhand
 } do
 	ns.encounterIDs[spellID] = encounterID
+end
+
+for _, itemID in next, {
+	-- Mounts
+	116660, -- Ironhoof Destroyer
+} do
+	ns.itemBlacklist[itemID] = true
 end
 
 ns.continents[7] = 557
