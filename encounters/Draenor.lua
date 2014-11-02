@@ -5,9 +5,9 @@ ns.continents = ns.continents or {}
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:6
 for spellID, encounterID in next, {
 	-- World - 557
-	[-1] = 1291, -- Drov the Ruiner
-	[-1] = 1211, -- Tarina the Ageless
-	[-1] = 1262, -- Rukhmar
+	[178847] = 1291, -- Drov the Ruiner
+	[178849] = 1211, -- Tarina the Ageless
+	[178851] = 1262, -- Rukhmar
 
 	-- Highmaul - 477
 	[177521] = 1128, -- Kargath Bladefist
