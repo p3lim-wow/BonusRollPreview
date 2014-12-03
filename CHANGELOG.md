@@ -1,3 +1,7 @@
+## Changes in 60000.22-Release:
+
+- Added: Support for "Warlords of Draenor" world encounters
+
 ## Changes in 60000.21-Release:
 
 - Added: Support for "Warlords of Draenor" raid encounters
