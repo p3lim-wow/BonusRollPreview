@@ -290,18 +290,21 @@ function Container:Update()
 		button:Hide()
 	end
 
-	local _, _, difficulty = GetInstanceInfo()
-	EJ_SetDifficulty(difficulty > 0 and difficulty or 4)
-
-	local currentInstance = EJ_GetCurrentInstance()
-	if(not currentInstance or currentInstance == 0) then
-		local oldMap = GetCurrentMapAreaID()
+	local instanceID = EJ_GetCurrentInstance()
+	if(instanceID == 0) then
+		local oldAreaID = GetCurrentMapAreaID()
 		SetMapToCurrentZone()
-		currentInstance = ns.continents[GetCurrentMapContinent()]
-		SetMapByID(oldMap)
+		instanceID = ns.continents[GetCurrentMapContinent()]
+		SetMapByID(oldAreaID)
 	end
 
-	EJ_SelectInstance(currentInstance)
+	local _, _, difficulty = GetInstanceInfo()
+	if(difficulty == 0) then
+		difficulty = instanceID < 369 and 3 or 14
+	end
+
+	EJ_SetDifficulty(difficulty)
+	EJ_SelectInstance(instanceID)
 	EJ_SelectEncounter(currentEncounterID)
 
 	local _, _, classID = UnitClass('player')
