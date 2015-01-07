@@ -236,6 +236,11 @@ function Container:Populate()
 	local numItems = 0
 	for index = 1, EJ_GetNumLoot() do
 		local name, texture, slot, itemClass, itemID, itemLink, encounterID = EJ_GetLootInfoByIndex(index)
+		if(not itemLink) then
+			-- Let the client receive the data
+			return
+		end
+
 		if(encounterID == currentEncounterID and not ns.itemBlacklist[itemID]) then
 			numItems = numItems + 1
 
@@ -278,11 +283,13 @@ function Container:Populate()
 	if(EncounterJournal) then
 		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
 		EncounterJournal:RegisterEvent('EJ_DIFFICULTY_UPDATE')
+		self:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
 	end
 end
 
 function Container:Update()
 	if(EncounterJournal) then
+		EncounterJournal:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
 		EncounterJournal:UnregisterEvent('EJ_DIFFICULTY_UPDATE')
 	end
 
@@ -314,11 +321,9 @@ function Container:Update()
 end
 
 function Container:EJ_LOOT_DATA_RECIEVED(event)
-	if(EncounterJournal) then
-		EncounterJournal:UnregisterEvent(event)
+	if(BonusRollFrame:IsShown()) then
+		self:Populate()
 	end
-
-	self:Populate()
 end
 
 function Container:PLAYER_LOOT_SPEC_UPDATED(event)
@@ -346,7 +351,6 @@ end
 function Container:SPELL_CONFIRMATION_TIMEOUT()
 	currentEncounterID = nil
 
-	self:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
 	self:UnregisterEvent('PLAYER_LOOT_SPEC_UPDATED')
 end
 
