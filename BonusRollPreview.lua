@@ -152,7 +152,7 @@ local function HandlePosition()
 end
 
 local function ItemButtonUpdate(self, elapsed)
-	if(IsModifiedClick('COMPAREITEMS') or (GetCVarBool('alwaysCompareItems') and not IsEquippedItem(self.itemID))) then
+	if(IsModifiedClick('COMPAREITEMS') or (GetCVarBool('alwaysCompareItems') and not IsEquippedItem(self.itemLink))) then
 		GameTooltip_ShowCompareItem()
 	else
 		ShoppingTooltip1:Hide()
@@ -172,7 +172,7 @@ end
 
 local function ItemButtonEnter(self)
 	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT')
-	GameTooltip:SetItemByID(self.itemID)
+	GameTooltip:SetHyperlink(self.itemLink)
 
 	self:SetScript('OnUpdate', ItemButtonUpdate)
 end
@@ -250,7 +250,6 @@ function Container:Populate()
 			ItemButton.Slot:SetText(slot)
 			ItemButton.Class:SetText(itemClass)
 
-			ItemButton.itemID = itemID
 			ItemButton.itemLink = itemLink
 
 			ItemButton:Show()
