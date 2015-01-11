@@ -1,3 +1,9 @@
+## Changes in 60000.23-Release:
+
+- Fixed: Incorrect difficulties for pre-Siege of Orgrimmar content
+- Fixed: Item list sometimes not containing full amount of items
+- Fixed: Tooltips not showing correct item for Heroic and Mythic items
+
 ## Changes in 60000.22-Release:
 
 - Added: Support for "Warlords of Draenor" world encounters
