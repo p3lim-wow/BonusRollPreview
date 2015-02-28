@@ -277,6 +277,7 @@ function Container:Populate()
 		self.Empty:Hide()
 	else
 		self.Empty:Show()
+		self.Slider:Hide()
 	end
 
 	if(EncounterJournal) then
