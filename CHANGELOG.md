@@ -1,3 +1,10 @@
+### Changes in 60100.24-Release:
+
+- Added: Global name references to every frame
+- Changed: Update Interface version
+- Fixed: Slider showing when there are no items
+- Fixed: Properly wrap multiline strings
+
 ### Changes in 60000.23-Release:
 
 - Fixed: Incorrect difficulties for pre-Siege of Orgrimmar content
