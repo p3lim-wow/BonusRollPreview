@@ -446,9 +446,10 @@ function Container:PLAYER_LOGIN()
 		end
 	end)
 
-	local Empty = self:CreateFontString(nil, 'ARTWORK', 'GameFontHighlight')
-	Empty:SetPoint('CENTER')
-	Empty:SetText('This encounter has no possible items for\nyour current class and/or specialization.')
+	local Empty = self:CreateFontString('$parentPlaceholder', 'ARTWORK', 'GameFontHighlight')
+	Empty:SetPoint('TOPLEFT', 10, 0)
+	Empty:SetPoint('BOTTOMRIGHT', -10, 0)
+	Empty:SetText('This encounter has no possible items for your current class and/or specialization.')
 	self.Empty = Empty
 
 	Handle:SetSize(64, 16)
