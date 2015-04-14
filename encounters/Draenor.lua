@@ -37,6 +37,7 @@ end
 for _, itemID in next, {
 	-- Mounts
 	116660, -- Ironhoof Destroyer
+	116771, -- Solar Spirehawk
 } do
 	ns.itemBlacklist[itemID] = true
 end
