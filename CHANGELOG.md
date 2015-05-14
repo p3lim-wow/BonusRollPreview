@@ -1,3 +1,8 @@
+### Changes in 60100.25-Release:
+
+- Fixed: Item "Solar Spirehawk" should no longer show up in the list
+- Fixed: Rare error when using the spec buttons
+
 ### Changes in 60100.24-Release:
 
 - Added: Global name references to every frame
