@@ -74,10 +74,8 @@ local function HotspotLeave()
 end
 
 local function ButtonsLeave(self)
-	local parent = GetMouseFocus():GetParent()
-	if(not Hotspot:IsMouseOver() and not (parent and parent == self)) then
-		BonusRollFrame.SpecIcon:SetDesaturated(false)
-		self:Hide()
+	if(not Hotspot:IsMouseOver()) then
+		HotspotLeave()
 	end
 end
 
