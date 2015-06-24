@@ -46,6 +46,55 @@ for spellID, encounterID in next, {
 	[188982] = 1394, -- Tyrant Velhari
 	[188983] = 1395, -- Mannoroth
 	[188984] = 1438, -- Archimonde
+
+	-- Auchindoun (Mythic) - 547
+	[190154] = 1185, -- Vigilant Kaathar
+	[190155] = 1186, -- Soulbinder Nyami
+	[190156] = 1216, -- Azzakel
+	[190157] = 1225, -- Teron'gor
+
+	-- Upper Blackrock Spire (Mythic) - 559
+	[190168] = 1226, -- Orebender Gor'ashan
+	[190170] = 1227, -- Kyrak
+	[190171] = 1228, -- Commander Tharbek
+	[190172] = 1229, -- Ragewing the Untamed
+	[190173] = 1234, -- Warlord Zaela
+
+	-- Shadowmoon Burial Grounds (Mythic) - 537
+	[190150] = 1139, -- Sadana Bloodfury
+	[190151] = 1168, -- Nhallish
+	[190152] = 1140, -- Bonemaw
+	[190153] = 1160, -- Ner'zhul
+
+	-- The Everbloom (Mythic) - 556
+	[190158] = 1214, -- Witherbark
+	[190159] = 1207, -- Ancient Protectors
+	[190160] = 1208, -- Archmage Sol
+	[190162] = 1209, -- Xeri'tac
+	[190163] = 1210, -- Yalnu
+
+	-- Grimrail Depot (Mythic) - 536
+	[190147] = 1138, -- Rocketspark and Borka
+	[190148] = 1163, -- Nitrogg Thundertower
+	[190149] = 1133, -- Skylord Tovra
+
+	-- Iron Docks (Mythic) - 558
+	[190164] = 1235, -- Fleshrender Nok'gar
+	[190165] = 1236, -- Grimrail Enforcers
+	[190166] = 1237, -- Oshir
+	[190167] = 1238, -- Skulloc
+
+	-- Skyreach (Mythic) - 476
+	[190142] = 965, -- Ranjit
+	[190143] = 966, -- Araknath
+	[190144] = 967, -- Rukhran
+	[190146] = 968, -- High Sage Viryx
+
+	-- Bloodmaul Slag Mines (Mythic) - 385
+	[190138] = 893, -- Magmolatus
+	[190139] = 888, -- Slave Watcher Crushto
+	[190140] = 887, -- Roltall
+	[190141] = 889, -- Gug'rokk
 } do
 	ns.encounterIDs[spellID] = encounterID
 end
