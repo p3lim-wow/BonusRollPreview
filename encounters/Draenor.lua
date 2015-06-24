@@ -9,6 +9,7 @@ for spellID, encounterID in next, {
 	[178847] = 1291, -- Drov the Ruiner
 	[178849] = 1211, -- Tarina the Ageless
 	[178851] = 1262, -- Rukhmar
+	[188985] = 1452, -- Supreme Lord Kazzak
 
 	-- Highmaul - 477
 	[177521] = 1128, -- Kargath Bladefist
@@ -29,15 +30,31 @@ for spellID, encounterID in next, {
 	[177531] = 1154, -- The Blast Furnace
 	[177535] = 1162, -- Kromog
 	[177538] = 1203, -- The Iron Maidens
-	[177539] = 959   -- Blackhand
+	[177539] = 959,   -- Blackhand
+
+	-- Hellfire Citadel - 669
+	[188972] = 1426, -- Hellfire Assault
+	[188973] = 1425, -- Iron Reaver
+	[188974] = 1392, -- Kormrok
+	[188975] = 1432, -- Hellfire High Council
+	[188976] = 1396, -- Kilrogg Deadeye
+	[188977] = 1372, -- Gorefiend
+	[188978] = 1433, -- Shadow-Lord Iskar
+	[188979] = 1427, -- Socrethar the Eternal
+	[188980] = 1391, -- Fel Lord Zakuun
+	[188981] = 1447, -- Xhul'horac
+	[188982] = 1394, -- Tyrant Velhari
+	[188983] = 1395, -- Mannoroth
+	[188984] = 1438, -- Archimonde
 } do
 	ns.encounterIDs[spellID] = encounterID
 end
 
 for _, itemID in next, {
 	-- Mounts
-	116660, -- Ironhoof Destroyer
 	116771, -- Solar Spirehawk
+	116660, -- Ironhoof Destroyer
+	123890, -- Felsteel Annihilator
 } do
 	ns.itemBlacklist[itemID] = true
 end
