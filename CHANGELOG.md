@@ -1,3 +1,11 @@
+### Changes in 60200.26-Release:
+
+- Added: Support for 6.2 raid encounters
+- Added: Support for 6.2 world encounters
+- Added: Support for mythic dungeons
+- Changed: Update Interface version
+- Fixed: World bosses sometimes not working correctly
+
 ### Changes in 60100.25-Release:
 
 - Fixed: Item "Solar Spirehawk" should no longer show up in the list
