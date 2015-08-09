@@ -230,6 +230,18 @@ local function GetItemLine(index)
 	return ItemButton
 end
 
+local resetTimer
+local function ResetEvents()
+	Container:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
+
+	if(EncounterJournal) then
+		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
+		EncounterJournal:RegisterEvent('EJ_DIFFICULTY_UPDATE')
+	end
+
+	resetTimer = nil
+end
+
 function Container:Populate()
 	local numItems = 0
 	for index = 1, EJ_GetNumLoot() do
@@ -278,11 +290,12 @@ function Container:Populate()
 		self.Slider:Hide()
 	end
 
-	if(EncounterJournal) then
-		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
-		EncounterJournal:RegisterEvent('EJ_DIFFICULTY_UPDATE')
-		self:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
+	if(resetTimer) then
+		resetTimer:Cancel()
+		resetTimer = nil
 	end
+
+	resetTimer = C_Timer.NewTimer(2, ResetEvents)
 end
 
 function Container:Update()
