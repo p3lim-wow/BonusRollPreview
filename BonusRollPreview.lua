@@ -366,12 +366,6 @@ function Container:SPELL_CONFIRMATION_TIMEOUT()
 end
 
 function Container:PLAYER_LOGIN()
-	local oldName = 'HabeebIt'
-	if(IsAddOnLoaded(oldName)) then
-		DisableAddOn(oldName)
-		print('|cffff8080BonusRollPreview:|r You\'re running a conflicting addon, type /reload to resolve')
-	end
-
 	local ScrollChild = CreateFrame('Frame', '$parentScrollChild', self)
 	ScrollChild:SetHeight(1) -- Completely ignores this value, bug?
 	self.ScrollChild = ScrollChild
