@@ -1,3 +1,8 @@
+### Changes in 60200.27-Release:
+
+- Fixed: Items sometimes not showing correctly
+- Removed: Old addon detection
+
 ### Changes in 60200.26-Release:
 
 - Added: Support for 6.2 raid encounters
