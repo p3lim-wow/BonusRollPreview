@@ -6,5 +6,6 @@
 
 encounters\Pandaria.lua
 encounters\Draenor.lua
+encounters\Legion.lua
 
 BonusRollPreview.lua
