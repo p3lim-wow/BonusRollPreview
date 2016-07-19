@@ -1,3 +1,10 @@
+### Changes in 70000.28-Release:
+
+- Added: Support for (most of) Legion's raid encounters
+- Added: Support for Legion's dungeon encounters
+- Added: Support for Legion's world encounters
+- Changed: Update Interface version
+
 ### Changes in 60200.27-Release:
 
 - Fixed: Items sometimes not showing correctly
