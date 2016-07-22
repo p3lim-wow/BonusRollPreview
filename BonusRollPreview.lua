@@ -331,6 +331,11 @@ function Container:Update()
 		difficulty = instanceID < 369 and 3 or 14
 	end
 
+	if(currentEncounterID == 1452) then
+		-- Supreme Lord Kazzak's loot is only heroic
+		difficulty = 15
+	end
+
 	EJ_SelectInstance(instanceID)
 	EJ_SetDifficulty(difficulty)
 end
