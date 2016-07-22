@@ -245,7 +245,7 @@ end
 function Container:Populate()
 	local numItems = 0
 	for index = 1, EJ_GetNumLoot() do
-		local name, texture, slot, itemClass, itemID, itemLink, encounterID = EJ_GetLootInfoByIndex(index)
+		local itemID, encounterID, name, texture, slot, armorType, itemLink = EJ_GetLootInfoByIndex(index)
 		if(not itemLink) then
 			-- Let the client receive the data
 			return
@@ -258,7 +258,7 @@ function Container:Populate()
 			ItemButton.Icon:SetTexture(texture)
 			ItemButton.Name:SetText(name)
 			ItemButton.Slot:SetText(slot)
-			ItemButton.Class:SetText(itemClass)
+			ItemButton.Class:SetText(armorType)
 
 			ItemButton.itemLink = itemLink
 
@@ -343,7 +343,7 @@ function Container:PLAYER_LOOT_SPEC_UPDATED(event)
 end
 
 function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, currencyID)
-	if(confirmType == CONFIRMATION_PROMPT_BONUS_ROLL) then
+	if(confirmType == LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL) then
 		currentEncounterID = ns.encounterIDs[spellID]
 
 		if(currentEncounterID) then
@@ -464,7 +464,7 @@ function Container:PLAYER_LOGIN()
 
 	local HandleBackground = Handle:CreateTexture('$parentBackground', 'BACKGROUND')
 	HandleBackground:SetAllPoints()
-	HandleBackground:SetTexture(0, 0, 0, 0.8)
+	HandleBackground:SetColorTexture(0, 0, 0, 0.8)
 
 	local TopCenter = Handle:CreateTexture('$parentTopCenter', 'BORDER')
 	TopCenter:SetPoint('TOP', 0, 4.5)
