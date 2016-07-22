@@ -1,3 +1,10 @@
+### Changes in 70000.29-Release:
+
+- Fixed: Loot not showing up due to changes in Legion
+- Fixed: Backround texture of handle not applying correctly
+- Fixed: Loot not updating correctly when changing loot specs
+- Fixed: Supreme Lord Kazzak loot not displaying correctly
+
 ### Changes in 70000.28-Release:
 
 - Added: Support for (most of) Legion's raid encounters
