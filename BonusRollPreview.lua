@@ -311,10 +311,17 @@ function Container:Update()
 
 	local instanceID = EJ_GetCurrentInstance()
 	if(instanceID == 0) then
-		local oldAreaID = GetCurrentMapAreaID()
-		SetMapToCurrentZone()
-		instanceID = ns.continents[GetCurrentMapContinent()] or 557
-		SetMapByID(oldAreaID)
+		local continent
+		if(WorldMapFrame:IsShown()) then
+			local oldAreaID = GetCurrentMapAreaID()
+			SetMapToCurrentZone()
+			continent = GetCurrentMapContinent()
+			SetMapByID(oldAreaID)
+		else
+			continent = GetCurrentMapContinent()
+		end
+
+		instanceID = ns.continents[continent]
 	end
 
 	local difficulty
