@@ -351,6 +351,8 @@ function Container:EJ_LOOT_DATA_RECIEVED(event)
 end
 
 function Container:PLAYER_LOOT_SPEC_UPDATED(event)
+	self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
+	self:RegisterEvent('EJ_DIFFICULTY_UPDATE')
 	self:Update()
 	HandlePosition()
 end
