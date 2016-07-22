@@ -233,6 +233,7 @@ end
 local resetTimer
 local function ResetEvents()
 	Container:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
+	Container:UnregisterEvent('EJ_DIFFICULTY_UPDATE')
 
 	if(EncounterJournal) then
 		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
@@ -316,13 +317,18 @@ function Container:Update()
 		SetMapByID(oldAreaID)
 	end
 
-	local _, _, difficulty = GetInstanceInfo()
-	if(difficulty == 0) then
+	local difficulty
+	if(IsInInstance()) then
+		difficulty = select(3, GetInstanceInfo)
+	else
 		difficulty = instanceID < 369 and 3 or 14
 	end
 
-	EJ_SetDifficulty(difficulty)
 	EJ_SelectInstance(instanceID)
+	EJ_SetDifficulty(difficulty)
+end
+
+function Container:EJ_DIFFICULTY_UPDATE(event, difficulty)
 	EJ_SelectEncounter(currentEncounterID)
 
 	local _, _, classID = UnitClass('player')
@@ -349,8 +355,9 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, 
 		if(currentEncounterID) then
 			local _, count = GetCurrencyInfo(currencyID)
 			if(count > 0) then
-				self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
 				self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
+				self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
+				self:RegisterEvent('EJ_DIFFICULTY_UPDATE')
 				self:Update()
 			end
 		else
