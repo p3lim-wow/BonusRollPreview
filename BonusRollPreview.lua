@@ -1,5 +1,5 @@
 local _, ns = ...
-local currentEncounterID
+local currentEncounterInfo
 local itemButtons = {}
 
 local BACKDROP = {
@@ -252,7 +252,7 @@ function Container:Populate()
 			return
 		end
 
-		if(encounterID == currentEncounterID and not ns.itemBlacklist[itemID]) then
+		if(encounterID == currentEncounterInfo[1] and not ns.itemBlacklist[itemID]) then
 			numItems = numItems + 1
 
 			local ItemButton = GetItemLine(numItems)
@@ -309,40 +309,19 @@ function Container:Update()
 		button:Hide()
 	end
 
-	local instanceID = EJ_GetCurrentInstance()
-	if(instanceID == 0) then
-		local continent
-		if(WorldMapFrame:IsShown()) then
-			local oldAreaID = GetCurrentMapAreaID()
-			SetMapToCurrentZone()
-			continent = GetCurrentMapContinent()
-			SetMapByID(oldAreaID)
-		else
-			continent = GetCurrentMapContinent()
-		end
-
-		instanceID = ns.continents[continent]
-	end
-
-	local difficulty
-	if(IsInInstance()) then
-		difficulty = select(3, GetInstanceInfo())
-	else
-		difficulty = instanceID < 369 and 3 or 14
-	end
-
-	if(currentEncounterID == 1452) then
-		-- Supreme Lord Kazzak's loot is only heroic
-		difficulty = 15
-	end
-
+	local encounterID, instanceID, difficulty = unpack(currentEncounterInfo)
 	EJ_SelectInstance(instanceID)
+	EJ_SelectEncounter(encounterID)
+
+	if(not difficulty) then
+		-- This should only ever happen in raids, everything else is hardcoded
+		difficulty = select(3, GetInstanceInfo())
+	end
+
 	EJ_SetDifficulty(difficulty)
 end
 
-function Container:EJ_DIFFICULTY_UPDATE(event, difficulty)
-	EJ_SelectEncounter(currentEncounterID)
-
+function Container:EJ_DIFFICULTY_UPDATE(event)
 	local _, _, classID = UnitClass('player')
 	EJ_SetLootFilter(classID, GetLootSpecialization() or GetSpecializationInfo(GetSpecialization() or 0) or 0)
 
@@ -364,9 +343,8 @@ end
 
 function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, currencyID)
 	if(confirmType == LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL) then
-		currentEncounterID = ns.encounterIDs[spellID]
-
-		if(currentEncounterID) then
+		currentEncounterInfo = ns.encounterInfo[spellID]
+		if(currentEncounterInfo) then
 			local _, count = GetCurrencyInfo(currencyID)
 			if(count > 0) then
 				self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
@@ -381,7 +359,7 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, 
 end
 
 function Container:SPELL_CONFIRMATION_TIMEOUT()
-	currentEncounterID = nil
+	currentEncounterInfo = nil
 
 	self:UnregisterEvent('PLAYER_LOOT_SPEC_UPDATED')
 end
