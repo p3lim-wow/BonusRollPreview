@@ -1,3 +1,7 @@
+### Changes in 70000.30-Release:
+
+- Fixed: Syntax error
+
 ### Changes in 70000.29-Release:
 
 - Fixed: Loot not showing up due to changes in Legion
