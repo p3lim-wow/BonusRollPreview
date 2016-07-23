@@ -1,3 +1,7 @@
+### Changes in 70000.31-Release:
+
+- Changed: Hardcoded all the encounter and instance data, less prone to errors
+
 ### Changes in 70000.30-Release:
 
 - Fixed: Syntax error
