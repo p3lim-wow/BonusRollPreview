@@ -326,7 +326,7 @@ function Container:Update()
 
 	local difficulty
 	if(IsInInstance()) then
-		difficulty = select(3, GetInstanceInfo)
+		difficulty = select(3, GetInstanceInfo())
 	else
 		difficulty = instanceID < 369 and 3 or 14
 	end
