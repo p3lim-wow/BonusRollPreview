@@ -16,7 +16,7 @@ This addon was made based on an idea posted on [reddit](http://reddit.com/r/wow/
 ## Feedback
 
 If you have a question, please use the comments section on Curse/WoWInterface.  
-If you would like to report a bug or contribute to the project, please follow [this link](https://github.com/p3lim-wow/BonusRollPreview/blob/master/CONTRIBUTING.md) to get started.
+If you would like to report a bug or contribute to the project, please follow [this link](//github.com/p3lim-wow/BonusRollPreview/issues?q=) to get started.
 
 ## Legal
 
