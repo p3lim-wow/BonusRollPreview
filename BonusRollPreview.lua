@@ -1,4 +1,4 @@
-local _, ns = ...
+local addonName, ns = ...
 local currentEncounterInfo
 local itemButtons = {}
 
@@ -8,11 +8,11 @@ local BACKDROP = {
 	insets = {left = 4, right = 4, top = 4, bottom = 4}
 }
 
-local Container = CreateFrame('Frame', 'BonusRollPreviewContainer', BonusRollFrame)
-local Handle = CreateFrame('Button', 'BonusRollPreviewHandle', BonusRollFrame)
+local Container = CreateFrame('Frame', addonName .. 'Container', BonusRollFrame)
+local Handle = CreateFrame('Button', addonName .. 'Handle', BonusRollFrame)
 
 local Hotspot = CreateFrame('Frame', nil, BonusRollFrame)
-local Buttons = CreateFrame('Frame', 'BonusRollPreviewSpecButtons', Hotspot)
+local Buttons = CreateFrame('Frame', addonName .. 'SpecButtons', Hotspot)
 Buttons:Hide()
 
 local function SpecButtonClick(self)
@@ -353,7 +353,7 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, 
 				self:Update()
 			end
 		else
-			print('|cffff8080BonusRollPreview:|r Found an unknown spell [' .. spellID .. ']. Please report this!')
+			print('|cffff8080' .. addonName .. ':|r Found an unknown spell [' .. spellID .. ']. Please report this!')
 		end
 	end
 end
