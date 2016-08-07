@@ -1,7 +1,7 @@
 # BonusRollPreview
 
 This is an addon for the popular MMORPG "World of Warcraft".  
-It can be downloaded at [Curse](http://curse.com/addons/wow/bonusrollpreview) or at [WoWInterface](http://wowinterface.com/downloads/info22213).
+It can be downloaded at [Curse](//mods.curse.com/addons/wow/bonusrollpreview) or at [WoWInterface](//wowinterface.com/downloads/info22213).
 
 ## Description
 
@@ -11,7 +11,7 @@ You can also change your spec priority right from the window, see the button in 
 
 So, from now on you don't have to alt-tab to a browser or open the Encounter Journal while on limited time.
 
-This addon was made based on an idea posted on [reddit](http://reddit.com/r/wow/comments/1b79zj/addon_idea_after_you_killed_a_boss_you_will_see_a/).
+This addon was made based on an idea posted on [reddit](//reddit.com/r/wow/comments/1b79zj/addon_idea_after_you_killed_a_boss_you_will_see_a/).
 
 ## Feedback
 
@@ -20,4 +20,4 @@ If you would like to report a bug or contribute to the project, please follow [t
 
 ## Legal
 
-Please see the [LICENSE](https://github.com/p3lim-wow/BonusRollPreview/blob/master/LICENSE.txt) file.
+Please see the [LICENSE](//github.com/p3lim-wow/BonusRollPreview/blob/master/LICENSE.txt) file.
