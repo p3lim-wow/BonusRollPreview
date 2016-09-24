@@ -1,3 +1,10 @@
+### Changes in 70000.32-Release:
+
+- Added: Support for The Nighthold raid
+- Added: Support for Trial of Valor raid
+- Added: Support for Return to Karazhan dungeon
+- Fixed: Incorrect loot tables for Elerethe and Il'gynoth in Emerald Nightmare
+
 ### Changes in 70000.31-Release:
 
 - Changed: Hardcoded all the encounter and instance data, less prone to errors
