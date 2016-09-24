@@ -19,8 +19,8 @@ for spellID, encounterInfo in next, {
 
 	-- The Emerald Nightmare
 	[221046] = {1703, 768}, -- Nythendra
-	[221047] = {1744, 768}, -- Elerethe Renferal
-	[221048] = {1738, 768}, -- Il'gynoth, Heart of Corruption
+	[221047] = {1738, 768}, -- Il'gynoth, Heart of Corruption
+	[221048] = {1744, 768}, -- Elerethe Renferal
 	[221049] = {1667, 768}, -- Ursoc
 	[221050] = {1704, 768}, -- Dragons of Nightmare
 	[221052] = {1750, 768}, -- Cenarius
