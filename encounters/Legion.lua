@@ -2,7 +2,7 @@ local _, ns = ...
 ns.encounterInfo = ns.encounterInfo or {}
 ns.itemBlacklist = ns.itemBlacklist or {}
 
--- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:7
+-- http://www.wowhead.com/spells/uncategorized/name:Bonus?filter=84:109:16;1:6:7;::
 for spellID, encounterInfo in next, {
 	-- World
 	[227128] = {1790, 822, 14}, -- Ana-Mouz
