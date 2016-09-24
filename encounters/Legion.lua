@@ -27,16 +27,34 @@ for spellID, encounterInfo in next, {
 	[221053] = {1726, 768}, -- Xavius
 
 	-- The Nighthold
-	[0] = {1706, 786}, -- Skorpyron
-	[0] = {1725, 786}, -- Chronomatic Anomaly
-	[0] = {1731, 786}, -- Trilliax
-	[0] = {1751, 786}, -- Spellblade Aluriel
-	[0] = {1762, 786}, -- Tichondrius
-	[0] = {1713, 786}, -- Krosus
-	[0] = {1761, 786}, -- High Botanist Tel'arn
-	[0] = {1732, 786}, -- Star Augur Etraeus
-	[0] = {1743, 786}, -- Grand Magistrix Elisande
-	[0] = {1737, 786}, -- Gul'dan
+	[232436] = {1706, 786}, -- Skorpyron
+	[232437] = {1725, 786}, -- Chronomatic Anomaly
+	[232438] = {1731, 786}, -- Trilliax
+	[232439] = {1751, 786}, -- Spellblade Aluriel
+	[232440] = {1762, 786}, -- Tichondrius
+	[232441] = {1713, 786}, -- Krosus
+	[232442] = {1761, 786}, -- High Botanist Tel'arn
+	[232443] = {1732, 786}, -- Star Augur Etraeus
+	[232444] = {1743, 786}, -- Grand Magistrix Elisande
+	[232445] = {1737, 786}, -- Gul'dan
+
+	-- Trial of Valor
+	[232466] = {1819, 861}, -- Odyn
+	[232467] = {1830, 861}, -- Guarm
+	[232468] = {1829, 861}, -- Helya
+
+	-- Return to Karazhan (Mythic)
+	[232099] = {1825, 860, 23}, -- Maiden of Virtue
+	[232100] = {1820, 860, 23}, -- Opera Hall: Wikket
+	[232101] = {1826, 860, 23}, -- Opera Hall: Westfall Story
+	[232102] = {1827, 860, 23}, -- Opera Hall: Beautiful Beast
+	[232103] = {1835, 860, 23}, -- Attumen the Huntsman
+	[232104] = {1837, 860, 23}, -- Moroes
+	[232105] = {1836, 860, 23}, -- The Curator
+	[232106] = {1817, 860, 23}, -- Shade of Medivh
+	[232107] = {1818, 860, 23}, -- Mana Devourer
+	[232108] = {1838, 860, 23}, -- Viz'aduum the Watcher
+	-- XXX: there is one more ID (232109), hidden boss?
 
 	-- Assault on Violet Hold (Mythic)
 	[226656] = {1693, 777, 23}, -- Festerface
