@@ -149,12 +149,13 @@ local function HandlePosition()
 	HandleClick()
 end
 
-local function ItemButtonUpdate(self, elapsed)
-	if(IsModifiedClick('COMPAREITEMS') or (GetCVarBool('alwaysCompareItems') and not IsEquippedItem(self.itemLink))) then
+function Container:MODIFIER_STATE_CHANGED()
+	if(IsModifiedClick("COMPAREITEMS") or GetCVarBool("alwaysCompareItems")) then
 		GameTooltip_ShowCompareItem()
 	else
-		ShoppingTooltip1:Hide()
-		ShoppingTooltip2:Hide()
+		for _, shoppingTooltip in next, GameTooltip.shoppingTooltips do
+			shoppingTooltip:Hide()
+		end
 	end
 
 	if(IsModifiedClick('DRESSUP')) then
@@ -172,13 +173,13 @@ local function ItemButtonEnter(self)
 	GameTooltip:SetOwner(self, 'ANCHOR_TOPLEFT')
 	GameTooltip:SetHyperlink(self.itemLink)
 
-	self:SetScript('OnUpdate', ItemButtonUpdate)
+	Container:RegisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 local function ItemButtonLeave(self)
 	GameTooltip:Hide()
 
-	self:SetScript('OnUpdate', nil)
+	Container:UnregisterEvent('MODIFIER_STATE_CHANGED')
 end
 
 local function GetItemLine(index)
