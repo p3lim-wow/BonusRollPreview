@@ -359,6 +359,14 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, 
 	end
 end
 
+function Container:PLAYER_ENTERING_WORLD(event)
+	for _, info in next, GetSpellConfirmationPromptsInfo() do
+		if(info) then
+			self:SPELL_CONFIRMATION_PROMPT(event, info.spellID, info.confirmType, nil, nil, info.currencyID)
+		end
+	end
+end
+
 function Container:SPELL_CONFIRMATION_TIMEOUT()
 	currentEncounterInfo = nil
 
@@ -521,4 +529,5 @@ function Container:PLAYER_LOGIN()
 end
 
 Container:SetScript('OnEvent', function(self, event, ...) self[event](self, event, ...) end)
+Container:RegisterEvent('PLAYER_ENTERING_WORLD')
 Container:RegisterEvent('PLAYER_LOGIN')
