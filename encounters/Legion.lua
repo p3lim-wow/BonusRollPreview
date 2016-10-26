@@ -7,7 +7,7 @@ for spellID, encounterInfo in next, {
 	-- World
 	[227128] = {1790, 822, 14}, -- Ana-Mouz
 	[227129] = {1774, 822, 14}, -- Calamir
-	[228130] = {1789, 822, 14}, -- Drugon the Frostblood
+	[227130] = {1789, 822, 14}, -- Drugon the Frostblood
 	[227131] = {1795, 822, 14}, -- Flotsam
 	[227132] = {1770, 822, 14}, -- Humongris
 	[227133] = {1769, 822, 14}, -- Levantus
