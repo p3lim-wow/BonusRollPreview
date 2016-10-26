@@ -1,3 +1,8 @@
+### Changes in 70100.34-Release:
+
+- Removed: Most of the Karazhan data, it was incorrect (please contribute!)
+- Changed: Spell detection message gives more info
+
 ### Changes in 70100.33-Release:
 
 - Changed: Update Interface version
