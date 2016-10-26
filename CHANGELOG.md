@@ -1,3 +1,11 @@
+### Changes in 70100.33-Release:
+
+- Changed: Update Interface version
+- Changed: Don't poll tooltip updates on OnUpdate
+- Fixed: Loot not propagating during reloads or zoning
+- Fixed: Incorrect loot tables for the last two bosses of Violet Hold
+- Fixed: Incorrect spell ID for Drugon
+
 ### Changes in 70000.32-Release:
 
 - Added: Support for The Nighthold raid
