@@ -44,13 +44,13 @@ for spellID, encounterInfo in next, {
 	[232468] = {1829, 861}, -- Helya
 
 	-- Return to Karazhan (Mythic)
-	[232099] = {1825, 860, 23}, -- Maiden of Virtue
-	[232100] = {1820, 860, 23}, -- Opera Hall: Wikket
-	[232101] = {1826, 860, 23}, -- Opera Hall: Westfall Story
-	[232102] = {1827, 860, 23}, -- Opera Hall: Beautiful Beast
-	[232103] = {1835, 860, 23}, -- Attumen the Huntsman
-	[232104] = {1837, 860, 23}, -- Moroes
-	[232105] = {1836, 860, 23}, -- The Curator
+	-- [232099] = {1825, 860, 23}, -- Maiden of Virtue
+	-- [232100] = {1820, 860, 23}, -- Opera Hall: Wikket
+	-- [232101] = {1826, 860, 23}, -- Opera Hall: Westfall Story
+	-- [232102] = {1827, 860, 23}, -- Opera Hall: Beautiful Beast
+	-- [232103] = {1835, 860, 23}, -- Attumen the Huntsman
+	-- [232104] = {1837, 860, 23}, -- Moroes
+	-- [232105] = {1836, 860, 23}, -- The Curator
 	[232106] = {1817, 860, 23}, -- Shade of Medivh
 	[232107] = {1818, 860, 23}, -- Mana Devourer
 	[232108] = {1838, 860, 23}, -- Viz'aduum the Watcher
