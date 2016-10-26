@@ -354,7 +354,7 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, 
 				self:Update()
 			end
 		else
-			print('|cffff8080' .. addonName .. ':|r Found an unknown spell [' .. spellID .. ']. Please report this!')
+			print('|cffff8080' .. addonName .. ':|r Found an unknown spell [' .. spellID .. ']. Please report this, with boss name!')
 		end
 	end
 end
