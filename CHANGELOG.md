@@ -1,3 +1,7 @@
+### Changes in 70100.35-Release: 
+
+- Fixed: Return to Karazhan IDs
+
 ### Changes in 70100.34-Release:
 
 - Removed: Most of the Karazhan data, it was incorrect (please contribute!)
