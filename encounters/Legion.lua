@@ -1,6 +1,7 @@
 local _, ns = ...
 ns.encounterInfo = ns.encounterInfo or {}
 ns.itemBlacklist = ns.itemBlacklist or {}
+ns.encounterBlacklist = ns.encounterBlacklist or {}
 
 -- http://www.wowhead.com/spells/uncategorized/name:Bonus?filter=84:109:16;1:6:7;::
 for spellID, encounterInfo in next, {
@@ -54,7 +55,6 @@ for spellID, encounterInfo in next, {
 	[232106] = {1817, 860, 23}, -- Shade of Medivh
 	[232107] = {1818, 860, 23}, -- Mana Devourer
 	[232108] = {1838, 860, 23}, -- Viz'aduum the Watcher
-	-- 232109 -- Nightbane (no dungeon journal entry)
 
 	-- Assault on Violet Hold (Mythic)
 	[226656] = {1693, 777, 23}, -- Festerface
@@ -129,4 +129,10 @@ for _, itemID in next, {
 	-- Mounts
 } do
 	ns.itemBlacklist[itemID] = true
+end
+
+for _, spellID in next, {
+	232109, -- Nightbane (no dungeon journal entry)
+} do
+	ns.encounterBlacklist[spellID] = true
 end
