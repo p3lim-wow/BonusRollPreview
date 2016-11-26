@@ -1,3 +1,7 @@
+### Changes in 70100.36-Release:
+
+- Fixed: Nightbane showing up as an unknown ID (no loot table available)
+
 ### Changes in 70100.35-Release: 
 
 - Fixed: Return to Karazhan IDs
