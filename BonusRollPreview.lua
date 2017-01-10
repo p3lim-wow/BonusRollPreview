@@ -353,7 +353,11 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, 
 				self:RegisterEvent('EJ_DIFFICULTY_UPDATE')
 				self:Update()
 			end
-		elseif(not ns.encounterBlacklist[spellID]) then
+
+			self:Show()
+		elseif(ns.encounterBlacklist[spellID]) then
+			self:Hide()
+		else
 			print('|cffff8080' .. addonName .. ':|r Found an unknown spell [' .. spellID .. ']. Please report this, with boss name!')
 		end
 	end
