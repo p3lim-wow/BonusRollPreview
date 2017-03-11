@@ -11,81 +11,6 @@ local BACKDROP = {
 local Container = CreateFrame('Frame', addonName .. 'Container', BonusRollFrame)
 local Handle = CreateFrame('Button', addonName .. 'Handle', BonusRollFrame)
 
-local Hotspot = CreateFrame('Frame', nil, BonusRollFrame)
-local Buttons = CreateFrame('Frame', addonName .. 'SpecButtons', Hotspot)
-Buttons:Hide()
-
-local function SpecButtonClick(self)
-	SetLootSpecialization(self.specID)
-	Buttons:Hide()
-	BonusRollFrame.SpecIcon:SetDesaturated(false)
-end
-
-local function SpecButtonEnter(self)
-	GameTooltip:SetOwner(self, 'ANCHOR_TOPRIGHT')
-	GameTooltip:AddLine(self.name, 1, 1, 1)
-	GameTooltip:Show()
-end
-
-local specButtons
-local function HotspotEnter()
-	if(not Buttons:IsShown()) then
-		if(not specButtons) then
-			local numSpecs = GetNumSpecializations()
-			for index = 1, numSpecs do
-				local specID, name, _, texture = GetSpecializationInfo(index)
-
-				local SpecButton = CreateFrame('Button', '$parentSpecButton' .. index, Buttons)
-				SpecButton:SetPoint('LEFT', index * 28, 0)
-				SpecButton:SetSize(22, 22)
-				SpecButton:SetScript('OnClick', SpecButtonClick)
-				SpecButton:SetScript('OnEnter', SpecButtonEnter)
-				SpecButton:SetScript('OnLeave', GameTooltip_Hide)
-				SpecButton:SetHighlightTexture([[Interface\Minimap\UI-Minimap-ZoomButton-Highlight]])
-
-				SpecButton.specID = specID
-				SpecButton.name = name
-
-				local Icon = SpecButton:CreateTexture('$parentIcon', 'OVERLAY', nil, 1)
-				Icon:SetAllPoints()
-				Icon:SetTexture(texture)
-
-				local Ring = SpecButton:CreateTexture('$parentRing', 'OVERLAY', nil, 2)
-				Ring:SetPoint('TOPLEFT', -6, 6)
-				Ring:SetSize(58, 58)
-				Ring:SetTexture([[Interface\Minimap\Minimap-TrackingBorder]])
-			end
-
-			Buttons:SetSize(numSpecs * 28 + 34, 38)
-
-			specButtons = true
-		end
-
-		BonusRollFrame.SpecIcon:SetDesaturated(true)
-		Buttons:Show()
-	end
-end
-
-local function HotspotLeave()
-	if(not Buttons:IsMouseOver()) then
-		BonusRollFrame.SpecIcon:SetDesaturated(false)
-		Buttons:Hide()
-	end
-end
-
-local function ButtonsLeave(self)
-	if(not Hotspot:IsMouseOver()) then
-		HotspotLeave()
-	end
-end
-
-local function HookStartRoll(self, frame)
-	local specID = GetLootSpecialization()
-	if(not specID or specID == 0) then
-		SetLootSpecialization(GetSpecializationInfo(GetSpecialization()))
-	end
-end
-
 local function PositionDownwards()
 	return (GetScreenHeight() - (BonusRollFrame:GetTop() or 200)) < 345
 end
@@ -518,17 +443,9 @@ function Container:PLAYER_LOGIN()
 	BottomLeft:SetTexCoord(0, 1, 0.1, 1)
 	Handle.BottomLeft = BottomLeft
 
-	Hotspot:SetAllPoints(BonusRollFrame.SpecIcon)
-	Hotspot:SetScript('OnEnter', HotspotEnter)
-	Hotspot:SetScript('OnLeave', HotspotLeave)
-
-	Buttons:SetPoint('LEFT', 4, 4)
-	Buttons:SetScript('OnLeave', ButtonsLeave)
-
 	self:RegisterEvent('SPELL_CONFIRMATION_PROMPT')
 	self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
 
-	hooksecurefunc('BonusRollFrame_StartBonusRoll', HookStartRoll)
 	hooksecurefunc(BonusRollFrame, 'SetPoint', HandlePosition)
 end
 

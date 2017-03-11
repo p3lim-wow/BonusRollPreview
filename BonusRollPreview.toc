@@ -9,3 +9,4 @@ encounters\Draenor.lua
 encounters\Legion.lua
 
 BonusRollPreview.lua
+SpecButtons.lua
