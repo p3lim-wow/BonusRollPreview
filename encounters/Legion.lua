@@ -18,6 +18,14 @@ for spellID, encounterInfo in next, {
 	[227136] = {1763, 822, 14}, -- Shar'thos
 	[227137] = {1756, 822, 14}, -- The Soultakers
 	[227138] = {1796, 822, 14}, -- Withered J'im
+	-- [242969] -- Broken Shore World Boss 1
+	-- [242970] -- Broken Shore World Boss 2
+	-- [242971] -- Broken Shore World Boss 3
+	-- [242972] -- Broken Shore World Boss 4
+	[0] = {1883, 822, 14}, -- Brutallus
+	[0] = {1884, 822, 14}, -- Malificus
+	[0] = {1885, 822, 14}, -- Si'vash
+	[0] = {1956, 822, 14}, -- Apocron
 
 	--- Raids
 	-- The Emerald Nightmare
@@ -45,6 +53,26 @@ for spellID, encounterInfo in next, {
 	[232443] = {1732, 786, nil, 14}, -- Star Augur Etraeus
 	-- Grand Magistrix Elisande needs special handling
 	[232445] = {1737, 786, nil, 14}, -- Gul'dan
+
+	-- Tomb of Sargeras
+	-- [240655] -- Boss 1
+	-- [240656] -- Boss 2
+	-- [240657] -- Boss 3
+	-- [240658] -- Boss 4
+	-- [240659] -- Boss 5
+	-- [240660] -- Boss 6
+	-- [240661] -- Boss 7
+	-- [240662] -- Boss 8
+	-- [240663] -- Boss 9
+	[0] = {1862, 875}, -- 1 Goroth
+	[0] = {1867, 875}, -- 2 Demonic Inquisition
+	[0] = {1856, 875}, -- 3 Harjatan
+	[0] = {1903, 875}, -- 4 Sisters of the Moon
+	[0] = {1861, 875}, -- 5 Mistress Sassz'ine
+	[0] = {1896, 875}, -- 6 The Desolate Host
+	[0] = {1897, 875}, -- 7 Maiden of Vigilance
+	[0] = {1873, 875}, -- 8 Fallen Avatar
+	[0] = {1898, 875}, -- 9 Kil'jaeden
 
 	--- Dungeons
 	-- Return to Karazhan (Mythic)
@@ -124,6 +152,12 @@ for spellID, encounterInfo in next, {
 	[226653] = {1468, 707, 23}, -- Ash'golm
 	[226654] = {1469, 707, 23}, -- Glazer
 	[226655] = {1470, 707, 23}, -- Cordana Felsong
+
+	-- Cathedral of Eternal Night (Mythic)
+	[0] = {1905, 900, 23}, -- 1 Agronox
+	[0] = {1906, 900, 23}, -- 2 Thrashbite the Scornful
+	[0] = {1904, 900, 23}, -- 3 Domatrax
+	[0] = {1878, 900, 23}, -- 4 Mephistroth
 } do
 	ns.encounterInfo[spellID] = encounterInfo
 end
