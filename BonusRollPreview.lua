@@ -310,6 +310,11 @@ function Container:StartEncounter()
 		self.difficulty = select(3, GetInstanceInfo())
 	end
 
+	if(not self.difficulty or self.difficulty == 0) then
+		-- Fallback difficulty, for PEW
+		self.difficulty = self.fallbackDifficulty
+	end
+
 	self:RegisterEvent('EJ_DIFFICULTY_UPDATE')
 	if(EncounterJournal) then
 		EncounterJournal:UnregisterEvent('EJ_DIFFICULTY_UPDATE')
@@ -429,6 +434,7 @@ function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, 
 				self.encounterID = encounterInfo[1]
 				self.instanceID = encounterInfo[2]
 				self.difficulty = encounterInfo[3]
+				self.fallbackDifficulty = encounterInfo[4]
 				self:StartEncounter()
 
 				Handle:Show()
@@ -483,7 +489,8 @@ function Container:PLAYER_LOGIN()
 		ns.encounterInfo[spellID] = {
 			(select(3, EJ_GetEncounterInfoByIndex(data[1]))),
 			data[2],
-			data[3]
+			data[3],
+			data[4],
 		}
 	end
 end

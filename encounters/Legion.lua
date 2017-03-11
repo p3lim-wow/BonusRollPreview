@@ -21,30 +21,30 @@ for spellID, encounterInfo in next, {
 
 	--- Raids
 	-- The Emerald Nightmare
-	[221046] = {1703, 768}, -- Nythendra
-	[221047] = {1738, 768}, -- Il'gynoth, Heart of Corruption
-	[221048] = {1744, 768}, -- Elerethe Renferal
-	[221049] = {1667, 768}, -- Ursoc
-	[221050] = {1704, 768}, -- Dragons of Nightmare
-	[221052] = {1750, 768}, -- Cenarius
-	[221053] = {1726, 768}, -- Xavius
+	[221046] = {1703, 768, nil, 14}, -- Nythendra
+	[221047] = {1738, 768, nil, 14}, -- Il'gynoth, Heart of Corruption
+	[221048] = {1744, 768, nil, 14}, -- Elerethe Renferal
+	[221049] = {1667, 768, nil, 14}, -- Ursoc
+	[221050] = {1704, 768, nil, 14}, -- Dragons of Nightmare
+	[221052] = {1750, 768, nil, 14}, -- Cenarius
+	[221053] = {1726, 768, nil, 14}, -- Xavius
 
 	-- Trial of Valor
-	[232466] = {1819, 861}, -- Odyn
-	[232467] = {1830, 861}, -- Guarm
-	[232468] = {1829, 861}, -- Helya
+	[232466] = {1819, 861, nil, 14}, -- Odyn
+	[232467] = {1830, 861, nil, 14}, -- Guarm
+	[232468] = {1829, 861, nil, 14}, -- Helya
 
 	-- The Nighthold
-	[232436] = {1706, 786}, -- Skorpyron
-	[232437] = {1725, 786}, -- Chronomatic Anomaly
-	[232438] = {1731, 786}, -- Trilliax
-	[232439] = {1751, 786}, -- Spellblade Aluriel
-	[232440] = {1762, 786}, -- Tichondrius
-	[232441] = {1713, 786}, -- Krosus
-	[232442] = {1761, 786}, -- High Botanist Tel'arn
-	[232443] = {1732, 786}, -- Star Augur Etraeus
+	[232436] = {1706, 786, nil, 14}, -- Skorpyron
+	[232437] = {1725, 786, nil, 14}, -- Chronomatic Anomaly
+	[232438] = {1731, 786, nil, 14}, -- Trilliax
+	[232439] = {1751, 786, nil, 14}, -- Spellblade Aluriel
+	[232440] = {1762, 786, nil, 14}, -- Tichondrius
+	[232441] = {1713, 786, nil, 14}, -- Krosus
+	[232442] = {1761, 786, nil, 14}, -- High Botanist Tel'arn
+	[232443] = {1732, 786, nil, 14}, -- Star Augur Etraeus
 	-- Grand Magistrix Elisande needs special handling
-	[232445] = {1737, 786}, -- Gul'dan
+	[232445] = {1737, 786, nil, 14}, -- Gul'dan
 
 	--- Dungeons
 	-- Return to Karazhan (Mythic)
@@ -130,7 +130,7 @@ end
 
 -- Grand Magistrix Elisande has two IDs (1743, 1872).
 -- Pick whichever one the client wants to use at load.
-ns.dynamicEncounters[232444] = {9, 786}
+ns.dynamicEncounters[232444] = {9, 786, nil, 14}
 
 for _, itemID in next, {
 	-- Mounts

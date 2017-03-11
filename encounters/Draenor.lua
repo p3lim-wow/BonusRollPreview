@@ -12,40 +12,40 @@ for spellID, encounterInfo in next, {
 
 	--- Raids
 	-- Highmaul
-	[177521] = {1128, 477}, -- Kargath Bladefist
-	[177522] = {971, 477}, -- The Butcher
-	[177523] = {1195, 477}, -- Tectus
-	[177524] = {1196, 477}, -- Brackenspore
-	[177525] = {1148, 477}, -- Twin Ogron
-	[177526] = {1153, 477}, -- Ko'ragh
-	[177528] = {1197, 477}, -- Imperator Mar'gok
+	[177521] = {1128, 477, nil, 14}, -- Kargath Bladefist
+	[177522] = {971, 477, nil, 14}, -- The Butcher
+	[177523] = {1195, 477, nil, 14}, -- Tectus
+	[177524] = {1196, 477, nil, 14}, -- Brackenspore
+	[177525] = {1148, 477, nil, 14}, -- Twin Ogron
+	[177526] = {1153, 477, nil, 14}, -- Ko'ragh
+	[177528] = {1197, 477, nil, 14}, -- Imperator Mar'gok
 
 	-- Blackrock Foundry
-	[177529] = {1161, 457}, -- Gruul
-	[177530] = {1202, 457}, -- Oregorger
-	[177536] = {1122, 457}, -- Beastlord Darmac
-	[177534] = {1123, 457}, -- Flamebender Ka'graz
-	[177533] = {1155, 457}, -- Hans'gar and Franzok
-	[177537] = {1147, 457}, -- Operator Thogar
-	[177531] = {1154, 457}, -- The Blast Furnace
-	[177535] = {1162, 457}, -- Kromog
-	[177538] = {1203, 457}, -- The Iron Maidens
+	[177529] = {1161, 457, nil, 14}, -- Gruul
+	[177530] = {1202, 457, nil, 14}, -- Oregorger
+	[177536] = {1122, 457, nil, 14}, -- Beastlord Darmac
+	[177534] = {1123, 457, nil, 14}, -- Flamebender Ka'graz
+	[177533] = {1155, 457, nil, 14}, -- Hans'gar and Franzok
+	[177537] = {1147, 457, nil, 14}, -- Operator Thogar
+	[177531] = {1154, 457, nil, 14}, -- The Blast Furnace
+	[177535] = {1162, 457, nil, 14}, -- Kromog
+	[177538] = {1203, 457, nil, 14}, -- The Iron Maidens
 	[177539] = {959, 457},   -- Blackhand
 
 	-- Hellfire Citadel
-	[188972] = {1426, 669}, -- Hellfire Assault
-	[188973] = {1425, 669}, -- Iron Reaver
-	[188974] = {1392, 669}, -- Kormrok
-	[188975] = {1432, 669}, -- Hellfire High Council
-	[188976] = {1396, 669}, -- Kilrogg Deadeye
-	[188977] = {1372, 669}, -- Gorefiend
-	[188978] = {1433, 669}, -- Shadow-Lord Iskar
-	[188979] = {1427, 669}, -- Socrethar the Eternal
-	[188980] = {1391, 669}, -- Fel Lord Zakuun
-	[188981] = {1447, 669}, -- Xhul'horac
-	[188982] = {1394, 669}, -- Tyrant Velhari
-	[188983] = {1395, 669}, -- Mannoroth
-	[188984] = {1438, 669}, -- Archimonde
+	[188972] = {1426, 669, nil, 14}, -- Hellfire Assault
+	[188973] = {1425, 669, nil, 14}, -- Iron Reaver
+	[188974] = {1392, 669, nil, 14}, -- Kormrok
+	[188975] = {1432, 669, nil, 14}, -- Hellfire High Council
+	[188976] = {1396, 669, nil, 14}, -- Kilrogg Deadeye
+	[188977] = {1372, 669, nil, 14}, -- Gorefiend
+	[188978] = {1433, 669, nil, 14}, -- Shadow-Lord Iskar
+	[188979] = {1427, 669, nil, 14}, -- Socrethar the Eternal
+	[188980] = {1391, 669, nil, 14}, -- Fel Lord Zakuun
+	[188981] = {1447, 669, nil, 14}, -- Xhul'horac
+	[188982] = {1394, 669, nil, 14}, -- Tyrant Velhari
+	[188983] = {1395, 669, nil, 14}, -- Mannoroth
+	[188984] = {1438, 669, nil, 14}, -- Archimonde
 
 	--- Dungeons
 	-- Auchindoun (Mythic)
