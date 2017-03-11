@@ -476,6 +476,16 @@ function Container:PLAYER_LOGIN()
 	self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
 
 	hooksecurefunc(BonusRollFrame, 'SetPoint', HookSetPoint)
+
+	-- Inject odd encounters
+	for spellID, data in next, ns.dynamicEncounters do
+		EJ_SelectInstance(data[2])
+		ns.encounterInfo[spellID] = {
+			(select(3, EJ_GetEncounterInfoByIndex(data[1]))),
+			data[2],
+			data[3]
+		}
+	end
 end
 
 Container:RegisterEvent('PLAYER_LOGIN')

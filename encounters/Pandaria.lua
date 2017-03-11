@@ -2,6 +2,7 @@
 local _, ns = ...
 ns.encounterInfo = ns.encounterInfo or {}
 ns.itemBlacklist = ns.itemBlacklist or {}
+ns.dynamicEncounters = ns.dynamicEncounters or {}
 
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:5
 for spellID, encounterInfo in next, {
@@ -71,13 +72,9 @@ for spellID, encounterInfo in next, {
 	ns.encounterInfo[spellID] = encounterInfo
 end
 
--- Galakras has two IDs, pick whatever the client uses
-local Handler = CreateFrame('Frame')
-Handler:RegisterEvent('PLAYER_LOGIN')
-Handler:SetScript('OnEvent', function()
-	EJ_SelectInstance(369)
-	ns.encounterInfo[145913] = {(select(3, EJ_GetEncounterInfoByIndex(5))), 369}
-end)
+-- Galakras has two IDs (868, 881).
+-- Pick whichever one the client wants to use at load.
+ns.dynamicEncounters[145913] = {5, 369}
 
 for _, itemID in next, {
 	-- Mounts

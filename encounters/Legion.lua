@@ -2,6 +2,7 @@ local _, ns = ...
 ns.encounterInfo = ns.encounterInfo or {}
 ns.itemBlacklist = ns.itemBlacklist or {}
 ns.encounterBlacklist = ns.encounterBlacklist or {}
+ns.dynamicEncounters = ns.dynamicEncounters or {}
 
 -- http://www.wowhead.com/spells/uncategorized/name:Bonus?filter=84:109:16;1:6:7;::
 for spellID, encounterInfo in next, {
@@ -127,13 +128,9 @@ for spellID, encounterInfo in next, {
 	ns.encounterInfo[spellID] = encounterInfo
 end
 
--- Grand Magistrix Elisande has two IDs, pick whatever the client uses
-local Handler = CreateFrame('Frame')
-Handler:RegisterEvent('PLAYER_LOGIN')
-Handler:SetScript('OnEvent', function()
-	EJ_SelectInstance(786)
-	ns.encounterInfo[232444] = {(select(3, EJ_GetEncounterInfoByIndex(9))), 786}
-end)
+-- Grand Magistrix Elisande has two IDs (1743, 1872).
+-- Pick whichever one the client wants to use at load.
+ns.dynamicEncounters[232444] = {9, 786}
 
 for _, itemID in next, {
 	-- Mounts
