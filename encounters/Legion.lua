@@ -36,7 +36,7 @@ for spellID, encounterInfo in next, {
 	[232441] = {1713, 786}, -- Krosus
 	[232442] = {1761, 786}, -- High Botanist Tel'arn
 	[232443] = {1732, 786}, -- Star Augur Etraeus
-	[232444] = {1743, 786}, -- Grand Magistrix Elisande
+	-- Grand Magistrix Elisande needs special handling
 	[232445] = {1737, 786}, -- Gul'dan
 
 	-- Trial of Valor
@@ -124,6 +124,14 @@ for spellID, encounterInfo in next, {
 } do
 	ns.encounterInfo[spellID] = encounterInfo
 end
+
+-- Grand Magistrix Elisande has two IDs, pick whatever the client uses
+local Handler = CreateFrame('Frame')
+Handler:RegisterEvent('PLAYER_LOGIN')
+Handler:SetScript('OnEvent', function()
+	EJ_SelectInstance(786)
+	ns.encounterInfo[232444] = {(select(3, EJ_GetEncounterInfoByIndex(9))), 786}
+end)
 
 for _, itemID in next, {
 	-- Mounts
