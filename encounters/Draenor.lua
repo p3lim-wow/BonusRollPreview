@@ -4,12 +4,13 @@ ns.itemBlacklist = ns.itemBlacklist or {}
 
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:6
 for spellID, encounterInfo in next, {
-	-- World
+	--- World
 	[178847] = {1291, 557, 14}, -- Drov the Ruiner
 	[178849] = {1211, 557, 14}, -- Tarina the Ageless
 	[178851] = {1262, 557, 14}, -- Rukhmar
 	[188985] = {1452, 557, 15}, -- Supreme Lord Kazzak
 
+	--- Raids
 	-- Highmaul
 	[177521] = {1128, 477}, -- Kargath Bladefist
 	[177522] = {971, 477}, -- The Butcher
@@ -46,6 +47,7 @@ for spellID, encounterInfo in next, {
 	[188983] = {1395, 669}, -- Mannoroth
 	[188984] = {1438, 669}, -- Archimonde
 
+	--- Dungeons
 	-- Auchindoun (Mythic)
 	[190154] = {1185, 547, 23}, -- Vigilant Kaathar
 	[190155] = {1186, 547, 23}, -- Soulbinder Nyami

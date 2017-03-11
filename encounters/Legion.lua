@@ -5,7 +5,7 @@ ns.encounterBlacklist = ns.encounterBlacklist or {}
 
 -- http://www.wowhead.com/spells/uncategorized/name:Bonus?filter=84:109:16;1:6:7;::
 for spellID, encounterInfo in next, {
-	-- World
+	--- World
 	[227128] = {1790, 822, 14}, -- Ana-Mouz
 	[227129] = {1774, 822, 14}, -- Calamir
 	[227130] = {1789, 822, 14}, -- Drugon the Frostblood
@@ -18,6 +18,7 @@ for spellID, encounterInfo in next, {
 	[227137] = {1756, 822, 14}, -- The Soultakers
 	[227138] = {1796, 822, 14}, -- Withered J'im
 
+	--- Raids
 	-- The Emerald Nightmare
 	[221046] = {1703, 768}, -- Nythendra
 	[221047] = {1738, 768}, -- Il'gynoth, Heart of Corruption
@@ -26,6 +27,11 @@ for spellID, encounterInfo in next, {
 	[221050] = {1704, 768}, -- Dragons of Nightmare
 	[221052] = {1750, 768}, -- Cenarius
 	[221053] = {1726, 768}, -- Xavius
+
+	-- Trial of Valor
+	[232466] = {1819, 861}, -- Odyn
+	[232467] = {1830, 861}, -- Guarm
+	[232468] = {1829, 861}, -- Helya
 
 	-- The Nighthold
 	[232436] = {1706, 786}, -- Skorpyron
@@ -39,11 +45,7 @@ for spellID, encounterInfo in next, {
 	-- Grand Magistrix Elisande needs special handling
 	[232445] = {1737, 786}, -- Gul'dan
 
-	-- Trial of Valor
-	[232466] = {1819, 861}, -- Odyn
-	[232467] = {1830, 861}, -- Guarm
-	[232468] = {1829, 861}, -- Helya
-
+	--- Dungeons
 	-- Return to Karazhan (Mythic)
 	[232102] = {1820, 860, 23}, -- Opera Hall: Wikket
 	[232103] = {1826, 860, 23}, -- Opera Hall: Westfall Story

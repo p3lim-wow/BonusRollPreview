@@ -5,7 +5,7 @@ ns.itemBlacklist = ns.itemBlacklist or {}
 
 -- http://www.wowhead.com/spells=0?filter=na=Bonus;cr=84:109:16;crs=1:6:5
 for spellID, encounterInfo in next, {
-	-- World
+	--- World
 	[132205] = {691, 322, 3}, -- Sha of Anger
 	[132206] = {725, 322, 3}, -- Salyis' Warband (Galleon)
 	[136381] = {814, 322, 3}, -- Nalak, The Storm God
@@ -13,6 +13,7 @@ for spellID, encounterInfo in next, {
 	[148317] = {857, 322, 3}, -- Celestials (also encounterIDs 858, 859 and 860)
 	[148316] = {861, 322, 3}, -- Ordos, Fire-God of the Yaungol
 
+	--- Raids
 	-- Mogu'Shan Vaults
 	[125144] = {679, 317}, -- The Stone Guard
 	[132189] = {689, 317}, -- Feng the Accursed
