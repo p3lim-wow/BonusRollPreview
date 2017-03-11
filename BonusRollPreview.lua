@@ -1,5 +1,4 @@
 local addonName, ns = ...
-local currentEncounterInfo
 local itemButtons = {}
 
 local BACKDROP = {
@@ -298,20 +297,36 @@ local function HookSetPoint()
 end
 
 --- Logic
-local resetTimer
-local function ResetEvents()
-	Container:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
-	Container:UnregisterEvent('EJ_DIFFICULTY_UPDATE')
-
-	if(EncounterJournal) then
-		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
-		EncounterJournal:RegisterEvent('EJ_DIFFICULTY_UPDATE')
+function Container:StartEncounter()
+	for index, button in next, itemButtons do
+		button:Hide()
 	end
 
-	resetTimer = nil
+	EJ_SelectInstance(self.instanceID)
+	EJ_SelectEncounter(self.encounterID)
+
+	if(not self.difficulty) then
+		-- This should only ever happen in raids, everything else is hardcoded
+		self.difficulty = select(3, GetInstanceInfo())
+	end
+
+	self:RegisterEvent('EJ_DIFFICULTY_UPDATE')
+	if(EncounterJournal) then
+		EncounterJournal:UnregisterEvent('EJ_DIFFICULTY_UPDATE')
+	end
+
+	EJ_SetDifficulty(self.difficulty)
 end
 
-function Container:Populate()
+function Container:UpdateItems()
+	if(not self:IsEventRegistered('EJ_LOOT_DATA_RECIEVED')) then
+		self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
+	end
+
+	if(EncounterJournal) then
+		EncounterJournal:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
+	end
+
 	local numItems = 0
 	for index = 1, EJ_GetNumLoot() do
 		local itemID, encounterID, name, texture, slot, armorType, itemLink = EJ_GetLootInfoByIndex(index)
@@ -320,7 +335,7 @@ function Container:Populate()
 			return
 		end
 
-		if(encounterID == currentEncounterInfo[1] and not ns.itemBlacklist[itemID]) then
+		if(not ns.itemBlacklist[itemID]) then
 			numItems = numItems + 1
 
 			local ItemButton = GetItemButton(numItems)
@@ -333,7 +348,14 @@ function Container:Populate()
 		end
 	end
 
-	self:Hide()
+	if(self:IsEventRegistered('EJ_LOOT_DATA_RECIEVED')) then
+		self:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
+	end
+
+	if(EncounterJournal) then
+		EncounterJournal:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
+	end
+
 	self:SetHeight(math.min(330, math.max(50, 10 + (numItems * 40))))
 
 	if(numItems > 0) then
@@ -354,76 +376,65 @@ function Container:Populate()
 		self.Empty:Hide()
 	else
 		self.Empty:Show()
+		self:EnableMouseWheel(false)
 		self.Slider:Hide()
+		self.ScrollChild:SetWidth(302)
 	end
-
-	if(resetTimer) then
-		resetTimer:Cancel()
-		resetTimer = nil
-	end
-
-	resetTimer = C_Timer.NewTimer(2, ResetEvents)
 end
 
-function Container:Update()
-	if(EncounterJournal) then
-		EncounterJournal:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
-		EncounterJournal:UnregisterEvent('EJ_DIFFICULTY_UPDATE')
+function Container:UpdateItemFilter()
+	local _, _, classID = UnitClass('player')
+	local lootSpecialization = GetLootSpecialization()
+	if(not lootSpecialization or lootSpecialization == 0) then
+		lootSpecialization = (GetSpecializationInfo(GetSpecialization() or 0)) or 0
 	end
 
-	for index, button in next, itemButtons do
-		button:Hide()
-	end
-
-	local encounterID, instanceID, difficulty = unpack(currentEncounterInfo)
-	EJ_SelectInstance(instanceID)
-	EJ_SelectEncounter(encounterID)
-
-	if(not difficulty) then
-		-- This should only ever happen in raids, everything else is hardcoded
-		difficulty = select(3, GetInstanceInfo())
-	end
-
-	EJ_SetDifficulty(difficulty)
+	EJ_SetLootFilter(classID, lootSpecialization)
 end
 
 --- Events
 function Container:EJ_DIFFICULTY_UPDATE(event)
-	local _, _, classID = UnitClass('player')
-	EJ_SetLootFilter(classID, GetLootSpecialization() or GetSpecializationInfo(GetSpecialization() or 0) or 0)
+	if(EncounterJournal) then
+		EncounterJournal:RegisterEvent(event)
+	end
 
-	self:Populate()
+	self:UnregisterEvent(event)
+	self:UpdateItemFilter()
+	self:UpdateItems()
 end
 
 function Container:EJ_LOOT_DATA_RECIEVED(event)
 	if(BonusRollFrame:IsShown()) then
-		self:Populate()
+		self:UpdateItems()
 	end
 end
 
-function Container:PLAYER_LOOT_SPEC_UPDATED(event)
-	self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
-	self:RegisterEvent('EJ_DIFFICULTY_UPDATE')
-	self:Update()
-	HookSetPoint()
+function Container:PLAYER_LOOT_SPEC_UPDATED()
+	-- We need to restart the entire encounter in case the user has
+	-- used the Adventure Guide before changing loot specializations.
+	self:StartEncounter()
 end
 
 function Container:SPELL_CONFIRMATION_PROMPT(event, spellID, confirmType, _, _, currencyID)
 	if(confirmType == LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL) then
-		currentEncounterInfo = ns.encounterInfo[spellID]
-		if(currentEncounterInfo) then
+		self:Hide()
+		Handle:Hide()
+
+		local encounterInfo = ns.encounterInfo[spellID]
+		if(encounterInfo) then
 			local _, count = GetCurrencyInfo(currencyID)
 			if(count > 0) then
 				self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
-				self:RegisterEvent('EJ_LOOT_DATA_RECIEVED')
-				self:RegisterEvent('EJ_DIFFICULTY_UPDATE')
-				self:Update()
-			end
 
-			self:Show()
-		elseif(ns.encounterBlacklist[spellID]) then
-			self:Hide()
-		else
+				self.encounterID = encounterInfo[1]
+				self.instanceID = encounterInfo[2]
+				self.difficulty = encounterInfo[3]
+				self:StartEncounter()
+
+				Handle:Show()
+				UpdateHandle(true)
+			end
+		elseif(not ns.encounterBlacklist[spellID]) then
 			print('|cffff8080' .. addonName .. ':|r Found an unknown spell [' .. spellID .. ']. Please report this, with boss name!')
 		end
 	end
@@ -438,8 +449,6 @@ function Container:PLAYER_ENTERING_WORLD(event)
 end
 
 function Container:SPELL_CONFIRMATION_TIMEOUT()
-	currentEncounterInfo = nil
-
 	self:UnregisterEvent('PLAYER_LOOT_SPEC_UPDATED')
 end
 
