@@ -1,3 +1,11 @@
+### Changes in 70100.37-Release:
+
+- Added: Fallback difficulty for bonus loots during login/reload
+- Changed: Now hiding the box on blacklisted encounters (Nightbane)
+- Fixed: Grand Magistix Elisande inconsistencies
+- Fixed: General logic, some things were broken during boss death detection
+- Fixed: Some of the interference with the Adventure Journal
+
 ### Changes in 70100.36-Release:
 
 - Fixed: Nightbane showing up as an unknown ID (no loot table available)
