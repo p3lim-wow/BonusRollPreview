@@ -1,3 +1,8 @@
+### Changes in 70200.38-Release:
+
+- Added: Support for Cathedral of Night
+- Changed: Update Interface version
+
 ### Changes in 70100.37-Release:
 
 - Added: Fallback difficulty for bonus loots during login/reload
