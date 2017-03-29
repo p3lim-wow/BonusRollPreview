@@ -141,10 +141,10 @@ for spellID, encounterInfo in next, {
 	[226655] = {1470, 707, 23}, -- Cordana Felsong
 
 	-- Cathedral of Eternal Night (Mythic)
-	-- [0] = {1905, 900, 23}, -- 1 Agronox
-	-- [0] = {1906, 900, 23}, -- 2 Thrashbite the Scornful
-	-- [0] = {1904, 900, 23}, -- 3 Domatrax
-	-- [0] = {1878, 900, 23}, -- 4 Mephistroth
+	[244782] = {1905, 900, 23}, -- Agronox
+	[244783] = {1906, 900, 23}, -- Thrashbite the Scornful
+	[244784] = {1904, 900, 23}, -- Domatrax
+	[244786] = {1878, 900, 23}, -- Mephistroth
 } do
 	ns.encounterInfo[spellID] = encounterInfo
 end
