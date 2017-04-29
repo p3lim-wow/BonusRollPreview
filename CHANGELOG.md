@@ -1,3 +1,7 @@
+### Changes in 70200.39-Release:
+
+- Added: Support for Broken Shore world bosses
+
 ### Changes in 70200.38-Release:
 
 - Added: Support for Cathedral of Night
