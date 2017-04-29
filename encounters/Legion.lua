@@ -18,10 +18,10 @@ for spellID, encounterInfo in next, {
 	[227136] = {1763, 822, 14}, -- Shar'thos
 	[227137] = {1756, 822, 14}, -- The Soultakers
 	[227138] = {1796, 822, 14}, -- Withered J'im
-	-- [242969] = {1883, 822, 14}, -- 1 Brutallus
-	-- [242970] = {1885, 822, 14}, -- 3 Si'vash
+	[242969] = {1956, 822, 14}, -- Apocron
+	[242970] = {1883, 822, 14}, -- Brutallus
 	[242971] = {1884, 822, 14}, -- Malificus
-	-- [242972] = {1956, 822, 14}, -- 4 Apocron
+	[242972] = {1885, 822, 14}, -- Si'vash
 
 	--- Raids
 	-- The Emerald Nightmare
