@@ -161,6 +161,11 @@ end
 
 for _, spellID in next, {
 	232109, -- Nightbane (no dungeon journal entry)
+
+	-- PvP
+	240042, -- Arena 2v2 Weekly Quest
+	240048, -- Arena 3v3 Weekly Quest
+	240052, -- Battlegrounds 10v10 Weekly Quest
 } do
 	ns.encounterBlacklist[spellID] = true
 end
