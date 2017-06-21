@@ -1,3 +1,8 @@
+### Changes in 70200.40-Release:
+
+- Added: Support for Tomb of Sargeras raid
+- Changed: PvP bonus loot rolls now ignored (we have no loot data)
+
 ### Changes in 70200.39-Release:
 
 - Added: Support for Broken Shore world bosses
