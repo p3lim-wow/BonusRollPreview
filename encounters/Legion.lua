@@ -51,15 +51,15 @@ for spellID, encounterInfo in next, {
 	[232445] = {1737, 786, nil, 14}, -- Gul'dan
 
 	-- Tomb of Sargeras
-	[240655] = {1862, 875}, -- Goroth
-	[240656] = {1867, 875}, -- Demonic Inquisition
-	[240657] = {1856, 875}, -- Harjatan
-	[240658] = {1861, 875}, -- Mistress Sassz'ine
-	[240659] = {1903, 875}, -- Sisters of the Moon
-	[240660] = {1896, 875}, -- The Desolate Host
-	[240661] = {1897, 875}, -- Maiden of Vigilance
-	[240662] = {1873, 875}, -- Fallen Avatar
-	[240663] = {1898, 875}, -- Kil'jaeden
+	[240655] = {1862, 875, nil, 14}, -- Goroth
+	[240656] = {1867, 875, nil, 14}, -- Demonic Inquisition
+	[240657] = {1856, 875, nil, 14}, -- Harjatan
+	[240658] = {1861, 875, nil, 14}, -- Mistress Sassz'ine
+	[240659] = {1903, 875, nil, 14}, -- Sisters of the Moon
+	[240660] = {1896, 875, nil, 14}, -- The Desolate Host
+	[240661] = {1897, 875, nil, 14}, -- Maiden of Vigilance
+	[240662] = {1873, 875, nil, 14}, -- Fallen Avatar
+	[240663] = {1898, 875, nil, 14}, -- Kil'jaeden
 
 	--- Dungeons
 	-- Return to Karazhan (Mythic)
