@@ -3,10 +3,11 @@
 ## Version: @project-version@
 ## Title: Bonus Roll Preview
 ## Notes: Easily see what the bonus loot roll can yield
+## OptionalDeps: Wasabi, LibStub
+## SavedVariables: BonusRollPreviewDB
 
-encounters\Pandaria.lua
-encounters\Draenor.lua
-encounters\Legion.lua
+#@do-not-package@
+..\Wasabi\embed.xml
+#@end-do-not-package@
 
-BonusRollPreview.lua
-SpecButtons.lua
+BonusRollPreview.xml

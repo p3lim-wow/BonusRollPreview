@@ -1,0 +1,226 @@
+<Ui>
+	<Script file='libs\LibStub\LibStub.lua'/>
+	<Include file='libs\Wasabi\embed.xml'/>
+	<Include file='libs\EJ_Ext\embed.xml'/>
+
+	<Script file='locale\initialize.lua'/>
+	<Script file='locale\deDE.lua'/>
+	<Script file='locale\esES.lua'/>
+	<Script file='locale\esMX.lua'/>
+	<Script file='locale\frFR.lua'/>
+	<Script file='locale\itIT.lua'/>
+	<Script file='locale\koKR.lua'/>
+	<Script file='locale\ptBR.lua'/>
+	<Script file='locale\ruRU.lua'/>
+	<Script file='locale\zhCN.lua'/>
+	<Script file='locale\zhTW.lua'/>
+
+	<Script file='BonusRollPreview.lua'/>
+	<Script file='SpecButtons.lua'/>
+	<Script file='Options.lua'/>
+
+	<Button name='BonusRollPreviewHandle' parent='BonusRollFrame'>
+		<Size x='64' y='16'/>
+		<Layers>
+			<Layer level='BACKGROUND'>
+				<Texture name='$parentBackground' setAllPoints='true'>
+					<Color r='0' g='0' b='0' a='0.8'/>
+				</Texture>
+			</Layer>
+			<Layer level='BORDER'>
+				<Texture name='$parentTopLeft' parentKey='TopLeft' file='Interface\RaidFrame\RaidPanel-UpperLeft'>
+					<Size x='24' y='20'/>
+					<Anchors>
+						<Anchor point='TOPLEFT' x='-4' y='4'/>
+					</Anchors>
+					<TexCoords left='0' right='1' top='0' bottom='0.8'/>
+				</Texture>
+				<Texture name='$parentTopCenter' parentKey='TopCenter' file='Interface\RaidFrame\RaidPanel-UpperMiddle'>
+					<Size x='24' y='12'/>
+					<Anchors>
+						<Anchor point='TOP' x='0' y='4.5'/>
+					</Anchors>
+				</Texture>
+				<Texture name='$parentTopRight' parentKey='TopRight' file='Interface\RaidFrame\RaidPanel-UpperRight'>
+					<Size x='24' y='20'/>
+					<Anchors>
+						<Anchor point='TOPRIGHT' x='4' y='4'/>
+					</Anchors>
+					<TexCoords left='0' right='1' top='0' bottom='0.8'/>
+				</Texture>
+				<Texture name='$parentBottomLeft' parentKey='BottomLeft' file='Interface\RaidFrame\RaidPanel-BottomLeft'>
+					<Size x='24' y='22'/>
+					<Anchors>
+						<Anchor point='BOTTOMLEFT' x='-4' y='-6'/>
+					</Anchors>
+					<TexCoords left='0' right='1' top='0.1' bottom='1'/>
+				</Texture>
+				<Texture name='$parentBottomCenter' parentKey='BottomCenter' file='Interface\RaidFrame\RaidPanel-BottomMiddle'>
+					<Size x='24' y='12'/>
+					<Anchors>
+						<Anchor point='BOTTOM' x='0' y='-9'/>
+					</Anchors>
+				</Texture>
+				<Texture name='$parentBottomRight' parentKey='BottomRight' file='Interface\RaidFrame\RaidPanel-BottomRight'>
+					<Size x='24' y='22'/>
+					<Anchors>
+						<Anchor point='BOTTOMRIGHT' x='4' y='-6'/>
+					</Anchors>
+					<TexCoords left='0' right='1' top='0.1' bottom='1'/>
+				</Texture>
+			</Layer>
+			<Layer level='ARTWORK'>
+				<Texture name='$parentArrow' parentKey='Arrow' file='Interface\RaidFrame\RaidPanel-Toggle' setAllPoints='true'/>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+				BonusRollPreview:Toggle()
+			</OnClick>
+		</Scripts>
+	</Button>
+
+	<Frame name='BonusRollPreviewAnchor' parent='UIParent' clampedToScreen='true' frameStrata='HIGH' movable='true' hidden='true'>
+		<Size x='286' y='76'/>
+		<Layers>
+			<Layer level='BACKGROUND'>
+				<Texture setAllPoints='true'>
+					<Color r='0' g='0.5' b='0' a='0.3'/>
+				</Texture>
+				<FontString inherits='GameFontNormalMed3' justifyH='LEFT' text='MOVE_FRAME'>
+					<Anchors>
+						<Anchor point='CENTER'/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnMouseDown>
+				self:StartMoving()
+			</OnMouseDown>
+			<OnMouseUp>
+				self:StopMovingOrSizing()
+				BonusRollPreview:UpdatePosition()
+
+				-- save new position
+				local point, _, relativePoint, x, y = self:GetPoint()
+				BonusRollPreviewDB.anchor[1] = point
+				BonusRollPreviewDB.anchor[3] = relativePoint
+				BonusRollPreviewDB.anchor[4] = x
+				BonusRollPreviewDB.anchor[5] = y
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+
+	<Frame name='BonusRollPreview' parent='BonusRollFrame' mixin='BonusRollPreviewMixin' frameLevel='3' hidden='true'>
+		<Size x='286' y='0'/>
+		<Backdrop bgFile='Interface\ChatFrame\ChatFrameBackground' edgeFile='Interface\Tooltips\UI-Tooltip-Border' tile='true'>
+			<EdgeSize val='16'/>
+			<TileSize val='16'/>
+			<BackgroundInsets left='4' right='4' top='4' bottom='4'/>
+		</Backdrop>
+		<Frames>
+			<ScrollFrame parentKey='ScrollFrame'>
+				<Anchors>
+					<Anchor point='TOPLEFT' x='6' y='-6'/>
+					<Anchor point='BOTTOMRIGHT' x='-6' y='6'/>
+				</Anchors>
+				<ScrollChild>
+					<Frame name='$parentScrollChild' parentKey='ScrollChild'>
+						<Size x='1' y='1'/>
+					</Frame>
+				</ScrollChild>
+				<Frames>
+					<Slider name='$parentSlider' parentKey='Slider' inherits='WasabiSliderTemplate'/>
+				</Frames>
+				<Scripts>
+					<OnMouseWheel>
+						if(delta > 0) then
+							self.Slider:SetValue(self.Slider:GetValue() - self.Slider:GetHeight() / 3)
+						else
+							self.Slider:SetValue(self.Slider:GetValue() + self.Slider:GetHeight() / 3)
+						end
+					</OnMouseWheel>
+				</Scripts>
+			</ScrollFrame>
+		</Frames>
+		<Scripts>
+			<OnLoad method='OnLoad'/>
+			<OnEvent method='OnEvent'/>
+		</Scripts>
+	</Frame>
+
+	<Button name='BonusRollPreviewButtonTemplate' virtual='true'>
+		<Size x='0' y='38'/>
+		<Layers>
+			<Layer layer='BACKGROUND'>
+				<Texture parentKey='Icon'>
+					<Size x='36' y='36'/>
+					<Anchors>
+						<Anchor point='TOPLEFT' x='1' y='-1'/>
+					</Anchors>
+				</Texture>
+				<Texture parentKey='Background' file='Interface\EncounterJournal\UI-EncounterJournalTextures' desaturated='true' setAllPoints='true'>
+					<TexCoords left='0.00195313' right='0.62890625' top='0.61816406' bottom='0.66210938'/>
+				</Texture>
+			</Layer>
+			<Layer layer='ARTWORK'>
+				<FontString parentKey='Name' inherits='GameFontNormalMed3' justifyH='LEFT'>
+					<Size x='0' y='12'/>
+					<Anchors>
+						<Anchor point='TOPLEFT' relativeKey='$parent.Icon' relativePoint='TOPRIGHT' x='7' y='-4'/>
+						<Anchor point='TOPRIGHT' x='-6' y='-4'/>
+					</Anchors>
+				</FontString>
+				<FontString  parentKey='Class' inherits='GameFontHighlight' justifyH='RIGHT'>
+					<Size x='0' y='12'/>
+					<Anchors>
+						<Anchor point='BOTTOMRIGHT' x='-6' y='5'/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey='Slot' inherits='GameFontHighlight' justifyH='LEFT'>
+					<Size x='0' y='12'/>
+					<Anchors>
+						<Anchor point='BOTTOMLEFT' relativeKey='$parent.Icon' relativePoint='BOTTOMRIGHT' x='7' y='4'/>
+						<Anchor point='BOTTOMRIGHT' relativeKey='$parent.Class' relativePoint='BOTTOMLEFT' x='-15' y='0'/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Scripts>
+			<OnClick>
+				if(self.itemLink) then
+					HandleModifiedItemClick(self.itemLink)
+				end
+			</OnClick>
+			<OnEnter>
+				if(self.itemLink) then
+					GameTooltip:SetOwner(self, 'ANCHOR_NONE')
+					GameTooltip:ClearAllPoints()
+					GameTooltip:SetPoint('TOPRIGHT', self, 'TOPLEFT')
+					GameTooltip:SetHyperlink(self.itemLink)
+					self:RegisterEvent('MODIFIER_STATE_CHANGED')
+				end
+			</OnEnter>
+			<OnLeave>
+				GameTooltip:Hide()
+				self:UnregisterEvent('MODIFIER_STATE_CHANGED')
+			</OnLeave>
+			<OnEvent>
+				if(IsModifiedClick('COMPAREITEMS') or GetCVarBool('alwaysCompareItems')) then
+					GameTooltip_ShowCompareItem()
+				else
+					for _, shoppingTooltip in next, GameTooltip.shoppingTooltips do
+						shoppingTooltip:Hide()
+					end
+				end
+
+				if(IsModifiedClick('DRESSUP')) then
+					ShowInspectCursor()
+				else
+					ResetCursor()
+				end
+			</OnEvent>
+		</Scripts>
+	</Button>
+</Ui>
