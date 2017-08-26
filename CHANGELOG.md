@@ -1,3 +1,7 @@
+### Changes in 70200.41-Release:
+
+- Fixed: Missing fallback difficulties for Tome of Sargeras raid
+
 ### Changes in 70200.40-Release:
 
 - Added: Support for Tomb of Sargeras raid
