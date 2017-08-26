@@ -1,3 +1,10 @@
+### Changes in 70200.42-Release:
+
+- Added: Option to move the BonusRollFrame
+- Added: Option to control the direction the item list appears
+- Added: Option to always show the item list
+- Removed: Encounter database, there's an API for it now
+
 ### Changes in 70200.41-Release:
 
 - Fixed: Missing fallback difficulties for Tome of Sargeras raid
