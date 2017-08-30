@@ -1,3 +1,8 @@
+### Changes in 70300.43-Release:
+
+- Changed: Update Interface version
+- Changed: Update embeds for regression fix
+
 ### Changes in 70200.42-Release:
 
 - Added: Option to move the BonusRollFrame
