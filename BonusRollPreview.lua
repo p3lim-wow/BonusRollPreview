@@ -70,8 +70,11 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 				table.wipe(query)
 				self:UpdateItems()
 			elseif(query[itemID]) then
-				-- item in the query is cached, update it
-				self:UpdateItem(itemID)
+				-- this sucks, but we have to restart the entire encounter to get accurate data
+				-- by the data returns to the client the client might have changed parameters
+				table.wipe(query)
+				self:StartEncounter()
+				-- self:UpdateItem(itemID)
 			end
 		end
 	elseif(event == 'PLAYER_LOOT_SPEC_UPDATED') then
@@ -194,7 +197,7 @@ function BonusRollPreviewMixin:UpdateItems()
 		self:DisableScrolling()
 	end
 end
-
+--[[
 function BonusRollPreviewMixin:UpdateItem(itemID)
 	local index = query[itemID]
 	query[itemID] = nil -- pop the item
@@ -212,7 +215,7 @@ function BonusRollPreviewMixin:UpdateItem(itemID)
 		end
 	end
 end
-
+--]]
 function BonusRollPreviewMixin:UpdateItemFilter()
 	local _, _, classID = UnitClass('player')
 	local lootSpecialization = GetLootSpecialization() or 0
