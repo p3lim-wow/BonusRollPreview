@@ -131,7 +131,28 @@
 					</Frame>
 				</ScrollChild>
 				<Frames>
-					<Slider name='$parentSlider' parentKey='Slider' inherits='WasabiSliderTemplate'/>
+					<Slider name='$parentSlider' parentKey='Slider' inherits='UIPanelScrollBarTemplate'>
+						<Anchors>
+							<Anchor point='TOPRIGHT' x='2' y='-14'/>
+							<Anchor point='BOTTOMRIGHT' x='2' y='14'/>
+						</Anchors>
+						<Scripts>
+							<OnValueChanged>
+								local min, max = self:GetMinMaxValues()
+								self.ScrollUpButton:SetEnabled(value ~= min)
+								self.ScrollDownButton:SetEnabled(value ~= max)
+
+								local parent = self:GetParent()
+								if(parent:GetObjectType() == 'ScrollFrame') then
+									parent:SetVerticalScroll(value)
+									parent:GetScrollChild():SetPoint('TOP',  0, value)
+								end
+							</OnValueChanged>
+							<OnMinMaxChanged>
+								self:SetValue(self:GetValue() or min)
+							</OnMinMaxChanged>
+						</Scripts>
+					</Slider>
 				</Frames>
 				<Scripts>
 					<OnMouseWheel>
