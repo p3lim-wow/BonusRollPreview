@@ -1,3 +1,8 @@
+### Changes in 70300.44-Release:
+
+- Fixed: Scrollbar not showing for >8 items
+- Fixed: Random errors (temporary)
+
 ### Changes in 70300.43-Release:
 
 - Changed: Update Interface version
