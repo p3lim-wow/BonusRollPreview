@@ -6,8 +6,4 @@
 ## OptionalDeps: Wasabi, LibStub
 ## SavedVariables: BonusRollPreviewDB
 
-#@do-not-package@
-..\Wasabi\embed.xml
-#@end-do-not-package@
-
 BonusRollPreview.xml

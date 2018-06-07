@@ -3,7 +3,7 @@ package-as: BonusRollPreview
 enable-nolib-creation: no
 
 externals:
-  libs/LibStub: svn://svn.wowace.com/wow/libstub/mainline/tags/1.0
+  libs/LibStub: https://repos.wowace.com/wow/libstub/trunk
   libs/Wasabi:
     url: git://github.com/p3lim-wow/Wasabi
     tag: latest
@@ -18,3 +18,4 @@ manual-changelog:
 
 ignore:
   - README.md
+  - utils

@@ -1,7 +1,7 @@
 <Ui>
 	<Script file='libs\LibStub\LibStub.lua'/>
 	<Include file='libs\Wasabi\embed.xml'/>
-	<Include file='libs\EJ_Ext\embed.xml'/>
+	<Include file='libs\EJ_Ext\EJ_Ext.lua'/>
 
 	<Script file='locale\initialize.lua'/>
 	<Script file='locale\deDE.lua'/>

@@ -1,4 +1,0 @@
-<Ui>
-	<Script file='LibStub\LibStub.lua'/>
-	<Script file='EJ_Ext.lua'/>
-</Ui>
