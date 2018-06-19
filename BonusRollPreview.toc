@@ -6,4 +6,7 @@
 ## OptionalDeps: Wasabi, LibStub
 ## SavedVariables: BonusRollPreviewDB
 
+## X-Curse-Project-ID: 54902
+## X-WoWI-ID: 22213
+
 BonusRollPreview.xml

@@ -1,0 +1,25 @@
+sudo: false
+language: c
+
+addons:
+  apt:
+    packages:
+    - pandoc
+
+branches:
+  only:
+  - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+
+env:
+  global:
+  - secure: YgQzeBNetsn0puxwhCndzNIzy2FnWyYk82gdihIMkrLzszLLnTt7UKCUCfUty/kbjJiOJbs8wW3e6j672gE6B7ZC05UY92xktOJE5OLixIrrlTuZHBswlL27eVknW0YkMcTsh5XzTMvIMVwkWxPLdVbmJY5jdPcJY8r8sHOfXpeqM3SRX7prAn2oYhCLUy6/avj6jUlYiKg1LYYW+1BCfLy17d1H8HIgJfnfDO4dGaq+GwIjdqe3XdQcdSV3u/pPCzFO/5DupNGvhUqWRrvaMsGVL2LMnYCBha1EmjI/qEtR3f23NjsvjcOBH3qmnkJ5ricZYy7UKsTw/bYd3Hm9KFjxb5EZ7P9wYaViRYUWShv4xxJ42NMGWCqw+OkRYKqPLQ/MB0xuKWX2ZHAPXRZ5WCEKLBagtK/yLe03AA5PmPz235u07SyFsdiIIn8u4gZHric34qhff9p0CBxYOW0d4mDMjJrTdrcJuZh0eTd7mWMiJsPkr6X2qpQCADvkx3RFeVQL9cScNNYk7oo9LofQXh6FGL7yrl53PmQGy8vIVreNCwmrKu5t9oLQEpSPMd46DxAA0Gw4lNBXY9s6bQX4YJFFaA3s9itQx1TgRP0BOsP2gaFAOgdB28WX1ncxHcOg5cUsrcJaUrBoFIOM50cCOn68MIkDOMa8BkSpv9Mes30=
+  - secure: L0vVzK4JLL4609greQoCMtBLt01QjrGNN2J7QYuKbjckD5FIn31gzvYvunxeBXclKwC2U+ga2HfYzr9KivcxKn1OcZHZcj3ycqTjqrD55Sl5HNLjOQ0YoMYx7mGKz1y/biVeKvJcbLuXrXoB1cvRcwnvNHzRzrV0cYscqLAPL7B0NPoguiB5eckfG3pvUX3GEtvjFUOgwnzOad2cKNxWQPpMvyPLQAjH1+BVreRma3KDJ0j4SmTs8gOe5Ledrqq3iVXZwxfqlqOiI9HxOL132tDcIi43IpayNR+IJS6tDsxDYRfk2/p3Ihj7K+VOX2Hr/zg0vusYASlX7DEHRDzeWBkYi2B4LSNpVy98v4GNfejKWaSOXcd6jd2nWd9WDKJDN12ahZLZeeIQmwLnO/kpDCdl+ABN0+/javF8k5gCM+3ulZ0XurriKLgWPFS6EYuO6Sy4/WLDDzPvt+2ZWsiMmjtViQMt49JhECYz/gjE/WSJuIUlWvI7B8cjE9EeMGB+zPDxBehuIsRnfQtTNKl47O+8d48ke6ieV7Z/sRIx+aEMS3A5x0Ihzg90trE/xgD3EtZeD5V7KTBqB4enHmN++0vHqr3T1aZp49k1Y5G4bT/Flj1yfjOJBqVcFqRHYKFfXN0MbGgVeImt3Gdhm7FoyUf48ZPQM8+pN2/xIfSxnRs=
+
+script: curl -s https://raw.githubusercontent.com/oUF-wow/packager/master/release.sh | bash
+
+notifications:
+  email:
+    on_success: always
+    on_failure: always
+    recipients:
+      secure: cC2pKRSI1bNPadl2SMypPc6QhkxY3bA1zS4fJRod0/QrWCyBhDuqp1zujJlrG+9QGf7sjQUOleND/KHxzS1KCVog78+AJnhjaqgOMMc56PdvBkcHP0KN9r578s8F8dO17nOgLwTswC73k7hsH+nDNcsWANlcqrV5ml7S3BMT8KQ8ymj+dJ6aqhxUc2vAYIwP5Z1gLuaee13hRsDGB77O094kK9i0shRX2XV73IiuqvbDxoAL6v5okpz72RrjL/6edu2VsDZHKm7LafY1G9hhtlirWDTV6NINhqtMXKhgmELWjDb0O1qdXxvQpD/EiN6S3EyeZd94EAjwrMr5T9lC2bVd/uA8diqNocvPyyXsiSisDY9lJsdbOY/4275T+7F5W1nZioAKhUrUHPYJsLsXNTb50HoLUm1HgFUxO3m2hY3F+foqL31FVstn/m/vor0s/ys/B+JI9IgpP6lSqS7/xqC/G/I45V+RJr5vo62ImdTGdbGMmFaSSlbOwMkFe3CH/JWM2EbReB9SZG8XOSM0l0a56sMszrd4vWo5JBn/9vZJhrAWHNEvmoHYQCCz/SUoiPnA8Zx1GNI+uV9MnP7XnbbL4gMlprf82bu8POC6b3+4Uk/nlW4EXv6uL/HB7PNje/mIk5tiO+I10p+mUzSRZWwQjtIqSn0mIs9G3XYUdek=
