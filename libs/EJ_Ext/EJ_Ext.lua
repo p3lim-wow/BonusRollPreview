@@ -159,9 +159,6 @@ local journalIDs = {
 	[190139] = {385, 888}, -- Slave Watcher Crushto
 	[190140] = {385, 887}, -- Roltall
 	[190141] = {385, 889}, -- Gug'rokk
-
-	-- 7.0 The Nighthold
-	-- Grand Magistrix Elisande needs special handling
 }
 
 -- the following encounters present different IDs based on client randomness (not entirely sure)
@@ -240,6 +237,26 @@ local difficulties = {
 	[726] = 23, -- Dungeon: The Arcway
 	[707] = 23, -- Dungeon: Vault of the Wardens
 	[945] = 13, -- Dungeon: The Seat of the Triumvirate
+
+	-- 8.0
+	[1028] = 14, -- World: Azeroth
+	[1031] = 14, -- Raid: Uldir
+	[968] = 23, -- Dungeon: Atal'Dazar
+	[1001] = 23, -- Dungeon: Freehold
+	[1041] = 23, -- Dungeon: King's Rest
+	[1036] = 23, -- Dungeon: Shrine of the Storm
+	[1023] = 23, -- Dungeon: Siege of Boralus
+	[1030] = 23, -- Dungeon: Temple of Sethraliss
+	[1012] = 23, -- Dungeon: The MOTHERLODE!!
+	[1022] = 23, -- Dungeon: The Underrot
+	[1002] = 23, -- Dungeon: Tol Dagor
+	[1021] = 23, -- Dungeon: Waycrest Manor
+}
+
+local encounterDifficulties = {
+	[1452] = 15, -- 6.0: Supreme Lord Kazzak
+	[2212] = 15, -- 8.0: The Lion's Roar
+	[2213] = 15, -- 8.0: Doom's Howl
 }
 
 function lib:GetBonusRollEncounterJournalLinkDifficulty(encounterID, instanceID)
@@ -248,11 +265,6 @@ function lib:GetBonusRollEncounterJournalLinkDifficulty(encounterID, instanceID)
 	if(difficultyID ~= 0) then
 		return difficultyID
 	else
-		if(encounterID == 1452) then
-			-- Supreme Lord Kazzak thinks he's special
-			return 15
-		else
-			return difficulties[instanceID] or 0
-		end
+		return encounterDifficulties[encounterID] or difficulties[instanceID] or 0
 	end
 end
