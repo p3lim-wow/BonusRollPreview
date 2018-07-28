@@ -1,3 +1,7 @@
+### Changes in 80000.46-Release:
+
+- Fixed: Incorrect item levels on non-normal difficulties
+
 ### Changes in 80000.45-Release:
 
 - Added: Support for Battle for Azeroth raids, dungeons and world encounters
