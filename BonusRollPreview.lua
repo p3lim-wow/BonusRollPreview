@@ -193,6 +193,7 @@ function BonusRollPreviewMixin:UpdateItems()
 	end
 end
 --[[
+-- Issue #29
 function BonusRollPreviewMixin:UpdateItem(itemID)
 	local index = query[itemID]
 	query[itemID] = nil -- pop the item
