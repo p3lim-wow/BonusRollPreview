@@ -82,14 +82,14 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		-- has used the EncounterJournal before changing loot specializations.
 		self:StartEncounter()
 	elseif(event == 'SPELL_CONFIRMATION_PROMPT') then
-		local spellID, confirmType, _, _, currencyID = ...
+		local spellID, confirmType, _, _, currencyID, currencyCost = ...
 		if(confirmType ~= LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL) then
 			return
 		end
 
 		if(not ignoredSpells[spellID]) then -- ignore blacklisted encounters
 			local instanceID, encounterID = EJ:GetJournalInfoForSpellConfirmation(spellID)
-			if(encounterID and select(2, GetCurrencyInfo(currencyID)) > 0) then
+			if(encounterID and select(2, GetCurrencyInfo(currencyID)) >= currencyCost) then
 				self.difficultyID = EJ:GetBonusRollEncounterJournalLinkDifficulty(encounterID, instanceID)
 				self.encounterID = encounterID
 				self.instanceID = instanceID
@@ -112,7 +112,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		-- check for any outstanding bonus rolls
 		for _, info in next, GetSpellConfirmationPromptsInfo() do
 			if(info and info.spellID) then
-				self:OnEvent('SPELL_CONFIRMATION_PROMPT', info.spellID, info.confirmType, nil, nil, info.currencyID)
+				self:OnEvent('SPELL_CONFIRMATION_PROMPT', info.spellID, info.confirmType, nil, nil, info.currencyID, info.currencyCost)
 			end
 		end
 	elseif(event == 'PLAYER_LOGIN') then
