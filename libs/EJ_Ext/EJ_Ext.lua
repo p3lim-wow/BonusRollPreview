@@ -183,12 +183,8 @@ end)
 function lib:GetJournalInfoForSpellConfirmation(spellID)
 	-- this extends the API to also work for earlier expansions
 	-- it also fixes incorrect data for certain encounters (see above)
-	local instanceID, encounterID
 	if(journalIDs[spellID]) then
-		instanceID, encounterID = unpack(journalIDs[spellID])
-	else
-		instanceID, encounterID = GetJournalInfoForSpellConfirmation(spellID)
+		return unpack(journalIDs[spellID])
 	end
-
-	return instanceID, encounterID
+	return GetJournalInfoForSpellConfirmation(spellID)
 end
