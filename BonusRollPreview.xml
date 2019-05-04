@@ -217,23 +217,21 @@
 			<OnEnter>
 				if(self.itemLink) then
 					GameTooltip:SetOwner(self, 'ANCHOR_NONE')
-					GameTooltip:ClearAllPoints()
-					GameTooltip:SetPoint('TOPRIGHT', self, 'TOPLEFT')
+					ContainerFrameItemButton_CalculateItemTooltipAnchors(self, GameTooltip)
+
 					GameTooltip:SetHyperlink(self.itemLink)
 					self:RegisterEvent('MODIFIER_STATE_CHANGED')
 				end
 			</OnEnter>
 			<OnLeave>
-				GameTooltip:Hide()
+				GameTooltip_HideResetCursor()
 				self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 			</OnLeave>
 			<OnEvent>
 				if(IsModifiedClick('COMPAREITEMS') or GetCVarBool('alwaysCompareItems')) then
 					GameTooltip_ShowCompareItem()
 				else
-					for _, shoppingTooltip in next, GameTooltip.shoppingTooltips do
-						shoppingTooltip:Hide()
-					end
+					GameTooltip_HideShoppingTooltips(GameTooltip)
 				end
 
 				if(IsModifiedClick('DRESSUP')) then
