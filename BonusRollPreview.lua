@@ -35,6 +35,10 @@ end
 
 BonusRollPreviewMixin = {}
 function BonusRollPreviewMixin:OnLoad()
+	if(BackdropTemplateMixin) then
+		Mixin(self, BackdropTemplateMixin)
+	end
+
 	self:RegisterEvent('SPELL_CONFIRMATION_PROMPT')
 	self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')
