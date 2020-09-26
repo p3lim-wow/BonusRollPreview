@@ -39,6 +39,15 @@ function BonusRollPreviewMixin:OnLoad()
 		Mixin(self, BackdropTemplateMixin)
 	end
 
+	self:SetBackdrop({
+		bgFile = [[Interface\ChatFrame\ChatFrameBackground]],
+		edgeFile = [[Interface\Tooltips\UI-Tooltip-Border]],
+		tile = true,
+		edgeSize = 16,
+		tileSize = 16,
+		insets = {left=4, right=4, top=4, bottom=4},
+	})
+
 	self:RegisterEvent('SPELL_CONFIRMATION_PROMPT')
 	self:RegisterEvent('SPELL_CONFIRMATION_TIMEOUT')
 	self:RegisterEvent('PLAYER_ENTERING_WORLD')

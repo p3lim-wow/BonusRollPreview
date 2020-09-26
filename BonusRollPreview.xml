@@ -112,13 +112,8 @@
 		</Scripts>
 	</Frame>
 
-	<Frame name='BonusRollPreview' parent='BonusRollFrame' mixin='BonusRollPreviewMixin' template='BackdropTemplate' frameLevel='3' hidden='true'>
+	<Frame name='BonusRollPreview' parent='BonusRollFrame' mixin='BonusRollPreviewMixin' frameLevel='3' hidden='true'>
 		<Size x='286' y='0'/>
-		<Backdrop bgFile='Interface\ChatFrame\ChatFrameBackground' edgeFile='Interface\Tooltips\UI-Tooltip-Border' tile='true'>
-			<EdgeSize val='16'/>
-			<TileSize val='16'/>
-			<BackgroundInsets left='4' right='4' top='4' bottom='4'/>
-		</Backdrop>
 		<Frames>
 			<ScrollFrame parentKey='ScrollFrame'>
 				<Anchors>
