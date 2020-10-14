@@ -1,3 +1,10 @@
+### Changes in 90000.48-Release:
+
+- Added: German translations
+- Changed: Update Interface version
+- Fixed: Shadowlands compatibility
+- Fixed: Tooltips not resetting properly
+
 ### Changes in 80100.47-Release:
 
 - Added: Support for Battle for Dazar'alor (and hopefully all future raids automatically)
