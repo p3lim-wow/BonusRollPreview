@@ -1,10 +1,4 @@
-local MAJOR, MINOR = 'EJ_Ext', 1
-assert(LibStub, MAJOR .. ' requires LibStub')
-
-local lib, oldMinor = LibStub:NewLibrary(MAJOR, MINOR)
-if(not lib) then
-	return
-end
+local _, addon = ...
 
 local journalIDs = {
 	-- 5.0 Pandaria
@@ -169,22 +163,19 @@ local incorrectJournalEntries = {
 	[232444] = {786, 9}, -- Grand Magistrix Elisande
 }
 
-local Handler = CreateFrame('Frame')
-Handler:RegisterEvent('PLAYER_LOGIN')
-Handler:SetScript('OnEvent', function(self, event)
-	self:UnregisterEvent(event)
-
+function addon:OnLogin()
 	for spellID, data in next, incorrectJournalEntries do
 		EJ_SelectInstance(data[1])
 		journalIDs[spellID] = {data[1], (select(3, EJ_GetEncounterInfoByIndex(data[2])))}
 	end
-end)
+end
 
-function lib:GetJournalInfoForSpellConfirmation(spellID)
+function addon:GetJournalInfoForSpellConfirmation(spellID)
 	-- this extends the API to also work for earlier expansions
 	-- it also fixes incorrect data for certain encounters (see above)
-	if(journalIDs[spellID]) then
+	if journalIDs[spellID] then
 		return unpack(journalIDs[spellID])
 	end
+
 	return GetJournalInfoForSpellConfirmation(spellID)
 end

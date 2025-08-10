@@ -1,4 +1,4 @@
-local L = select(2, ...)('frFR')
+local L = select(2, ...).L('frFR')
 
 -- Config
 L['Lock/unlock movement with /brp lock, and reset the position with /brp reset.'] = 'Verrouillez/déverrouillez la fenêtre avec /brp lock, et réinitialisez la position avec /brp reset.'

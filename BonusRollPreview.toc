@@ -9,4 +9,27 @@
 ## X-Curse-Project-ID: 54902
 ## X-WoWI-ID: 22213
 
+#@non-debug@
+# libs\Dashi\embed.xml
+#@end-non-debug@
+#@debug@
+..\Dashi\embed.xml
+#@end-debug@
+
+locale\deDE.lua
+locale\esES.lua
+locale\esMX.lua
+locale\frFR.lua
+locale\itIT.lua
+locale\koKR.lua
+locale\ptBR.lua
+locale\ruRU.lua
+locale\zhCN.lua
+locale\zhTW.lua
+
+data.lua
+
+BonusRollPreview.lua
 BonusRollPreview.xml
+SpecButtons.lua
+Options.lua

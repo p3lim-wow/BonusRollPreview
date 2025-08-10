@@ -1,4 +1,6 @@
-local Buttons = CreateFrame('Frame', (...) .. 'SpecButtons', BonusRollFrame)
+local addonName = ...
+
+local Buttons = CreateFrame('Frame', addonName .. 'SpecButtons', BonusRollFrame)
 Buttons:SetPoint('LEFT', BonusRollFrame.SpecIcon, 4, 4)
 Buttons:Hide()
 

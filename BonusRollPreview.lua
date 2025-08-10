@@ -1,4 +1,4 @@
-local EJ = LibStub('EJ_Ext')
+local _, addon = ...
 
 -- sourced from _G
 local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON or 2
@@ -101,7 +101,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		end
 
 		if(not ignoredSpells[spellID]) then -- ignore blacklisted encounters
-			local instanceID, encounterID = EJ:GetJournalInfoForSpellConfirmation(spellID)
+			local instanceID, encounterID = addon:GetJournalInfoForSpellConfirmation(spellID)
 			if(encounterID) then
 				local currency = C_CurrencyInfo.GetCurrencyInfo(currencyID)
 				if(currency.quantity >= currencyCost) then

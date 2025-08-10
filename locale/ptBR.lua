@@ -1,4 +1,4 @@
-local L = select(2, ...)('ptBR')
+local L = select(2, ...).L('ptBR')
 
 -- Config
 L['Lock/unlock movement with /brp lock, and reset the position with /brp reset.'] = 'Lock/unlock movement with /brp lock, and reset the position with /brp reset.' -- needs translation

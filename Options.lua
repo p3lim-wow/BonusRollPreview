@@ -1,35 +1,36 @@
-local addonName, L = ...
-local defaults = {
-	anchor = {'CENTER', 'UIParent', 'CENTER', 0, 0},
-	alwaysShow = false,
-	fillDirection = 'UP'
+local addonName, addon = ...
+
+local settings = {
+	{
+		key = 'alwaysShow',
+		type = 'toggle',
+		title = addon.L['Always unfold the loot list'],
+		-- tooltip = '',
+		default = false
+	},
+	{
+		key = 'fillDirection',
+		type = 'menu',
+		title = addon.L['Direction the loot list should appear'],
+		-- tooltip = '',
+		default = 'UP',
+		options = {
+			{value = 'UP', label = addon.L['Up']},
+			{value = 'DOWN', label = addon.L['Down']},
+		},
+	}
 }
 
-local Options = LibStub('Wasabi'):New(addonName, 'BonusRollPreviewDB', defaults)
-Options:Initialize(function(self)
-	local Title = self:CreateTitle()
-	Title:SetPoint('TOPLEFT', 16, -16)
-	Title:SetText(addonName)
+addon:RegisterSettings('BonusRollPreviewDB', settings)
+-- addon:RegisterSettingsSlash('/bonusrollpreview', '/brp')
 
-	local Description = self:CreateDescription()
-	Description:SetPoint('TOPLEFT', Title, 'BOTTOMLEFT', 0, -8)
-	Description:SetText(L['Lock/unlock movement with /brp lock, and reset the position with /brp reset.']:gsub('/brp %w+', '|cff9999ff%1|r'))
+function addon:OnLogin()
+	if not BonusRollPreviewDB.anchor then
+		BonusRollPreviewDB.anchor = {'CENTER', 'UIParent', 'CENTER', 0, 0}
+	end
+end
 
-	local AlwaysShow = self:CreateCheckButton('alwaysShow')
-	AlwaysShow:SetPoint('TOPLEFT', Description, 'BOTTOMLEFT', 0, -20)
-	AlwaysShow:SetText(L['Always unfold the loot list'])
-
-	local FillDirection = self:CreateDropDown('fillDirection')
-	FillDirection:SetPoint('TOPLEFT', AlwaysShow, 'BOTTOMLEFT', 0, -10)
-	FillDirection:SetText(L['Direction the loot list should appear'])
-	FillDirection:SetValues({
-		UP = L['Up'],
-		DOWN = L['Down'],
-	})
-end)
-
-_G['SLASH_' .. addonName .. '1'] = '/brp'
-SlashCmdList[addonName] = function(msg)
+addon:RegisterSlash('/bonusrollpreview', '/brp', function(msg)
 	msg = msg:lower()
 
 	if(msg == 'unlock' or msg == 'lock') then
@@ -38,6 +39,6 @@ SlashCmdList[addonName] = function(msg)
 		BonusRollPreviewDB.anchor = CopyTable(defaults.anchor)
 		BonusRollPreview:OnEvent('PLAYER_LOGIN')
 	else
-		Options:ShowOptions()
+		addon:OpenSettings()
 	end
-end
+end)

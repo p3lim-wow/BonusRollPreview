@@ -1,4 +1,4 @@
-local L = select(2, ...)('zhCN')
+local L = select(2, ...).L('zhCN')
 
 -- Config
 L['Lock/unlock movement with /brp lock, and reset the position with /brp reset.'] = '使用/brp lock命令解锁或锁定位置, 使用/brp reset命令重置位置.'
