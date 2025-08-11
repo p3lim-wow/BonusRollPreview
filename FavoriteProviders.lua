@@ -28,50 +28,42 @@ function addon:GetAvailableFavoriteProviders()
 end
 
 local providerChecker = {
-  AtlasLootClassic = function()
+  AtlasLootClassic = function(itemID)
     if AtlasLoot and AtlasLoot.Addons and AtlasLoot.Addons.GetAddon then
       local Favourites = AtlasLoot.Addons:GetAddon("Favourites")
       if Favourites and Favourites:IsEnabled() and Favourites.IsFavouriteItemID then
-        return function(itemID) -- checker
-          if Favourites:IsFavouriteItemID(itemID) then
-            local icon = Favourites:GetIconForActiveItemID(itemID)
-            return "|cff00ff00AL|r"..(icon and format("|T%s:0|t",icon)) or ''
-          end
+        if Favourites:IsFavouriteItemID(itemID) then
+          local icon = Favourites:GetIconForActiveItemID(itemID)
+          return "|cff00ff00AL|r"..(icon and format("|T%s:0|t",icon)) or ''
         end
       end
     end
   end,
-  BastionLoot = function()
+  BastionLoot = function(itemID)
     if BastionLoot and BastionLoot.GetFavorite then
-      return function(itemID) -- checker
-        return BastionLoot:GetFavorite(itemID)
-      end
+      return BastionLoot:GetFavorite(itemID)
     end
   end,
-  LOIHLoot = function()
+  LOIHLoot = function(itemID)
     if LOIHLOOT_GLOBAL_PRIVATE then
-      return function(itemID) -- checker
-        for subTable, tableData in pairs(LOIHLootCharDB) do
-          if tableData[itemID] then
-            return format("|cffF5F5DC%s|r:%s","LOIH",subTable)
-          end
+      for subTable, tableData in pairs(LOIHLootCharDB) do
+        if tableData[itemID] then
+          return format("|cffF5F5DC%s|r:%s","LOIH",subTable)
         end
       end
     end
   end,
-  LootAlarm = function()
+  LootAlarm = function(itemID)
     if type(LootAlarmLocalDB) == "table" then
-      return function(itemID) -- checker
-        local activeProfile = LootAlarmLocalDB.Settings and LootAlarmLocalDB.Settings.LoadedProfile
-        if activeProfile and activeProfile ~= '' then
-          local profiles = LootAlarmLocalDB.Profiles
-          if profiles then
-            local Items = profiles[activeProfile].Items
-            if Items then
-              for ItemName,ItemInfo in pairs(Items) do
-                if ItemInfo.ID == itemID then
-                  return format("|cff2E8B57%s|r:%s","LA",activeProfile)
-                end
+      local activeProfile = LootAlarmLocalDB.Settings and LootAlarmLocalDB.Settings.LoadedProfile
+      if activeProfile and activeProfile ~= '' then
+        local profiles = LootAlarmLocalDB.Profiles
+        if profiles then
+          local Items = profiles[activeProfile].Items
+          if Items then
+            for ItemName,ItemInfo in pairs(Items) do
+              if ItemInfo.ID == itemID then
+                return format("|cff2E8B57%s|r:%s","LA",activeProfile)
               end
             end
           end
@@ -79,25 +71,12 @@ local providerChecker = {
       end
     end
   end,
-  LootReserve = function()
+  LootReserve = function(itemID)
     if LootReserve and LootReserve.Client and LootReserve.Client.IsFavorite then
-      return function(itemID) -- checker
-        return LootReserve.Client:IsFavorite(itemID) and "|cffDDA0DDLR|r"
-      end
+      return LootReserve.Client:IsFavorite(itemID) and "|cffDDA0DDLR|r"
     end
   end,
 }
-
-local cachedProviderCheckers = {}
-function addon:GetProviderChecker(provider)
-  if not cachedProviderCheckers[provider] then
-    local func = providerChecker[provider]()
-    if type(func) == "function" then
-      cachedProviderCheckers[provider] = func
-    end
-  end
-  return cachedProviderCheckers[provider]
-end
 
 function addon:IsFavoritedItem(itemID)
   if BonusRollPreviewDB.favoriteProvider == 'ANY' then
@@ -106,20 +85,16 @@ function addon:IsFavoritedItem(itemID)
     local isFav
     if haveProviders then
       for _,provider in ipairs(availableProviders) do
-        local checker = self:GetProviderChecker(provider)
-        if type(checker) == "function" then
-          local isFav = checker(itemID)
-          if isFav then
-            return isFav
-          end
+        local isFav = providerChecker[provider](itemID)
+        if isFav then
+          return isFav
         end
       end
     end
   else
     -- query just the configured checker
-    local func = self:GetProviderChecker(BonusRollPreviewDB.favoriteProvider)
-    if type(func) == "function" then
-      return func(itemID)
+    if providerChecker[BonusRollPreviewDB.favoriteProvider] then -- check we haven't ended up with a dangling reference
+      return providerChecker[BonusRollPreviewDB.favoriteProvider](itemID)
     end
   end
   return ''
