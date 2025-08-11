@@ -7,7 +7,7 @@ local defaults = {
 	fillDirection = 'UP',
 	favoriteAlert = true,
 	favoritesOnly = false,
-	favoriteProvider = _G.CLUB_FINDER_ANY_FLAG,
+	favoriteProvider = 'ANY',
 }
 
 local Options = LibStub('Wasabi'):New(addonName, 'BonusRollPreviewDB', defaults)
@@ -38,7 +38,7 @@ Options:Initialize(function(self)
 	FavoriteProviders:SetText(L['Select a Favorite Items provider'])
 	if haveFavoriteProviders then
 		local values = {
-			[_G.CLUB_FINDER_ANY_FLAG] = _G.CLUB_FINDER_ANY_FLAG,
+			ANY = L['Any'],
 		}
 		for _,addonName in ipairs(availableFavProviders) do
 			values[addonName] = addonName

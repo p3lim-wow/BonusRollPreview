@@ -100,7 +100,7 @@ function addon:GetProviderChecker(provider)
 end
 
 function addon:IsFavoritedItem(itemID)
-  if BonusRollPreviewDB.favoriteProvider == _G.CLUB_FINDER_ANY_FLAG then
+  if BonusRollPreviewDB.favoriteProvider == 'ANY' then
     -- query all available checkers, return first hit
     local haveProviders, availableProviders = self:GetAvailableFavoriteProviders()
     local isFav

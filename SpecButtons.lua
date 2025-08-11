@@ -1,6 +1,6 @@
-local Spec = LibStub('Spec_Ext')
+local addonName, addon = ...
 
-local Buttons = CreateFrame('Frame', (...) .. 'SpecButtons', BonusRollFrame)
+local Buttons = CreateFrame('Frame', addonName .. 'SpecButtons', BonusRollFrame)
 Buttons:SetPoint('LEFT', BonusRollFrame.SpecIcon, 4, 4)
 Buttons:Hide()
 
@@ -86,7 +86,7 @@ hooksecurefunc('BonusRollFrame_StartBonusRoll', function()
 	-- has no chosen loot specialization.
 	local lootSpecialization = GetLootSpecialization()
 	if(not lootSpecialization or lootSpecialization == 0) then
-		local specID, _, _, texture = Spec:GetSpecializationInfo(Spec:GetSpecialization() or 0)
+		local specID, _, _, texture = addon:GetSpecializationInfo(addon:GetSpecialization() or 0)
 		if(specID) then
 			BonusRollFrame.SpecIcon:SetTexture(texture)
 			BonusRollFrame.SpecIcon:Show()

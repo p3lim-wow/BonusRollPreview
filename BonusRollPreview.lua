@@ -1,6 +1,4 @@
 local addonName, addon = ...
-local EJ = LibStub('EJ_Ext')
-local Spec = LibStub('Spec_Ext')
 
 -- sourced from _G
 local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON or 2
@@ -225,7 +223,7 @@ function BonusRollPreviewMixin:UpdateItemFilter()
 	local _, classID = UnitClassBase('player')
 	local lootSpecialization = GetLootSpecialization() or 0
 	if(lootSpecialization == 0) then
-		lootSpecialization = (Spec:GetSpecializationInfo(Spec:GetSpecialization() or 0)) or 0
+		lootSpecialization = (addon:GetSpecializationInfo(addon:GetSpecialization() or 0)) or 0
 	end
 
 	EJ_SetLootFilter(classID, lootSpecialization)

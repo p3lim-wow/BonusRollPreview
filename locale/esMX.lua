@@ -7,6 +7,7 @@ L['Always unfold the loot list'] = 'Always unfold the loot list' -- needs transl
 L['Direction the loot list should appear'] = 'Direction the loot list should appear' -- needs translation
 L['Up'] = 'Up' -- needs translation
 L['Down'] = 'Down' -- needs translation
+L['Any'] = 'Any' -- needs translation
 L['Visual and Audio cue for favorited Items'] = 'Visual and Audio cue for favorited Items' -- needs translation
 L['Filter preview to favorited items only'] = 'Filter preview to favorited items only' -- needs translation
 L['Select a Favorite Items provider'] = 'Select a Favorite Items provider' -- needs translation

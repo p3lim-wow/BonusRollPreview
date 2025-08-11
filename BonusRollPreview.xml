@@ -1,26 +1,4 @@
 <Ui>
-	<Script file='libs\LibStub\LibStub.lua'/>
-	<Include file='libs\Wasabi\embed.xml'/>
-	<Include file='libs\EJ_Ext\EJ_Ext.lua'/>
-	<Include file='libs\Spec_Ext\Spec_Ext.lua'/>
-
-	<Script file='locale\initialize.lua'/>
-	<Script file='locale\deDE.lua'/>
-	<Script file='locale\esES.lua'/>
-	<Script file='locale\esMX.lua'/>
-	<Script file='locale\frFR.lua'/>
-	<Script file='locale\itIT.lua'/>
-	<Script file='locale\koKR.lua'/>
-	<Script file='locale\ptBR.lua'/>
-	<Script file='locale\ruRU.lua'/>
-	<Script file='locale\zhCN.lua'/>
-	<Script file='locale\zhTW.lua'/>
-
-	<Script file='BonusRollPreview.lua'/>
-	<Script file='SpecButtons.lua'/>
-	<Script file='FavoriteProviders.lua'/>
-	<Script file='Options.lua'/>
-
 	<Button name='BonusRollPreviewHandle' parent='BonusRollFrame'>
 		<Size x='64' y='16'/>
 		<Layers>
