@@ -1,4 +1,6 @@
+local addonName, addon = ...
 local EJ = LibStub('EJ_Ext')
+local Spec = LibStub('Spec_Ext')
 
 -- sourced from _G
 local LE_ITEM_CLASS_WEAPON = LE_ITEM_CLASS_WEAPON or 2
@@ -23,15 +25,6 @@ local specialItems = { -- non-equippable items confirmed available from bonus ro
 }
 
 local query = {}
-local function tSize(t)
-	-- I really want Lua 5.2
-	local size = 0
-	for _ in next, t do
-		size = size + 1
-	end
-
-	return size
-end
 
 BonusRollPreviewMixin = {}
 function BonusRollPreviewMixin:OnLoad()
@@ -55,7 +48,7 @@ function BonusRollPreviewMixin:OnLoad()
 	self:SetBackdropColor(0, 0, 0, 0.8)
 	self:SetFrameLevel(self:GetParent():GetFrameLevel() - 2)
 
-	-- TODO: consider preventing this frame to GroupLootContainer, but I'm afraid of taints
+	-- TODO: consider parenting this frame to GroupLootContainer, but I'm afraid of taints
 	BonusRollFrame:ClearAllPoints()
 	BonusRollFrame:SetPoint('CENTER', BonusRollPreviewAnchor)
 	BonusRollFrame.ClearAllPoints = nop
@@ -72,7 +65,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		self:UpdateItems()
 	elseif(event == 'EJ_LOOT_DATA_RECIEVED') then
 		if(self:GetParent():IsShown()) then
-			if(tSize(query) == 0) then
+			if(CountTable(query) == 0) then
 				-- query is empty, bail out
 				return self:UnregisterSafeEvent(event)
 			end
@@ -128,13 +121,19 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		-- check for any outstanding bonus rolls
 		for _, info in next, GetSpellConfirmationPromptsInfo() do
 			if(info and info.spellID) then
-				self:OnEvent('SPELL_CONFIRMATION_PROMPT', info.spellID, info.confirmType, nil, nil, info.currencyID, info.currencyCost, info.difficultyID)
+				local inInstance, instanceType = IsInInstance()
+				local difficultyID, _
+				if inInstance and instanceType == "raid" then
+					_,_,difficultyID = GetInstanceInfo()
+				end
+				self:OnEvent('SPELL_CONFIRMATION_PROMPT', info.spellID, info.confirmType, nil, nil, info.currencyID, info.currencyCost, (info.difficultyID or difficultyID or DifficultyUtil.ID.Raid25Normal))
 			end
 		end
 	elseif(event == 'PLAYER_LOGIN') then
 		-- update anchor position and frame positions
 		BonusRollPreviewAnchor:ClearAllPoints()
 		BonusRollPreviewAnchor:SetPoint(unpack(BonusRollPreviewDB.anchor))
+
 	end
 end
 
@@ -151,15 +150,23 @@ function BonusRollPreviewMixin:UpdateItems()
 	self.buttons:ReleaseAll() -- reset and hide all buttons in the pool
 
 	local numItems = 0
+	local soundAlert -- only do it once at the end of the loop, if we had any wishlisted items show up
+
 	for index = 1, EJ_GetNumLoot() do
 		local itemInfo = C_EncounterJournal.GetLootInfoByIndex(index)
 		-- for some reason the API returns all loot for the entire instance
 		-- so we need to make sure we only list the ones for the selected encounter
 		if(itemInfo.encounterID == self.encounterID) then
 			local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemInfo.itemID)
+
+			local FavoriteLabel = addon:IsFavoritedItem(itemInfo.itemID)
+			if FavoriteLabel ~= '' then
+				soundAlert = BonusRollPreviewDB.favoriteAlert
+			end
 			-- only show equippable and special whitelisted items
 			-- by filtering them by item class/subclass
-			if(itemClass == LE_ITEM_CLASS_WEAPON or itemClass == LE_ITEM_CLASS_ARMOR or (itemClass == LE_ITEM_CLASS_GEM and itemSubClass == LE_ITEM_ARMOR_RELIC) or specialItems[itemInfo.itemID]) then
+			if ((BonusRollPreviewDB.favoritesOnly == false or (BonusRollPreviewDB.favoritesOnly and FavoriteLabel ~= '')) and
+				(itemClass == Enum.ItemClass.Weapon or itemClass == Enum.ItemClass.Armor or (itemClass == Enum.ItemClass.Gem and itemSubClass == Enum.ItemArmorSubclass.Relic))) or specialItems[itemInfo.itemID] then
 				-- add item to item count
 				numItems = numItems + 1
 
@@ -172,6 +179,7 @@ function BonusRollPreviewMixin:UpdateItems()
 				-- update its data
 				Button.itemLink = itemInfo.link
 				Button.itemID = itemInfo.itemID
+				Button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and FavoriteLabel or '')
 
 				if(itemInfo.link) then
 					Button.Icon:SetTexture(itemInfo.icon)
@@ -188,6 +196,7 @@ function BonusRollPreviewMixin:UpdateItems()
 					-- add the item to our query list
 					query[itemInfo.itemID] = index
 				end
+				self.buttons.numActiveObjects = numItems
 			end
 		end
 	end
@@ -195,8 +204,11 @@ function BonusRollPreviewMixin:UpdateItems()
 	if(numItems == 0) then
 		self:OnEvent('SPELL_CONFIRMATION_TIMEOUT')
 		return
+	else
+		if soundAlert then
+			PlaySound(18443)
+		end
 	end
-
 	-- set height based on number of items, min 1, max 8
 	local height = 10 + (numItems * 40)
 	self:SetHeight(Clamp(height, 50, 330))
@@ -208,31 +220,12 @@ function BonusRollPreviewMixin:UpdateItems()
 		self:DisableScrolling()
 	end
 end
---[[
--- Issue #29
-function BonusRollPreviewMixin:UpdateItem(itemID)
-	local index = query[itemID]
-	query[itemID] = nil -- pop the item
 
-	for Button in self.buttons:EnumerateActive() do
-		if(Button.itemID == itemID) then
-			local _, _, name, texture, slot, armorType, itemLink = EJ_GetLootInfoByIndex(index)
-			Button.Icon:SetTexture(texture)
-			Button.Name:SetText(name)
-			Button.Slot:SetText(slot)
-			Button.Class:SetText(armorType)
-			Button.itemLink = itemLink
-
-			return
-		end
-	end
-end
---]]
 function BonusRollPreviewMixin:UpdateItemFilter()
-	local _, _, classID = UnitClass('player')
+	local _, classID = UnitClassBase('player')
 	local lootSpecialization = GetLootSpecialization() or 0
 	if(lootSpecialization == 0) then
-		lootSpecialization = (GetSpecializationInfo(GetSpecialization() or 0)) or 0
+		lootSpecialization = (Spec:GetSpecializationInfo(Spec:GetSpecialization() or 0)) or 0
 	end
 
 	EJ_SetLootFilter(classID, lootSpecialization)
@@ -329,3 +322,4 @@ function BonusRollPreviewMixin:Toggle()
 	self:SetShown(not self:IsShown())
 	self:UpdateHandlePosition(not self:IsShown())
 end
+_G[addonName.."Ext"] = addon -- for debugging, comment out for release

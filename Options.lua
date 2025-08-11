@@ -1,8 +1,13 @@
-local addonName, L = ...
+local addonName, addon = ...
+local L = addon.L
+
 local defaults = {
 	anchor = {'CENTER', 'UIParent', 'CENTER', 0, 0},
 	alwaysShow = false,
-	fillDirection = 'UP'
+	fillDirection = 'UP',
+	favoriteAlert = true,
+	favoritesOnly = false,
+	favoriteProvider = _G.CLUB_FINDER_ANY_FLAG,
 }
 
 local Options = LibStub('Wasabi'):New(addonName, 'BonusRollPreviewDB', defaults)
@@ -26,6 +31,35 @@ Options:Initialize(function(self)
 		UP = L['Up'],
 		DOWN = L['Down'],
 	})
+
+	local haveFavoriteProviders, availableFavProviders = addon:GetAvailableFavoriteProviders()
+	local FavoriteProviders = self:CreateDropDown('favoriteProvider')
+	FavoriteProviders:SetPoint('TOPLEFT', FillDirection, 'BOTTOMLEFT', 0, -10)
+	FavoriteProviders:SetText(L['Select a Favorite Items provider'])
+	if haveFavoriteProviders then
+		local values = {
+			[_G.CLUB_FINDER_ANY_FLAG] = _G.CLUB_FINDER_ANY_FLAG,
+		}
+		for _,addonName in ipairs(availableFavProviders) do
+			values[addonName] = addonName
+		end
+		FavoriteProviders:SetValues(values)
+		FavoriteProviders:Enable()
+	else
+		FavoriteProviders:SetValues({[_G.NONE] = _G.NONE})
+		FavoriteProviders:Disable()
+	end
+
+	if haveFavoriteProviders then
+		local FavoriteShow = self:CreateCheckButton('favoriteAlert')
+		FavoriteShow:SetPoint('TOPLEFT', FavoriteProviders, 'BOTTOMLEFT', 0, -10)
+		FavoriteShow:SetText(L['Visual and Audio cue for favorited Items'])
+
+		local OnlyFavorites = self:CreateCheckButton('favoritesOnly')
+		OnlyFavorites:SetPoint('TOPLEFT', FavoriteShow, 'BOTTOMLEFT', 20, -10)
+		OnlyFavorites:SetText(L['Filter preview to favorited items only'])
+	end
+
 end)
 
 _G['SLASH_' .. addonName .. '1'] = '/brp'

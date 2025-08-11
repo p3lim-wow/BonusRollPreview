@@ -1,9 +1,9 @@
-## Interface: 90001
+## Interface: 50500
 ## Author: p3lim
 ## Version: @project-version@
 ## Title: Bonus Roll Preview
 ## Notes: Easily see what the bonus loot roll can yield
-## OptionalDeps: Wasabi, LibStub
+## OptionalDeps: Wasabi, LibStub, AtlasLootClassic, BastionLoot, LootReserve, LootAlarm, LOIHLoot
 ## SavedVariables: BonusRollPreviewDB
 
 ## X-Curse-Project-ID: 54902

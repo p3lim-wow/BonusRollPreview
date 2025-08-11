@@ -1,4 +1,4 @@
-local MAJOR, MINOR = 'EJ_Ext', 1
+local MAJOR, MINOR = 'EJ_Ext', 2
 assert(LibStub, MAJOR .. ' requires LibStub')
 
 local lib, oldMinor = LibStub:NewLibrary(MAJOR, MINOR)
@@ -175,8 +175,10 @@ Handler:SetScript('OnEvent', function(self, event)
 	self:UnregisterEvent(event)
 
 	for spellID, data in next, incorrectJournalEntries do
-		EJ_SelectInstance(data[1])
-		journalIDs[spellID] = {data[1], (select(3, EJ_GetEncounterInfoByIndex(data[2])))}
+		local retOK = pcall(EJ_SelectInstance,data[1])
+		if retOK then
+			journalIDs[spellID] = {data[1], (select(3, EJ_GetEncounterInfoByIndex(data[2])))}
+		end
 	end
 end)
 

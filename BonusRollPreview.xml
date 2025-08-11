@@ -2,6 +2,7 @@
 	<Script file='libs\LibStub\LibStub.lua'/>
 	<Include file='libs\Wasabi\embed.xml'/>
 	<Include file='libs\EJ_Ext\EJ_Ext.lua'/>
+	<Include file='libs\Spec_Ext\Spec_Ext.lua'/>
 
 	<Script file='locale\initialize.lua'/>
 	<Script file='locale\deDE.lua'/>
@@ -17,6 +18,7 @@
 
 	<Script file='BonusRollPreview.lua'/>
 	<Script file='SpecButtons.lua'/>
+	<Script file='FavoriteProviders.lua'/>
 	<Script file='Options.lua'/>
 
 	<Button name='BonusRollPreviewHandle' parent='BonusRollFrame'>
@@ -169,7 +171,7 @@
 	<Button name='BonusRollPreviewButtonTemplate' virtual='true'>
 		<Size x='0' y='38'/>
 		<Layers>
-			<Layer layer='BACKGROUND'>
+			<Layer level='BACKGROUND'>
 				<Texture parentKey='Icon'>
 					<Size x='36' y='36'/>
 					<Anchors>
@@ -180,7 +182,7 @@
 					<TexCoords left='0.00195313' right='0.62890625' top='0.61816406' bottom='0.66210938'/>
 				</Texture>
 			</Layer>
-			<Layer layer='ARTWORK'>
+			<Layer level='ARTWORK'>
 				<FontString parentKey='Name' inherits='GameFontNormalMed3' justifyH='LEFT'>
 					<Size x='0' y='12'/>
 					<Anchors>
@@ -199,6 +201,12 @@
 					<Anchors>
 						<Anchor point='BOTTOMLEFT' relativeKey='$parent.Icon' relativePoint='BOTTOMRIGHT' x='7' y='4'/>
 						<Anchor point='BOTTOMRIGHT' relativeKey='$parent.Class' relativePoint='BOTTOMLEFT' x='-15' y='0'/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey='Fav' inherits='GameFontHighlight' justifyH='CENTER'>
+					<Size x='0' y='12'/>
+					<Anchors>
+						<Anchor point='BOTTOM' x='0' y='5'/>
 					</Anchors>
 				</FontString>
 			</Layer>

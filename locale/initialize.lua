@@ -1,4 +1,6 @@
-local _, L = ...
+local addonName, addon = ...
+addon.L = {}
+local L = addon.L
 
 local localizations = {}
 local locale = GetLocale()
