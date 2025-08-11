@@ -82,7 +82,7 @@ addon:RegisterSlash('/bonusrollpreview', '/brp', function(msg)
   if(msg == 'unlock' or msg == 'lock') then
     BonusRollPreview:ToggleLock()
   elseif(msg == 'reset') then
-    BonusRollPreviewDB.anchor = CopyTable(defaults.anchor)
+    BonusRollPreviewDB.anchor = {'CENTER', 'UIParent', 'CENTER', 0, 0}
     BonusRollPreview:OnEvent('PLAYER_LOGIN')
   else
     addon:OpenSettings()
