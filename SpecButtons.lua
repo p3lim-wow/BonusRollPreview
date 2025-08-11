@@ -44,7 +44,7 @@ Zone:SetScript('OnEnter', function(self)
 		if(not self.initialized) then
 			local numSpecs = GetNumSpecializations()
 			for index = 1, numSpecs do
-				local specID, name, _, texture = Spec:GetSpecializationInfo(index)
+				local specID, name, _, texture = addon:GetSpecializationInfo(index)
 
 				local Button = CreateFrame('Button', '$parentButton' .. index, Buttons)
 				Button:SetPoint('LEFT', index * 28, 0)
