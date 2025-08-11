@@ -69,6 +69,10 @@ function addon:OnLogin()
   end
   if not haveFavoriteProviders then
     BonusRollPreviewDB.favoritesOnly = false
+  else
+    if not tContains(availableFavProviders,BonusRollPreviewDB.favoriteProvider) then
+      BonusRollPreviewDB.favoriteProvider = 'ANY'
+    end
   end
 end
 
