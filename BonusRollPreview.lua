@@ -92,7 +92,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		end
 
 		if(not ignoredSpells[spellID]) then -- ignore blacklisted encounters
-			local instanceID, encounterID = EJ:GetJournalInfoForSpellConfirmation(spellID)
+			local instanceID, encounterID = addon:GetJournalInfoForSpellConfirmation(spellID)
 			if(encounterID) then
 				local currency = C_CurrencyInfo.GetCurrencyInfo(currencyID)
 				if(currency.quantity >= currencyCost) then
