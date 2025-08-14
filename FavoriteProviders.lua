@@ -54,20 +54,11 @@ local providerChecker = {
     end
   end,
   LootAlarm = function(itemID)
-    if type(LootAlarmLocalDB) == "table" then
-      local activeProfile = LootAlarmLocalDB.Settings and LootAlarmLocalDB.Settings.LoadedProfile
-      if activeProfile and activeProfile ~= '' then
-        local profiles = LootAlarmLocalDB.Profiles
-        if profiles then
-          local Items = profiles[activeProfile].Items
-          if Items then
-            for ItemName,ItemInfo in pairs(Items) do
-              if ItemInfo.ID == itemID then
-                return format("|cff2E8B57%s|r:%s","LA",activeProfile)
-              end
-            end
-          end
-        end
+    if LootAlarm and LootAlarm.IsInitialized and LootAlarm.GetActiveProfileName and LootAlarm.HasItemInActiveProfile then
+      if LootAlarm:IsInitialized() then
+        local profile = LootAlarm:GetActiveProfileName()
+        local isFav = LootAlarm:HasItemInActiveProfile(itemID)
+        return isFav and format("|cff2E8B57%s|r:%s","LA",profile)
       end
     end
   end,
