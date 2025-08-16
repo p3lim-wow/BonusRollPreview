@@ -22,7 +22,7 @@ local settings = {
   },
 }
 
-local haveFavoriteProviders, availableFavProviders = addon:GetAvailableFavoriteProviders()
+local haveFavoriteProviders, sortedFavProviders = addon:GetAvailableFavoriteProviders()
 do
   if haveFavoriteProviders then
     tinsert(settings, {
@@ -51,7 +51,7 @@ do
     for index,setting in ipairs(settings) do
       if setting.key == 'favoriteProvider' then
         if setting.type == 'menu' and setting.options then
-          for order,provider in ipairs(availableFavProviders) do
+          for order,provider in ipairs(sortedFavProviders) do
             tinsert(setting.options, {value = provider, label = provider})
           end
         end
@@ -70,7 +70,7 @@ function addon:OnLogin()
   if not haveFavoriteProviders then
     BonusRollPreviewDB.favoritesOnly = false
   else
-    if not tContains(availableFavProviders,BonusRollPreviewDB.favoriteProvider) then
+    if not addon.favoriteProviders[BonusRollPreviewDB.favoriteProvider] then
       BonusRollPreviewDB.favoriteProvider = 'ANY'
     end
   end

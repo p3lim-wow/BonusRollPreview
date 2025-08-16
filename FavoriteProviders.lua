@@ -8,23 +8,27 @@ addon.favoriteProviders = {
   LootReserve = false,
 }
 
-local availableFavProviders = { }
+local sortedFavProviders = { } -- only used for options menu & login check
 local haveFavoriteProviders
 function addon:GetAvailableFavoriteProviders()
+  sortedFavProviders = wipe(sortedFavProviders)
   for name,status in pairs(addon.favoriteProviders) do
     local _, _, _, loadable, reason, security, updateAvailable = C_AddOns.GetAddOnInfo(name)
     local enabled = AddOnUtil.IsAddOnEnabledForCurrentCharacter(name)
     if (not reason or reason == '') and loadable and enabled then
-      table.insert(availableFavProviders,name)
+      table.insert(sortedFavProviders,name)
+      addon.favoriteProviders[name] = true -- use this as a registry
+    else
+      addon.favoriteProviders[name] = false
     end
   end
-  haveFavoriteProviders = CountTable(availableFavProviders) > 0
+  haveFavoriteProviders = CountTable(sortedFavProviders) > 0
   if haveFavoriteProviders then
-    table.sort(availableFavProviders)
+    table.sort(sortedFavProviders)
   else
     BonusRollPreviewDB.favoritesOnly = false
   end
-  return haveFavoriteProviders, availableFavProviders
+  return haveFavoriteProviders, sortedFavProviders
 end
 
 local providerChecker = {
@@ -70,22 +74,24 @@ local providerChecker = {
 }
 
 function addon:IsFavoritedItem(itemID)
-  if BonusRollPreviewDB.favoriteProvider == 'ANY' then
-    -- query all available checkers, return first hit
-    local haveProviders, availableProviders = self:GetAvailableFavoriteProviders()
+  local favoriteProvider = BonusRollPreviewDB.favoriteProvider
+  if not favoriteProvider then return '' end
+  if favoriteProvider == 'ANY' then
+    -- just iterate our registry
     local isFav
-    if haveProviders then
-      for _,provider in ipairs(availableProviders) do
-        local isFav = providerChecker[provider](itemID)
+    for provider, status in pairs(addon.favoriteProviders) do
+      if status and providerChecker[provider] then
+        isFav = providerChecker[provider](itemID)
         if isFav then
           return isFav
         end
       end
     end
   else
-    -- query just the configured checker
-    if providerChecker[BonusRollPreviewDB.favoriteProvider] then -- check we haven't ended up with a dangling reference
-      return providerChecker[BonusRollPreviewDB.favoriteProvider](itemID)
+    -- just the configured checker
+    -- check we haven't ended up with a dangling reference
+    if providerChecker[favoriteProvider] and addon.favoriteProviders[favoriteProvider] then
+      return providerChecker[favoriteProvider](itemID)
     end
   end
   return ''
