@@ -204,7 +204,7 @@ function BonusRollPreviewMixin:UpdateItems()
 		return
 	else
 		if soundAlert then
-			PlaySound(18443)
+			PlaySound(18443,"SFX")
 		end
 	end
 	-- set height based on number of items, min 1, max 8

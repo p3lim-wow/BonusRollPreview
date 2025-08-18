@@ -49,11 +49,10 @@ local providerChecker = {
     end
   end,
   LOIHLoot = function(itemID)
-    if LOIHLOOT_GLOBAL_PRIVATE then
-      for subTable, tableData in pairs(LOIHLootCharDB) do
-        if tableData[itemID] then
-          return format("|cffF5F5DC%s|r:%s","LOIH",subTable)
-        end
+    if LOIHLOOT_GLOBAL_PRIVATE and LOIHLOOT_GLOBAL_PRIVATE.IsItemWishList then
+      local isFav, list = LOIHLOOT_GLOBAL_PRIVATE:IsItemWishList(itemID)
+      if isFav then
+        return format("|cff006666%s|r",list)
       end
     end
   end,
