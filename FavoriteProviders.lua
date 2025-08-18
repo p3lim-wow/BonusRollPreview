@@ -74,7 +74,7 @@ local providerChecker = {
 
 function addon:IsFavoritedItem(itemID)
   local favoriteProvider = BonusRollPreviewDB.favoriteProvider
-  if not favoriteProvider then return '' end
+  if not favoriteProvider then return end
   if favoriteProvider == 'ANY' then
     -- just iterate our registry
     local isFav
@@ -93,5 +93,4 @@ function addon:IsFavoritedItem(itemID)
       return providerChecker[favoriteProvider](itemID)
     end
   end
-  return ''
 end
