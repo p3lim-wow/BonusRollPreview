@@ -5,15 +5,15 @@ local settings = {
   {
     key = 'alwaysShow',
     type = 'toggle',
-    title = L['Always unfold the loot list'],
-    -- tooltip = '',
+    title = L['Auto unfold'],
+    tooltip = L['Always unfold the loot list'],
     default = false
   },
   {
     key = 'fillDirection',
     type = 'menu',
-    title = L['Direction the loot list should appear'],
-    -- tooltip = '',
+    title = L['Direction'],
+    tooltip = L['Direction the loot list should appear'],
     default = 'UP',
     options = {
       {value = 'UP', label = L['Up']},
@@ -28,7 +28,8 @@ do
     tinsert(settings, {
       key = 'favoriteProvider',
       type = 'menu',
-      title = L['Select a Favorite Items provider'],
+      title = L['Favorites from'],
+      tooltip = L['Select a Favorite Items provider'],
       default = 'ANY',
       options = {
         {value = 'ANY', label = L['Any']},
@@ -37,14 +38,16 @@ do
     tinsert(settings,{
       key = 'favoriteAlert',
       type = 'toggle',
-      title = L['Visual and Audio cue for favorited Items'],
+      title = L['Favorite alert'],
+      tooltip = L['Visual and Audio cue for favorited Items'],
       default = true,
       parent = 'favoriteProvider',
     })
     tinsert(settings,{
       key = 'favoritesOnly',
       type = 'toggle',
-      title = L['Filter preview to favorited items only'],
+      title = L['Only favorites'],
+      tooltip = L['Filter preview to favorited items only'],
       default = false,
       parent = 'favoriteProvider',
     })

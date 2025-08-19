@@ -151,7 +151,7 @@ function BonusRollPreviewMixin:UpdateItems()
 		local itemInfo = C_EncounterJournal.GetLootInfoByIndex(index)
 		-- for some reason the API returns all loot for the entire instance
 		-- so we need to make sure we only list the ones for the selected encounter
-		if (itemInfo.encounterID == self.encounterID) then
+		if(itemInfo.encounterID == self.encounterID) then
 			local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemInfo.itemID)
 
 			local Favorite = addon:IsFavoritedItem(itemInfo.itemID)
@@ -160,12 +160,12 @@ function BonusRollPreviewMixin:UpdateItems()
 			end
 			-- only show equippable and special whitelisted items
 			-- by filtering them by item class/subclass
-			if (
+			if(
 					(BonusRollPreviewDB.favoritesOnly == false or (BonusRollPreviewDB.favoritesOnly and Favorite))
 					and
 					(
-						itemClass == Enum.ItemClass.Weapon or itemClass == Enum.ItemClass.Armor or
-						(itemClass == Enum.ItemClass.Gem and itemSubClass == Enum.ItemArmorSubclass.Relic)
+					itemClass == Enum.ItemClass.Weapon or itemClass == Enum.ItemClass.Armor or
+					(itemClass == Enum.ItemClass.Gem and itemSubClass == Enum.ItemArmorSubclass.Relic)
 					)
 				)	or specialItems[itemInfo.itemID] then
 				-- add item to item count
@@ -180,7 +180,7 @@ function BonusRollPreviewMixin:UpdateItems()
 				-- update its data
 				Button.itemLink = itemInfo.link
 				Button.itemID = itemInfo.itemID
-				Button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and Favorite or '')
+				Button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and (Favorite or '') or '')
 
 				if(itemInfo.link) then
 					Button.Icon:SetTexture(itemInfo.icon)
@@ -207,7 +207,7 @@ function BonusRollPreviewMixin:UpdateItems()
 		return
 	else
 		if soundAlert then
-			PlaySound(18443,"SFX")
+			PlaySound(SOUNDKIT.LFG_REWARDS,"SFX")
 		end
 	end
 	-- set height based on number of items, min 1, max 8
