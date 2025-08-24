@@ -165,7 +165,8 @@ function BonusRollPreviewMixin:UpdateItems()
 					and
 					(
 					itemClass == Enum.ItemClass.Weapon or itemClass == Enum.ItemClass.Armor or
-					(itemClass == Enum.ItemClass.Gem and itemSubClass == Enum.ItemArmorSubclass.Relic)
+					(itemClass == Enum.ItemClass.Gem and itemSubClass == Enum.ItemArmorSubclass.Relic) or -- azerite (retail)
+					(itemClass == Enum.ItemClass.Miscellaneous and itemSubClass == Enum.ItemMiscellaneousSubclass.Junk) -- tokens (mists)
 					)
 				)	or specialItems[itemInfo.itemID] then
 				-- add item to item count
