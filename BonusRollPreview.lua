@@ -3,6 +3,9 @@ local addonName, addon = ...
 -- sourced from _G
 local LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL = LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL or 1
 
+local GetSpecialization = GetSpecialization or C_SpecializationInfo.GetSpecialization -- deprecated in 12.x
+local GetSpecializationInfo = GetSpecializationInfo or C_SpecializationInfo.GetSpecializationInfo -- deprecated in 12.x
+
 local ignoredSpells = {
 	-- 7.0
 	[232109] = true, -- Return to Karazhan: Nighbane (no EJ entry)
@@ -154,7 +157,7 @@ function BonusRollPreviewMixin:UpdateItems()
 		if(itemInfo.encounterID == self.encounterID) then
 			local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemInfo.itemID)
 
-			local Favorite = addon:IsFavoritedItem(itemInfo.itemID)
+			local Favorite = addon.IsFavoritedItem and addon:IsFavoritedItem(itemInfo.itemID)
 			if Favorite then
 				soundAlert = BonusRollPreviewDB.favoriteAlert
 			end
@@ -227,7 +230,7 @@ function BonusRollPreviewMixin:UpdateItemFilter()
 	local _, classID = UnitClassBase('player')
 	local lootSpecialization = GetLootSpecialization() or 0
 	if(lootSpecialization == 0) then
-		lootSpecialization = (addon:GetSpecializationInfo(addon:GetSpecialization() or 0)) or 0
+		lootSpecialization = (GetSpecializationInfo(GetSpecialization() or 0)) or 0
 	end
 
 	EJ_SetLootFilter(classID, lootSpecialization)
