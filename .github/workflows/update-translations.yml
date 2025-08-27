@@ -1,0 +1,21 @@
+name: Upload localization strings to CurseForge
+
+on:
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - '**'
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v5
+
+      - name: Upload localizations
+        uses: p3lim/curseforge-localizations@v1
+        env:
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          HANDLE_MISSING: DeletePhrase
