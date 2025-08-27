@@ -1,43 +1,93 @@
-local addonName, L = ...
-local defaults = {
-	anchor = {'CENTER', 'UIParent', 'CENTER', 0, 0},
-	alwaysShow = false,
-	fillDirection = 'UP'
+local addonName, addon = ...
+local L = addon.L
+
+local settings = {
+  {
+    key = 'alwaysShow',
+    type = 'toggle',
+    title = L['Auto unfold'],
+    tooltip = L['Always unfold the loot list'],
+    default = false
+  },
+  {
+    key = 'fillDirection',
+    type = 'menu',
+    title = L['Direction'],
+    tooltip = L['Direction the loot list should appear'],
+    default = 'UP',
+    options = {
+      {value = 'UP', label = L['Up']},
+      {value = 'DOWN', label = L['Down']},
+    },
+  },
 }
 
-local Options = LibStub('Wasabi'):New(addonName, 'BonusRollPreviewDB', defaults)
-Options:Initialize(function(self)
-	local Title = self:CreateTitle()
-	Title:SetPoint('TOPLEFT', 16, -16)
-	Title:SetText(addonName)
-
-	local Description = self:CreateDescription()
-	Description:SetPoint('TOPLEFT', Title, 'BOTTOMLEFT', 0, -8)
-	Description:SetText(L['Lock/unlock movement with /brp lock, and reset the position with /brp reset.']:gsub('/brp %w+', '|cff9999ff%1|r'))
-
-	local AlwaysShow = self:CreateCheckButton('alwaysShow')
-	AlwaysShow:SetPoint('TOPLEFT', Description, 'BOTTOMLEFT', 0, -20)
-	AlwaysShow:SetText(L['Always unfold the loot list'])
-
-	local FillDirection = self:CreateDropDown('fillDirection')
-	FillDirection:SetPoint('TOPLEFT', AlwaysShow, 'BOTTOMLEFT', 0, -10)
-	FillDirection:SetText(L['Direction the loot list should appear'])
-	FillDirection:SetValues({
-		UP = L['Up'],
-		DOWN = L['Down'],
-	})
-end)
-
-_G['SLASH_' .. addonName .. '1'] = '/brp'
-SlashCmdList[addonName] = function(msg)
-	msg = msg:lower()
-
-	if(msg == 'unlock' or msg == 'lock') then
-		BonusRollPreview:ToggleLock()
-	elseif(msg == 'reset') then
-		BonusRollPreviewDB.anchor = CopyTable(defaults.anchor)
-		BonusRollPreview:OnEvent('PLAYER_LOGIN')
-	else
-		Options:ShowOptions()
-	end
+local haveFavoriteProviders, sortedFavProviders = addon:GetAvailableFavoriteProviders()
+do
+  if haveFavoriteProviders then
+    tinsert(settings, {
+      key = 'favoriteProvider',
+      type = 'menu',
+      title = L['Favorites from'],
+      tooltip = L['Select a Favorite Items provider'],
+      default = 'ANY',
+      options = {
+        {value = 'ANY', label = L['Any']},
+      },
+    })
+    tinsert(settings,{
+      key = 'favoriteAlert',
+      type = 'toggle',
+      title = L['Favorite alert'],
+      tooltip = L['Visual and Audio cue for favorited Items'],
+      default = true,
+      parent = 'favoriteProvider',
+    })
+    tinsert(settings,{
+      key = 'favoritesOnly',
+      type = 'toggle',
+      title = L['Only favorites'],
+      tooltip = L['Filter preview to favorited items only'],
+      default = false,
+      parent = 'favoriteProvider',
+    })
+    for index,setting in ipairs(settings) do
+      if setting.key == 'favoriteProvider' then
+        if setting.type == 'menu' and setting.options then
+          for order,provider in ipairs(sortedFavProviders) do
+            tinsert(setting.options, {value = provider, label = provider})
+          end
+        end
+        break
+      end
+    end
+  end
 end
+
+addon:RegisterSettings('BonusRollPreviewDB', settings)
+
+function addon:OnLogin()
+  if not BonusRollPreviewDB.anchor then
+    BonusRollPreviewDB.anchor = {'CENTER', 'UIParent', 'CENTER', 0, 0}
+  end
+  if not haveFavoriteProviders then
+    BonusRollPreviewDB.favoritesOnly = false
+  else
+    if not addon.favoriteProviders[BonusRollPreviewDB.favoriteProvider] then
+      BonusRollPreviewDB.favoriteProvider = 'ANY'
+    end
+  end
+end
+
+addon:RegisterSlash('/bonusrollpreview', '/brp', function(msg)
+  msg = msg:lower()
+
+  if(msg == 'unlock' or msg == 'lock') then
+    BonusRollPreview:ToggleLock()
+  elseif(msg == 'reset') then
+    BonusRollPreviewDB.anchor = {'CENTER', 'UIParent', 'CENTER', 0, 0}
+    BonusRollPreview:OnEvent('PLAYER_LOGIN')
+  else
+    addon:OpenSettings()
+  end
+end)
