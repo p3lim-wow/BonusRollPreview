@@ -130,9 +130,10 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		end
 	elseif(event == 'PLAYER_LOGIN') then
 		-- update anchor position and frame positions
-		BonusRollPreviewAnchor:ClearAllPoints()
-		BonusRollPreviewAnchor:SetPoint(unpack(BonusRollPreviewDB.anchor))
-
+		C_Timer.After(3, function() -- wait for db
+			BonusRollPreviewAnchor:ClearAllPoints()
+			BonusRollPreviewAnchor:SetPoint(unpack(BonusRollPreviewDB.anchor))
+		end)
 	end
 end
 
