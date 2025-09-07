@@ -22,7 +22,9 @@ function addon:GetAvailableFavoriteProviders()
 		end
 	end
 
-	return availableProviders:sort()
+	availableProviders:sort()
+
+	return availableProviders
 end
 
 function addon:HasFavoriteProvider(name)

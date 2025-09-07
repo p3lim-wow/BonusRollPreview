@@ -26,7 +26,7 @@ local settings = addon:T{
 
 if addon.GetAvailableFavoriteProviders then
 	local providers = addon:GetAvailableFavoriteProviders()
-	if #providers > 0 then
+	if providers and #providers > 0 then
 		local providerOptions = {
 			{value = 'ANY', label = L['Any']},
 		}
