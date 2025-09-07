@@ -52,7 +52,7 @@ function BonusRollPreviewMixin:OnLoad()
 	BonusRollFrame.ClearAllPoints = nop
 	BonusRollFrame.SetPoint = nop
 
-	self.buttons = CreateFramePool('Button', self.ScrollFrame.ScrollChild, 'BonusRollPreviewButtonTemplate')
+	self.buttons = CreateUnsecuredFramePool('Button', self.ScrollFrame.ScrollChild, 'BonusRollPreviewButtonTemplate')
 end
 
 function BonusRollPreviewMixin:OnEvent(event, ...)
