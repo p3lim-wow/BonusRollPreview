@@ -165,8 +165,7 @@ local incorrectJournalEntries = {
 
 function addon:OnLogin()
 	for spellID, data in next, incorrectJournalEntries do
-		local retOK = pcall(EJ_SelectInstance,data[1])
-		if retOK then
+		if pcall(EJ_SelectInstance, data[1]) then
 			journalIDs[spellID] = {data[1], (select(3, EJ_GetEncounterInfoByIndex(data[2])))}
 		end
 	end
