@@ -70,7 +70,7 @@ local providerChecker = {
 	end,
 }
 
-function addon:IsFavoritedItem(itemID)
+function addon:GetFavoriteTag(itemID)
 	local provider = BonusRollPreviewDB.favoriteProvider
 	if not provider then
 		return

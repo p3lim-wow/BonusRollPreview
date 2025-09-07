@@ -144,6 +144,30 @@ function BonusRollPreviewMixin:StartEncounter()
 	EJ_SelectEncounter(self.encounterID)
 end
 
+local function shouldShowItem(itemID)
+	if specialItems[itemID] then
+		return true
+	end
+
+	local favoriteTag = addon.GetFavoriteTag and addon:GetFavoriteTag(itemID)
+	if BonusRollPreviewDB.favoritesOnly then
+		return favoriteTag ~= nil, favoriteTag
+	end
+
+	local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemID)
+	if itemClass == Enum.ItemClass.Weapon then
+		return true, favoriteTag
+	elseif itemClass == Enum.ItemClass.Armor then
+		return true, favoriteTag
+	elseif itemClass == Enum.ItemClass.Gem and itemSubClass == Enum.ItemArmorSubclass.Relic then
+		-- azerite
+		return true, favoriteTag
+	elseif itemClass == Enum.ItemClass.Miscellaneous and itemSubClass == Enum.ItemMiscellaneousSubclass.Junk then
+		-- armor tokens
+		return true, favoriteTag
+	end
+end
+
 function BonusRollPreviewMixin:UpdateItems()
 	self:RegisterSafeEvent('EJ_LOOT_DATA_RECIEVED')
 	self.buttons:ReleaseAll() -- reset and hide all buttons in the pool
@@ -156,23 +180,12 @@ function BonusRollPreviewMixin:UpdateItems()
 		-- for some reason the API returns all loot for the entire instance
 		-- so we need to make sure we only list the ones for the selected encounter
 		if(itemInfo.encounterID == self.encounterID) then
-			local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemInfo.itemID)
-
-			local Favorite = addon.IsFavoritedItem and addon:IsFavoritedItem(itemInfo.itemID)
-			if Favorite then
+			local shouldShow, favoriteTag = shouldShowItem(itemInfo.itemID)
+			if favoriteTag then
 				soundAlert = BonusRollPreviewDB.favoriteAlert
 			end
-			-- only show equippable and special whitelisted items
-			-- by filtering them by item class/subclass
-			if(
-					(BonusRollPreviewDB.favoritesOnly == false or (BonusRollPreviewDB.favoritesOnly and Favorite))
-					and
-					(
-					itemClass == Enum.ItemClass.Weapon or itemClass == Enum.ItemClass.Armor or
-					(itemClass == Enum.ItemClass.Gem and itemSubClass == Enum.ItemArmorSubclass.Relic) or -- azerite (retail)
-					(itemClass == Enum.ItemClass.Miscellaneous and itemSubClass == Enum.ItemMiscellaneousSubclass.Junk) -- tokens (mists)
-					)
-				)	or specialItems[itemInfo.itemID] then
+
+			if shouldShow then
 				-- add item to item count
 				numItems = numItems + 1
 
@@ -185,7 +198,7 @@ function BonusRollPreviewMixin:UpdateItems()
 				-- update its data
 				Button.itemLink = itemInfo.link
 				Button.itemID = itemInfo.itemID
-				Button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and (Favorite or '') or '')
+				Button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and favoriteTag or '')
 
 				if(itemInfo.link) then
 					Button.Icon:SetTexture(itemInfo.icon)
@@ -202,6 +215,7 @@ function BonusRollPreviewMixin:UpdateItems()
 					-- add the item to our query list
 					query[itemInfo.itemID] = index
 				end
+
 				self.buttons.numActiveObjects = numItems
 			end
 		end
@@ -212,7 +226,7 @@ function BonusRollPreviewMixin:UpdateItems()
 		return
 	else
 		if soundAlert then
-			PlaySound(SOUNDKIT.LFG_REWARDS,"SFX")
+			PlaySound(SOUNDKIT.LFG_REWARDS, 'SFX')
 		end
 	end
 	-- set height based on number of items, min 1, max 8
