@@ -27,10 +27,10 @@ locale\ruRU.lua
 locale\zhCN.lua
 locale\zhTW.lua
 
-data.lua
-
 BonusRollPreview.lua
 BonusRollPreview.xml
-SpecButtons.lua
-FavoriteProviders.lua
-Options.lua
+
+data.lua
+specbuttons.lua
+favorites.lua
+settings.lua

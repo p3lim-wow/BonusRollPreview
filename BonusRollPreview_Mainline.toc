@@ -26,9 +26,9 @@ locale\ruRU.lua
 locale\zhCN.lua
 locale\zhTW.lua
 
-data.lua
-
 BonusRollPreview.lua
 BonusRollPreview.xml
-SpecButtons.lua
-Options.lua
+
+data.lua
+specbuttons.lua
+settings.lua
