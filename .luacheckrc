@@ -16,6 +16,8 @@ ignore = {
 	'542', -- empty if branch
 	'614', -- trailing whitespace in a comment
 	'631', -- line is too long
+
+	'122/BonusRollFrame', -- we mutate this object
 }
 
 globals = {
