@@ -23,6 +23,7 @@ local specialItems = { -- non-equippable items confirmed available from bonus ro
 }
 
 local query = {}
+local nop = function() end
 
 BonusRollPreviewMixin = {}
 function BonusRollPreviewMixin:OnLoad()
