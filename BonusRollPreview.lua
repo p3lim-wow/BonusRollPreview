@@ -328,4 +328,3 @@ function BonusRollPreviewMixin:Toggle()
 	self:SetShown(not self:IsShown())
 	self:UpdateHandlePosition(not self:IsShown())
 end
-_G[addonName.."Ext"] = addon -- for debugging, comment out for release
