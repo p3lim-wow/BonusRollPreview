@@ -136,9 +136,9 @@ function addon:ZONE_CHANGED_NEW_AREA()
 			EJ_SelectInstance(instanceID)
 			EJ_SetDifficulty(difficultyID or DifficultyUtil.ID.Raid25Normal)
 
-			local index = 1
-			while index do
-				local _, _, encounterID = EJ_GetEncounterInfoByIndex(index)
+			local journalIndex = 1
+			while journalIndex do
+				local _, _, encounterID = EJ_GetEncounterInfoByIndex(journalIndex)
 				if encounterID and encounterID > 0 then
 					EJ_SelectEncounter(encounterID)
 
@@ -146,7 +146,7 @@ function addon:ZONE_CHANGED_NEW_AREA()
 						C_EncounterJournal.GetLootInfoByIndex(index)
 					end
 
-					index = index + 1
+					journalIndex = journalIndex + 1
 				else
 					break
 				end

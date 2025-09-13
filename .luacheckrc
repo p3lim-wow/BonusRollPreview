@@ -60,13 +60,16 @@ read_globals = {
 	-- namespaces
 	'C_CurrencyInfo',
 	'C_EncounterJournal',
+	'C_Map',
 	'C_SpecializationInfo',
 	'C_Timer',
 	'Enum',
 
 	-- API
 	'CreateFrame',
+	'EJ_GetEncounterInfo',
 	'EJ_GetEncounterInfoByIndex',
+	'EJ_GetInstanceForMap',
 	'EJ_GetNumLoot',
 	'EJ_IsLootListOutOfDate',
 	'EJ_SelectEncounter',
@@ -85,6 +88,7 @@ read_globals = {
 	'Mixin',
 	'PlaySound',
 	'SetLootSpecialization',
+	'UnitClass',
 	'UnitClassBase',
 	'hooksecurefunc',
 
