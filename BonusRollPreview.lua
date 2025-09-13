@@ -119,6 +119,52 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 	end
 end
 
+function addon:ZONE_CHANGED_NEW_AREA()
+	-- warm up cache
+	local mapID = C_Map.GetBestMapForUnit('player')
+	if not mapID or mapID < 1 then
+		return
+	end
+
+	local _, _, classID = UnitClass('player')
+	EJ_SetLootFilter(classID, 0) -- all specs for wide cache
+
+	if IsInInstance() then
+		local _, _, difficultyID = GetInstanceInfo()
+		local instanceID = EJ_GetInstanceForMap(mapID)
+		if instanceID then
+			EJ_SelectInstance(instanceID)
+			EJ_SetDifficulty(difficultyID or DifficultyUtil.ID.Raid25Normal)
+
+			local index = 1
+			while index do
+				local _, _, encounterID = EJ_GetEncounterInfoByIndex(index)
+				if encounterID and encounterID > 0 then
+					EJ_SelectEncounter(encounterID)
+
+					for index = 1, EJ_GetNumLoot() do
+						C_EncounterJournal.GetLootInfoByIndex(index)
+					end
+
+					index = index + 1
+				else
+					break
+				end
+			end
+		end
+	else
+		for _, info in next, C_EncounterJournal.GetEncountersOnMap(mapID) do
+			local _, _, _, _, _, instanceID = EJ_GetEncounterInfo(info.encounterID)
+			EJ_SelectInstance(instanceID)
+			EJ_SelectEncounter(info.encounterID)
+
+			for index = 1, EJ_GetNumLoot() do
+				C_EncounterJournal.GetLootInfoByIndex(index)
+			end
+		end
+	end
+end
+
 function BonusRollPreviewMixin:StartEncounter()
 	-- start the encounter by selecting the encounter
 	self:RegisterSafeEvent('EJ_DIFFICULTY_UPDATE')
@@ -151,7 +197,7 @@ local function shouldShowItem(itemID)
 	end
 end
 
-function BonusRollPreviewMixin:PrepareButton()
+function BonusRollPreviewMixin:PrepareButton(index)
 	local button = self.buttons:Acquire()
 
 	-- reset info while we're waiting for cache
@@ -162,13 +208,16 @@ function BonusRollPreviewMixin:PrepareButton()
 	button.Fav:SetText('')
 	button:Show()
 
+	-- set journal index
+	button.index = index
+
 	return button
 end
 
-function BonusRollPreviewMixin:ProcessItem(button, index, itemInfo)
+function BonusRollPreviewMixin:ProcessItem(button, itemInfo)
 	if not itemInfo then
-		-- from cache miss
-		itemInfo = C_EncounterJournal.GetLootInfoByIndex(index)
+		-- cache is still cold for some reason, this shouldn't happen
+		return
 	end
 
 	if itemInfo.encounterID ~= self.encounterID then
@@ -222,15 +271,13 @@ function BonusRollPreviewMixin:UpdateItems()
 	self.numShownItems = 0
 
 	for index = 1, EJ_GetNumLoot() do
-		local button = self:PrepareButton()
 		local itemInfo = C_EncounterJournal.GetLootInfoByIndex(index)
+		if itemInfo and itemInfo.encounterID == self.encounterID then
+			local button = self:PrepareButton(index, itemInfo.itemID)
 
-		if itemInfo.link then
-			-- item is cached - pass through the info
-			self:ProcessItem(button, index, itemInfo)
-		else
-			-- need to wait for cache, we only know the item ID
-			Item:CreateFromItemID(itemInfo.itemID):ContinueOnItemLoad(GenerateClosure(self.ProcessItem, self, button, index))
+			if itemInfo and itemInfo.link and itemInfo.link ~= "" then
+				self:ProcessItem(button, itemInfo)
+			end
 		end
 	end
 
