@@ -62,26 +62,6 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		self:UnregisterSafeEvent(event)
 		self:UpdateItemFilter()
 		self:UpdateItems()
-	elseif(event == 'EJ_LOOT_DATA_RECIEVED') then
-		if(self:GetParent():IsShown()) then
-			if(CountTable(query) == 0) then
-				-- query is empty, bail out
-				return self:UnregisterSafeEvent(event)
-			end
-
-			local itemID = ...
-			if(EJ_IsLootListOutOfDate()) then
-				-- entire list is considered out of date, wipe the query and start over
-				table.wipe(query)
-				self:UpdateItems()
-			elseif(query[itemID]) then
-				-- this sucks, but we have to restart the entire encounter to get accurate data
-				-- by the data returns to the client the client might have changed parameters
-				table.wipe(query)
-				self:StartEncounter()
-				-- self:UpdateItem(itemID)
-			end
-		end
 	elseif(event == 'PLAYER_LOOT_SPEC_UPDATED') then
 		-- we need to restart the entire encounter logic just in case the user
 		-- has used the EncounterJournal before changing loot specializations.
@@ -112,7 +92,6 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 			end
 		end
 	elseif(event == 'SPELL_CONFIRMATION_TIMEOUT') then
-		self:UnregisterEvent('EJ_LOOT_DATA_RECIEVED')
 		self:UnregisterEvent('PLAYER_LOOT_SPEC_UPDATED')
 		self:Hide()
 		BonusRollPreviewHandle:Hide()
@@ -141,8 +120,8 @@ function BonusRollPreviewMixin:StartEncounter()
 	-- start the encounter by selecting the encounter
 	self:RegisterSafeEvent('EJ_DIFFICULTY_UPDATE')
 	EJ_SelectInstance(self.instanceID)
-	EJ_SetDifficulty(self.difficultyID) -- this will trigger EJ_DIFFICULTY_UPDATE
 	EJ_SelectEncounter(self.encounterID)
+	EJ_SetDifficulty(self.difficultyID) -- this will trigger EJ_DIFFICULTY_UPDATE
 end
 
 local function shouldShowItem(itemID)
@@ -169,77 +148,92 @@ local function shouldShowItem(itemID)
 	end
 end
 
-function BonusRollPreviewMixin:UpdateItems()
-	self:RegisterSafeEvent('EJ_LOOT_DATA_RECIEVED')
-	self.buttons:ReleaseAll() -- reset and hide all buttons in the pool
+function BonusRollPreviewMixin:PrepareButton()
+	local button = self.buttons:Acquire()
 
-	local numItems = 0
-	local soundAlert -- only do it once at the end of the loop, if we had any wishlisted items show up
+	-- reset info while we're waiting for cache
+	button.Icon:SetTexture(QUESTION_MARK_ICON)
+	button.Name:SetText(RETRIEVING_ITEM_INFO)
+	button.Slot:SetText('')
+	button.Class:SetText('')
+	button.Fav:SetText('')
+	button:Show()
+
+	return button
+end
+
+function BonusRollPreviewMixin:ProcessItem(button, index, itemInfo)
+	if not itemInfo then
+		-- from cache miss
+		itemInfo = C_EncounterJournal.GetLootInfoByIndex(index)
+	end
+
+	if itemInfo.encounterID ~= self.encounterID then
+		-- sometimes the API returns all loot for an entire instance, so we'll need to ignore
+		-- items from other encounters
+		self.buttons:Release(button)
+		self:UpdateButtonPositions()
+		return
+	end
+
+	local shouldShow, favoriteTag = shouldShowItem(itemInfo.itemID)
+	if not shouldShow then
+		self.buttons:Release(button)
+		self:UpdateButtonPositions()
+		return
+	end
+
+	if favoriteTag then
+		PlaySound(SOUNDKIT.LFG_REWARDS, 'SFX')
+	end
+
+	-- update button data
+	button.itemLink = itemInfo.link
+	button.itemID = itemInfo.itemID
+
+	-- update button widgets
+	button.Icon:SetTexture(itemInfo.icon)
+	button.Name:SetText(itemInfo.name)
+	button.Slot:SetText(itemInfo.slot)
+	button.Class:SetText(itemInfo.armorType)
+	button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and favoriteTag or '')
+
+	-- update box
+	self:SetHeight(Clamp(10 + (self.buttons:GetNumActive() * 40), 50, 330))
+	self:UpdateScrolling()
+end
+
+function BonusRollPreviewMixin:UpdateButtonPositions()
+	-- TODO: look into using a list type instead of managing this ourselves
+	-- TODO: consider sorting by slot or something
+	local num = 0
+	for button in self.buttons:EnumerateActive() do
+		button:SetPoint('TOPLEFT', 0, num * -40)
+		button:SetPoint('TOPRIGHT', 0, num * -40)
+		num = num + 1
+	end
+end
+
+function BonusRollPreviewMixin:UpdateItems()
+	self.buttons:ReleaseAll() -- reset and hide all buttons in the pool
+	self.numShownItems = 0
 
 	for index = 1, EJ_GetNumLoot() do
+		local button = self:PrepareButton()
 		local itemInfo = C_EncounterJournal.GetLootInfoByIndex(index)
-		-- for some reason the API returns all loot for the entire instance
-		-- so we need to make sure we only list the ones for the selected encounter
-		if(itemInfo.encounterID == self.encounterID) then
-			local shouldShow, favoriteTag = shouldShowItem(itemInfo.itemID)
-			if favoriteTag then
-				soundAlert = BonusRollPreviewDB.favoriteAlert
-			end
 
-			if shouldShow then
-				-- add item to item count
-				numItems = numItems + 1
-
-				-- grab a button from the pool and position it
-				local Button = self.buttons:Acquire()
-				Button:SetPoint('TOPLEFT', 0, (numItems - 1) * -40)
-				Button:SetPoint('TOPRIGHT', 0, (numItems - 1) * -40)
-				Button:Show()
-
-				-- update its data
-				Button.itemLink = itemInfo.link
-				Button.itemID = itemInfo.itemID
-				Button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and favoriteTag or '')
-
-				if(itemInfo.link) then
-					Button.Icon:SetTexture(itemInfo.icon)
-					Button.Name:SetText(itemInfo.name)
-					Button.Slot:SetText(itemInfo.slot)
-					Button.Class:SetText(itemInfo.armorType)
-				else
-					-- item is not cached, show temporary information
-					Button.Icon:SetTexture(QUESTION_MARK_ICON)
-					Button.Name:SetText(RETRIEVING_ITEM_INFO)
-					Button.Slot:SetText('')
-					Button.Class:SetText('')
-
-					-- add the item to our query list
-					query[itemInfo.itemID] = index
-				end
-
-				self.buttons.numActiveObjects = numItems
-			end
+		if itemInfo.link then
+			-- item is cached - pass through the info
+			self:ProcessItem(button, index, itemInfo)
+		else
+			-- need to wait for cache, we only know the item ID
+			Item:CreateFromItemID(itemInfo.itemID):ContinueOnItemLoad(GenerateClosure(self.ProcessItem, self, button, index))
 		end
 	end
 
-	if(numItems == 0) then
-		self:OnEvent('SPELL_CONFIRMATION_TIMEOUT')
-		return
-	else
-		if soundAlert then
-			PlaySound(SOUNDKIT.LFG_REWARDS, 'SFX')
-		end
-	end
-	-- set height based on number of items, min 1, max 8
-	local height = 10 + (numItems * 40)
-	self:SetHeight(Clamp(height, 50, 330))
-
-	-- update scrolling based on number of shown items
-	if(numItems > 8) then
-		self:EnableScrolling()
-	else
-		self:DisableScrolling()
-	end
+	-- update box
+	self:SetHeight(Clamp(10 + (self.buttons:GetNumActive() * 40), 50, 330))
+	self:UpdateScrolling()
 end
 
 function BonusRollPreviewMixin:UpdateItemFilter()
@@ -318,25 +312,23 @@ function BonusRollPreviewMixin:ToggleLock()
 	Anchor:SetShown(not Anchor:IsShown())
 end
 
-function BonusRollPreviewMixin:EnableScrolling()
+function BonusRollPreviewMixin:UpdateScrolling()
 	local ScrollFrame = self.ScrollFrame
-	ScrollFrame:EnableMouseWheel(true)
-	ScrollFrame.ScrollChild:SetWidth(274 - ScrollFrame.Slider:GetWidth())
+	local numButtons = self.buttons:GetNumActive()
+	if numButtons > 8 then
+		ScrollFrame:EnableMouseWheel(true)
+		ScrollFrame.ScrollChild:SetWidth(274 - ScrollFrame.Slider:GetWidth())
+		ScrollFrame.Slider:Show()
+		ScrollFrame.Slider:SetValue(0) -- reset scroll to top
 
-	-- set new scroll values
-	local height = (10 + (self.buttons.numActiveObjects * 40)) - self:GetHeight()
-	ScrollFrame.Slider:SetMinMaxValues(0, height)
-
-	-- reset scroll to top
-	ScrollFrame.Slider:SetValue(0)
-	ScrollFrame.Slider:Show()
-end
-
-function BonusRollPreviewMixin:DisableScrolling()
-	local ScrollFrame = self.ScrollFrame
-	ScrollFrame:EnableMouseWheel(false)
-	ScrollFrame.ScrollChild:SetWidth(274)
-	ScrollFrame.Slider:Hide()
+		-- update scroll values
+		local height = (10 + (numButtons * 40)) - self:GetHeight()
+		ScrollFrame.Slider:SetMinMaxValues(0, height)
+	else
+		ScrollFrame:EnableMouseWheel(false)
+		ScrollFrame.ScrollChild:SetWidth(274)
+		ScrollFrame.Slider:Hide()
+	end
 end
 
 function BonusRollPreviewMixin:Toggle()
