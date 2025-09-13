@@ -94,6 +94,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		self:UnregisterEvent('PLAYER_LOOT_SPEC_UPDATED')
 		self:Hide()
 		BonusRollPreviewHandle:Hide()
+		self.buttons:ReleaseAll()
 	elseif(event == 'PLAYER_ENTERING_WORLD') then
 		-- check for any outstanding bonus rolls
 		for _, info in next, GetSpellConfirmationPromptsInfo() do
