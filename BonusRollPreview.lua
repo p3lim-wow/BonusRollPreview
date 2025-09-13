@@ -99,12 +99,15 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		-- check for any outstanding bonus rolls
 		for _, info in next, GetSpellConfirmationPromptsInfo() do
 			if(info and info.spellID) then
-				local inInstance, instanceType = IsInInstance()
-				local difficultyID, _
-				if inInstance and instanceType == "raid" then
-					_,_,difficultyID = GetInstanceInfo()
+				local difficultyID = info.difficultyID
+				if not difficultyID then
+					local inInstance, instanceType, _ = IsInInstance()
+					if inInstance and instanceType == 'raid' then
+						_, _, difficultyID = GetInstanceInfo()
+					end
 				end
-				self:OnEvent('SPELL_CONFIRMATION_PROMPT', info.spellID, info.confirmType, nil, nil, info.currencyID, info.currencyCost, (info.difficultyID or difficultyID or DifficultyUtil.ID.Raid25Normal))
+
+				self:OnEvent('SPELL_CONFIRMATION_PROMPT', info.spellID, info.confirmType, nil, nil, info.currencyID, info.currencyCost, difficultyID or DifficultyUtil.ID.Raid25Normal)
 			end
 		end
 	elseif(event == 'PLAYER_LOGIN') then
