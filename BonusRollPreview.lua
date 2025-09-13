@@ -282,6 +282,7 @@ function BonusRollPreviewMixin:UpdateItems()
 	end
 
 	-- update box
+	self:UpdateButtonPositions()
 	self:SetHeight(Clamp(10 + (self.buttons:GetNumActive() * 40), 50, 330))
 	self:UpdateScrolling()
 end
