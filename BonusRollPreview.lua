@@ -123,8 +123,8 @@ function BonusRollPreviewMixin:StartEncounter()
 	-- start the encounter by selecting the encounter
 	self:RegisterSafeEvent('EJ_DIFFICULTY_UPDATE')
 	EJ_SelectInstance(self.instanceID)
-	EJ_SelectEncounter(self.encounterID)
 	EJ_SetDifficulty(self.difficultyID) -- this will trigger EJ_DIFFICULTY_UPDATE
+	EJ_SelectEncounter(self.encounterID) -- must be called last, otherwise breaks loot spec logic
 end
 
 local function shouldShowItem(itemID)
