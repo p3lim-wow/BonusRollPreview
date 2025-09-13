@@ -22,7 +22,6 @@ local specialItems = { -- non-equippable items confirmed available from bonus ro
 	[95057] = true, -- Mount: Reins of the Thundering Cobalt Cloud Serpent
 }
 
-local query = {}
 local nop = function() end
 
 BonusRollPreviewMixin = {}

@@ -40,6 +40,8 @@ read_globals = {
 	'DifficultyUtil',
 	'EncounterJournal',
 	'GameTooltip',
+	'GenerateClosure',
+	'Item',
 	'LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL', -- enum const
 	'QUESTION_MARK_ICON', -- const
 	'SOUNDKIT', -- enum
@@ -59,6 +61,7 @@ read_globals = {
 	'C_CurrencyInfo',
 	'C_EncounterJournal',
 	'C_SpecializationInfo',
+	'C_Timer',
 	'Enum',
 
 	-- API
