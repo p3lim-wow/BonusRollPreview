@@ -14,9 +14,12 @@ It can be downloaded at one of the following sites:
 
 BonusRollPreview allows you to see at a glance what the possible yields from a bonus roll would be.  
 When the bonus roll window shows up, press the arrow button to show a quick preview of items.  
-You can also change your spec priority right from the window.
+You can also change your loot specialization right from the window.
 
 So, from now on you don't have to alt-tab to a browser or open the Encounter Journal while on limited time.
+
+To move the BonusRollFrame, type `/brp unlock` in the chat, `/brp lock` to lock it, `/brp reset` for defaults.  
+Type `/brp` to see more options.
 
 This addon was made based on an idea posted on [reddit](//reddit.com/r/wow/comments/1b79zj/addon_idea_after_you_killed_a_boss_you_will_see_a/).
 
