@@ -53,6 +53,7 @@ function BonusRollPreviewMixin:OnLoad()
 	BonusRollFrame.SetPoint = nop
 
 	self.buttons = CreateUnsecuredFramePool('Button', self.ScrollFrame.ScrollChild, 'BonusRollPreviewButtonTemplate')
+	self.itemButtons = addon:T()
 end
 
 function BonusRollPreviewMixin:OnEvent(event, ...)
@@ -223,15 +224,11 @@ function BonusRollPreviewMixin:ProcessItem(button, itemInfo)
 	if itemInfo.encounterID ~= self.encounterID then
 		-- sometimes the API returns all loot for an entire instance, so we'll need to ignore
 		-- items from other encounters
-		self.buttons:Release(button)
-		self:UpdateButtonPositions()
 		return
 	end
 
 	local shouldShow, favoriteTag = shouldShowItem(itemInfo.itemID)
 	if not shouldShow then
-		self.buttons:Release(button)
-		self:UpdateButtonPositions()
 		return
 	end
 
@@ -250,25 +247,27 @@ function BonusRollPreviewMixin:ProcessItem(button, itemInfo)
 	button.Class:SetText(itemInfo.armorType)
 	button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and favoriteTag or '')
 
-	-- update box
-	self:SetHeight(Clamp(10 + (self.buttons:GetNumActive() * 40), 50, 330))
-	self:UpdateScrolling()
+	return true
+end
+
+local function sortByIndex(a, b)
+	return a.index < b.index
 end
 
 function BonusRollPreviewMixin:UpdateButtonPositions()
-	-- TODO: look into using a list type instead of managing this ourselves
-	-- TODO: consider sorting by slot or something
-	local num = 0
-	for button in self.buttons:EnumerateActive() do
-		button:SetPoint('TOPLEFT', 0, num * -40)
-		button:SetPoint('TOPRIGHT', 0, num * -40)
-		num = num + 1
+	-- TODO: look into using a ScrollUtil instead of managing this ourselves
+	table.sort(self.itemButtons, sortByIndex)
+
+	for index, button in next, self.itemButtons do
+		button:SetPoint('TOPLEFT', 0, (index - 1) * -40)
+		button:SetPoint('TOPRIGHT', 0, (index - 1) * -40)
 	end
 end
 
 function BonusRollPreviewMixin:UpdateItems()
 	self.buttons:ReleaseAll() -- reset and hide all buttons in the pool
 	self.numShownItems = 0
+	self.itemButtons:wipe()
 
 	for index = 1, EJ_GetNumLoot() do
 		local itemInfo = C_EncounterJournal.GetLootInfoByIndex(index)
@@ -276,14 +275,16 @@ function BonusRollPreviewMixin:UpdateItems()
 			local button = self:PrepareButton(index, itemInfo.itemID)
 
 			if itemInfo and itemInfo.link and itemInfo.link ~= "" then
-				self:ProcessItem(button, itemInfo)
+				if self:ProcessItem(button, itemInfo) then
+					self.itemButtons:insert(button)
+				end
 			end
 		end
 	end
 
 	-- update box
+	self:SetHeight(Clamp(10 + (#self.itemButtons * 40), 50, 330))
 	self:UpdateButtonPositions()
-	self:SetHeight(Clamp(10 + (self.buttons:GetNumActive() * 40), 50, 330))
 	self:UpdateScrolling()
 end
 
@@ -365,7 +366,7 @@ end
 
 function BonusRollPreviewMixin:UpdateScrolling()
 	local ScrollFrame = self.ScrollFrame
-	local numButtons = self.buttons:GetNumActive()
+	local numButtons = #self.itemButtons
 	if numButtons > 8 then
 		ScrollFrame:EnableMouseWheel(true)
 		ScrollFrame.ScrollChild:SetWidth(274 - ScrollFrame.Slider:GetWidth())
