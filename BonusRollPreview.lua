@@ -23,6 +23,20 @@ local specialItems = { -- non-equippable items confirmed available from bonus ro
 }
 
 local nop = function() end
+local function resetButton(_, button)
+	button:Hide()
+	button:ClearAllPoints()
+
+	button.Icon:SetTexture(QUESTION_MARK_ICON)
+	button.Name:SetText(RETRIEVING_ITEM_INFO)
+	button.Slot:SetText('')
+	button.Class:SetText('')
+	button.Fav:SetText('')
+
+	button.itemID = nil
+	button.itemLink = nil
+	button.favoriteTag = nil
+end
 
 BonusRollPreviewMixin = {}
 function BonusRollPreviewMixin:OnLoad()
@@ -52,7 +66,7 @@ function BonusRollPreviewMixin:OnLoad()
 	BonusRollFrame.ClearAllPoints = nop
 	BonusRollFrame.SetPoint = nop
 
-	self.buttons = CreateUnsecuredFramePool('Button', self.ScrollFrame.ScrollChild, 'BonusRollPreviewButtonTemplate')
+	self.buttons = CreateUnsecuredFramePool('Button', self.ScrollFrame.ScrollChild, 'BonusRollPreviewButtonTemplate', resetButton)
 	self.itemButtons = addon:T()
 end
 
@@ -200,13 +214,6 @@ end
 
 function BonusRollPreviewMixin:PrepareButton(index)
 	local button = self.buttons:Acquire()
-
-	-- reset info while we're waiting for cache
-	button.Icon:SetTexture(QUESTION_MARK_ICON)
-	button.Name:SetText(RETRIEVING_ITEM_INFO)
-	button.Slot:SetText('')
-	button.Class:SetText('')
-	button.Fav:SetText('')
 	button:Show()
 
 	-- set journal index
