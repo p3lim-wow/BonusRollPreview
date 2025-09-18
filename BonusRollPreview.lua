@@ -241,6 +241,9 @@ function BonusRollPreviewMixin:ProcessItem(button, itemInfo)
 
 	if favoriteTag then
 		PlaySound(SOUNDKIT.LFG_REWARDS, 'SFX')
+
+		-- sort favorites first
+		button.index = 0
 	end
 
 	-- update button data
