@@ -1,3 +1,9 @@
+### Changes in 110200.49-Release:
+
+- Added: Support for Mists of Pandaria Classic
+- Added: Support for favorites from external addons
+- Fixed: Long-standing errors on retail
+
 ### Changes in 90000.48-Release:
 
 - Added: German translations
