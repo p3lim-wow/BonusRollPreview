@@ -132,8 +132,7 @@ function addon:ZONE_CHANGED_NEW_AREA()
 	if IsInInstance() then
 		local _, _, difficultyID = GetInstanceInfo()
 		local instanceID = EJ_GetInstanceForMap(mapID)
-		if instanceID then
-			EJ_SelectInstance(instanceID)
+		if instanceID and pcall(EJ_SelectInstance, instanceID) then
 			EJ_SetDifficulty(difficultyID or DifficultyUtil.ID.Raid25Normal)
 
 			local journalIndex = 1
@@ -155,11 +154,12 @@ function addon:ZONE_CHANGED_NEW_AREA()
 	else
 		for _, info in next, C_EncounterJournal.GetEncountersOnMap(mapID) do
 			local _, _, _, _, _, instanceID = EJ_GetEncounterInfo(info.encounterID)
-			EJ_SelectInstance(instanceID)
-			EJ_SelectEncounter(info.encounterID)
+			if pcall(EJ_SelectInstance, instanceID) then
+				EJ_SelectEncounter(info.encounterID)
 
-			for index = 1, EJ_GetNumLoot() do
-				C_EncounterJournal.GetLootInfoByIndex(index)
+				for index = 1, EJ_GetNumLoot() do
+					C_EncounterJournal.GetLootInfoByIndex(index)
+				end
 			end
 		end
 	end
