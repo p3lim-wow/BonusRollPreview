@@ -8,6 +8,7 @@
 
 ## X-Curse-Project-ID: 54902
 ## X-WoWI-ID: 22213
+## X-Wago-ID: nKW1zLNE
 
 #@non-debug@
 # libs\Dashi\embed.xml
