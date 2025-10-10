@@ -1,3 +1,7 @@
+### Changes in 110205.50-Release:
+
+- Fixed: Accidental pollution of the global table library
+
 ### Changes in 110200.49-Release:
 
 - Added: Support for Mists of Pandaria Classic
