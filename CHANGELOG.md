@@ -1,3 +1,7 @@
+### Changes in 110205.51-Release:
+
+- Changed: Update Interface version (classic)
+
 ### Changes in 110205.50-Release:
 
 - Fixed: Accidental pollution of the global table library
