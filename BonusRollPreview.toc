@@ -1,8 +1,9 @@
-## Interface: 110205, 110207
+## Interface: 110205, 110207, 50502, 50503
 ## Author: p3lim
 ## Version: @project-version@
 ## Title: Bonus Roll Preview
 ## Notes: Easily see what the bonus loot roll can yield
+## OptionalDeps: AtlasLootClassic, BastionLoot, LootReserve, LootAlarm, LOIHLoot
 ## SavedVariables: BonusRollPreviewDB
 
 ## X-Curse-Project-ID: 54902
@@ -23,4 +24,5 @@ BonusRollPreview.xml
 
 data.lua
 specbuttons.lua
+favorites.lua [AllowLoadGameType mists]
 settings.lua
