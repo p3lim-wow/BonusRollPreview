@@ -82,7 +82,7 @@ function addon:GetFavoriteTag(itemID)
 		-- just iterate our registry
 		for name, status in next, favoriteProviders do
 			if status and providerChecker[name] and providerChecker[name](itemID) then
-				return status
+				return providerChecker[name](itemID)
 			end
 		end
 	end
