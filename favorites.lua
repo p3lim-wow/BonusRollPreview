@@ -6,6 +6,7 @@ local favoriteProviders = {
 	LOIHLoot = false,
 	LootAlarm = false,
 	LootReserve = false,
+	LootHunter = false,
 }
 
 local availableProviders = addon:T() -- only used for options menu & login check
@@ -70,6 +71,11 @@ local providerChecker = {
 			return LootReserve.Client:IsFavorite(itemID) and '|cffDDA0DDLR|r'
 		end
 	end,
+	LootHunter = function(itemID)
+		if LootHunterAPI and LootHunterAPI.IsFavorite then
+			return LootHunterAPI:IsFavorite(itemID)
+		end
+	end,
 }
 
 function addon:GetFavoriteTag(itemID)
@@ -82,7 +88,7 @@ function addon:GetFavoriteTag(itemID)
 		-- just iterate our registry
 		for name, status in next, favoriteProviders do
 			if status and providerChecker[name] and providerChecker[name](itemID) then
-				return status
+				return providerChecker[name](itemID)
 			end
 		end
 	end
