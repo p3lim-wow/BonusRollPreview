@@ -6,6 +6,7 @@ local favoriteProviders = {
 	LOIHLoot = false,
 	LootAlarm = false,
 	LootReserve = false,
+	LootHunter = false,
 }
 
 local availableProviders = addon:T() -- only used for options menu & login check
@@ -68,6 +69,11 @@ local providerChecker = {
 	LootReserve = function(itemID)
 		if LootReserve and LootReserve.Client and LootReserve.Client.IsFavorite then
 			return LootReserve.Client:IsFavorite(itemID) and '|cffDDA0DDLR|r'
+		end
+	end,
+	LootHunter = function(itemID)
+		if LootHunterAPI and LootHunterAPI.IsFavorite then
+			return LootHunterAPI:IsFavorite(itemID)
 		end
 	end,
 }
