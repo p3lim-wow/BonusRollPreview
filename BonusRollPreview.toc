@@ -1,4 +1,4 @@
-## Interface: 110205, 110207, 50502, 50503
+## Interface: 120000, 50503
 ## Author: p3lim
 ## Version: @project-version@
 ## Title: Bonus Roll Preview
