@@ -65,29 +65,9 @@ if addon.GetAvailableFavoriteProviders then
 			parent = 'favoriteProvider',
 		})
 	end
-
-	function addon:PLAYER_LOGIN()
-		local providers = addon:GetAvailableFavoriteProviders()
-		if #providers == 0 then
-			BonusRollPreviewDB.favoritesOnly = false
-		elseif not addon:HasFavoriteProvider(BonusRollPreviewDB.favoriteProvider) then
-			BonusRollPreviewDB.favoriteProvider = 'ANY'
-		end
-		if not BonusRollPreviewDB.anchor then
-			BonusRollPreviewDB.anchor = CopyTable(DEFAULT_POSITION)
-		end
-	end
 end
 
 addon:RegisterSettings('BonusRollPreviewDB', settings)
-
-if not addon.PLAYER_LOGIN then
-	function addon:PLAYER_LOGIN()
-		if not BonusRollPreviewDB.anchor then
-			BonusRollPreviewDB.anchor = CopyTable(DEFAULT_POSITION)
-		end
-	end
-end
 
 addon:RegisterSlash('/bonusrollpreview', '/brp', function(msg)
 	msg = msg:lower()
@@ -101,3 +81,18 @@ addon:RegisterSlash('/bonusrollpreview', '/brp', function(msg)
 		addon:OpenSettings()
 	end
 end)
+
+function addon:OnLogin()
+	if addon.GetAvailableFavoriteProviders then
+		local providers = addon:GetAvailableFavoriteProviders()
+		if #providers == 0 then
+			BonusRollPreviewDB.favoritesOnly = false
+		elseif not addon:HasFavoriteProvider(BonusRollPreviewDB.favoriteProvider) then
+			BonusRollPreviewDB.favoriteProvider = 'ANY'
+		end
+	end
+
+	if not BonusRollPreviewDB.anchor then
+		BonusRollPreviewDB.anchor = CopyTable(DEFAULT_POSITION)
+	end
+end
