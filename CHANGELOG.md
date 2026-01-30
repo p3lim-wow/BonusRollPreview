@@ -1,3 +1,8 @@
+### Changes in 120000.52-Release:
+
+- Added: Support for favorites from the addon LootHunter
+- Changed: Update Interface version
+
 ### Changes in 110205.51-Release:
 
 - Changed: Update Interface version (classic)
