@@ -3,7 +3,7 @@
 ## Version: @project-version@
 ## Title: Bonus Roll Preview
 ## Notes: Easily see what the bonus loot roll can yield
-## OptionalDeps: AtlasLootClassic, BastionLoot, LootReserve, LootAlarm, LOIHLoot
+## OptionalDeps: AtlasLootClassic, BastionLoot, LootReserve, LootAlarm, LOIHLoot, LootHunter
 ## SavedVariables: BonusRollPreviewDB
 
 ## X-Curse-Project-ID: 54902
