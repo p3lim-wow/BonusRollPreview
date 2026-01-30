@@ -98,5 +98,5 @@ read_globals = {
 	'LOIHLOOT_GLOBAL_PRIVATE',
 	'LootAlarm',
 	'LootReserve',
-	'LootHunter',
+	'LootHunterAPI',
 }
