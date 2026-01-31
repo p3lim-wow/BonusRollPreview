@@ -255,7 +255,7 @@ function BonusRollPreviewMixin:ProcessItem(button, itemInfo)
 	button.Name:SetText(itemInfo.name)
 	button.Slot:SetText(itemInfo.slot)
 	button.Class:SetText(itemInfo.armorType)
-	button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and favoriteTag or '')
+	button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and favoriteTag and favoriteTag or '')
 
 	return true
 end
