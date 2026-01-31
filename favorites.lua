@@ -73,7 +73,8 @@ local providerChecker = {
 	end,
 	LootHunter = function(itemID)
 		if LootHunterAPI and LootHunterAPI.IsFavorite then
-			return LootHunterAPI:IsFavorite(itemID)
+			local isFavorite, label = LootHunterAPI:IsFavorite(itemID)
+			return isFavorite and label
 		end
 	end,
 }
