@@ -1,4 +1,5 @@
 <Ui>
+	<Script file="BonusRollPreview.lua"/>
 	<Button name='BonusRollPreviewHandle' parent='BonusRollFrame'>
 		<Size x='64' y='16'/>
 		<Layers>
@@ -89,6 +90,10 @@
 				BonusRollPreviewDB.anchor[4] = x
 				BonusRollPreviewDB.anchor[5] = y
 			</OnMouseUp>
+			<OnHide>
+				-- avoid tooltip stuck on mouse if it hides during movement
+				self:StopMovingOrSizing()
+			</OnHide>
 		</Scripts>
 	</Frame>
 

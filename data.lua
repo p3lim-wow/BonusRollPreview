@@ -53,6 +53,7 @@ local journalIDs = {
 	[145911] = {369, 866}, -- Norushen
 	[145912] = {369, 867}, -- Sha of Pride
 	-- Galakras needs special handling
+	[145913] = {369, 881}, -- Galakras
 	[145914] = {369, 864}, -- Iron Juggernaut
 	[145915] = {369, 856}, -- Kor'kron Dark Shaman
 	[145916] = {369, 850}, -- General Nazgrim
