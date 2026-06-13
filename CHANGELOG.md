@@ -1,3 +1,10 @@
+### Changes in 120000.54-Release:
+
+- Changed: Update Interface versions
+- Fixed: Anchor sometimes not working
+- Fixed: Loot specialization not refreshing correctly (classic)
+- Fixed: Tooltip getting stuck
+
 ### Changes in 120000.53-Release:
 
 - Changed: Update Interface version
