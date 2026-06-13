@@ -1,8 +1,10 @@
-## Interface: 120001, 120005, 50503, 50504
+## Interface: 120005, 50504
 ## Author: p3lim
 ## Version: @project-version@
 ## Title: Bonus Roll Preview
 ## Notes: Easily see what the bonus loot roll can yield
+## Category: Loot
+## IconTexture: 135725
 ## OptionalDeps: AtlasLootClassic, BastionLoot, LootReserve, LootAlarm, LOIHLoot, LootHunter
 ## SavedVariables: BonusRollPreviewDB
 
@@ -19,7 +21,6 @@
 
 locale\[TextLocale].lua [AllowLoadTextLocale deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW]
 
-BonusRollPreview.lua
 BonusRollPreview.xml
 
 data.lua

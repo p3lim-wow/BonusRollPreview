@@ -1,7 +1,16 @@
-local _, addon = ...
+local addonName, addon = ...
 
 -- sourced from _G
-local LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL = LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL or 1
+local LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL
+if Enum and Enum.ConfirmationPromptUIType and Enum.ConfirmationPromptUIType.BonusRoll then
+	LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL = Enum.ConfirmationPromptUIType.BonusRoll
+elseif _G.LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL then
+	LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL = _G.LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL
+else
+	LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL = 1
+end
+local loot_spec_change_capture = ERR_LOOT_SPEC_CHANGED_S:gsub("%%s", ".+")
+local in_bonus_prompt
 
 local GetSpecialization = GetSpecialization or C_SpecializationInfo.GetSpecialization -- deprecated in 12.x
 local GetSpecializationInfo = GetSpecializationInfo or C_SpecializationInfo.GetSpecializationInfo -- deprecated in 12.x
@@ -76,6 +85,11 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		self:UnregisterSafeEvent(event)
 		self:UpdateItemFilter()
 		self:UpdateItems()
+	elseif(event == 'CHAT_MSG_SYSTEM') then
+		local message = ...
+		if message:match(loot_spec_change_capture) then
+			self:OnEvent('PLAYER_LOOT_SPEC_UPDATED')
+		end
 	elseif(event == 'PLAYER_LOOT_SPEC_UPDATED') then
 		-- we need to restart the entire encounter logic just in case the user
 		-- has used the EncounterJournal before changing loot specializations.
@@ -94,8 +108,9 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 					self.difficultyID = difficultyID
 					self.encounterID = encounterID
 					self.instanceID = instanceID
-
+					in_bonus_prompt = true
 					self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
+					self:RegisterEvent("CHAT_MSG_SYSTEM")
 					self:StartEncounter()
 
 					-- show/hide list and handle
@@ -107,6 +122,8 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		end
 	elseif(event == 'SPELL_CONFIRMATION_TIMEOUT') then
 		self:UnregisterEvent('PLAYER_LOOT_SPEC_UPDATED')
+		self:UnregisterEvent("CHAT_MSG_SYSTEM")
+		in_bonus_prompt= nil
 		self:Hide()
 		BonusRollPreviewHandle:Hide()
 		self.buttons:ReleaseAll()
@@ -126,6 +143,21 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 			end
 		end
 	elseif(event == 'PLAYER_LOGIN') then
+		if BonusRollFrame then
+			BonusRollFrame:SetScript("OnShow", function()
+				BonusRollPreview:UpdatePosition()
+			end)
+		end
+		if SetLootSpecialization then
+			hooksecurefunc("SetLootSpecialization",function(specID)
+				if in_bonus_prompt and specID == 0 then
+					-- lootspec roundtrips to server, sadly PLAYER_LOOT_SPEC_UPDATED broken in 5.5.4
+					C_Timer.After(1, function()
+						self:StartEncounter()
+					end)
+				end
+			end)
+		end
 		-- update anchor position and frame positions
 		C_Timer.After(3, function() -- wait for db
 			BonusRollPreviewAnchor:ClearAllPoints()
