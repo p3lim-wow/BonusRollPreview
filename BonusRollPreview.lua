@@ -1,20 +1,20 @@
-local addonName, addon = ...
-
--- sourced from _G
-local LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL
-if Enum and Enum.ConfirmationPromptUIType and Enum.ConfirmationPromptUIType.BonusRoll then
-	LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL = Enum.ConfirmationPromptUIType.BonusRoll
-elseif _G.LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL then
-	LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL = _G.LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL
-else
-	LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL = 1
-end
-local loot_spec_change_capture = ERR_LOOT_SPEC_CHANGED_S:gsub("%%s", ".+")
-local in_bonus_prompt
+local _, addon = ...
 
 local GetSpecialization = GetSpecialization or C_SpecializationInfo.GetSpecialization -- deprecated in 12.x
 local GetSpecializationInfo = GetSpecializationInfo or C_SpecializationInfo.GetSpecializationInfo -- deprecated in 12.x
 
+local confirmationType
+if Enum and Enum.ConfirmationPromptUIType and Enum.ConfirmationPromptUIType.BonusRoll then
+	confirmationType = Enum.ConfirmationPromptUIType.BonusRoll
+elseif LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL then
+	confirmationType = LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL
+else
+	confirmationType = 1
+end
+
+local LOOT_SPEC_CHANGED_MSG = ERR_LOOT_SPEC_CHANGED_S:gsub('%%s', '.+')
+
+local activeBonusRoll
 local ignoredSpells = {
 	-- 7.0
 	[232109] = true, -- Return to Karazhan: Nighbane (no EJ entry)
@@ -86,17 +86,19 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		self:UpdateItemFilter()
 		self:UpdateItems()
 	elseif(event == 'CHAT_MSG_SYSTEM') then
+		-- check chat messages for player loot spec, as PLSU is broken in MoP Classic
 		local message = ...
-		if message:match(loot_spec_change_capture) then
-			self:OnEvent('PLAYER_LOOT_SPEC_UPDATED')
+		if message:match(LOOT_SPEC_CHANGED_MSG) then
+			self:StartEncounter()
 		end
 	elseif(event == 'PLAYER_LOOT_SPEC_UPDATED') then
 		-- we need to restart the entire encounter logic just in case the user
 		-- has used the EncounterJournal before changing loot specializations.
+		-- NOTE: this event seems to be broken in MoP Classic
 		self:StartEncounter()
 	elseif(event == 'SPELL_CONFIRMATION_PROMPT') then
 		local spellID, confirmType, _, _, currencyID, currencyCost, difficultyID = ...
-		if(confirmType ~= LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL) then
+		if(confirmType ~= confirmationType) then
 			return
 		end
 
@@ -108,9 +110,15 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 					self.difficultyID = difficultyID
 					self.encounterID = encounterID
 					self.instanceID = instanceID
-					in_bonus_prompt = true
-					self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
-					self:RegisterEvent("CHAT_MSG_SYSTEM")
+
+					activeBonusRoll = true
+
+					if addon:IsRetail() then
+						self:RegisterEvent('PLAYER_LOOT_SPEC_UPDATED')
+					else
+						self:RegisterEvent('CHAT_MSG_SYSTEM')
+					end
+
 					self:StartEncounter()
 
 					-- show/hide list and handle
@@ -122,8 +130,10 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		end
 	elseif(event == 'SPELL_CONFIRMATION_TIMEOUT') then
 		self:UnregisterEvent('PLAYER_LOOT_SPEC_UPDATED')
-		self:UnregisterEvent("CHAT_MSG_SYSTEM")
-		in_bonus_prompt= nil
+		self:UnregisterEvent('CHAT_MSG_SYSTEM')
+
+		activeBonusRoll = nil
+
 		self:Hide()
 		BonusRollPreviewHandle:Hide()
 		self.buttons:ReleaseAll()
@@ -144,22 +154,22 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		end
 	elseif(event == 'PLAYER_LOGIN') then
 		if BonusRollFrame then
-			BonusRollFrame:SetScript("OnShow", function()
+			BonusRollFrame:SetScript('OnShow', function()
 				BonusRollPreview:UpdatePosition()
 			end)
 		end
-		if SetLootSpecialization then
-			hooksecurefunc("SetLootSpecialization",function(specID)
-				if in_bonus_prompt and specID == 0 then
-					-- lootspec roundtrips to server, sadly PLAYER_LOOT_SPEC_UPDATED broken in 5.5.4
-					C_Timer.After(1, function()
-						self:StartEncounter()
-					end)
-				end
-			end)
-		end
-		-- update anchor position and frame positions
-		C_Timer.After(3, function() -- wait for db
+
+		hooksecurefunc('SetLootSpecialization',function(specID)
+			if activeBonusRoll and specID == 0 then
+				-- lootspec roundtrips to server, sadly PLAYER_LOOT_SPEC_UPDATED broken in 5.5.4
+				C_Timer.After(1, function()
+					self:StartEncounter()
+				end)
+			end
+		end)
+
+		-- update anchor position and frame positions after a delay
+		C_Timer.After(3, function()
 			BonusRollPreviewAnchor:ClearAllPoints()
 			BonusRollPreviewAnchor:SetPoint(unpack(BonusRollPreviewDB.anchor))
 		end)
@@ -316,7 +326,7 @@ function BonusRollPreviewMixin:UpdateItems()
 		if itemInfo and itemInfo.encounterID == self.encounterID then
 			local button = self:PrepareButton(index, itemInfo.itemID)
 
-			if itemInfo and itemInfo.link and itemInfo.link ~= "" then
+			if itemInfo and itemInfo.link and itemInfo.link ~= '' then
 				if self:ProcessItem(button, itemInfo) then
 					self.itemButtons:insert(button)
 				end

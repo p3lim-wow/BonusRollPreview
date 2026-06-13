@@ -56,6 +56,7 @@ read_globals = {
 	-- GlobalStrings
 	'RETRIEVING_ITEM_INFO',
 	'SELECT_LOOT_SPECIALIZATION',
+	'ERR_LOOT_SPEC_CHANGED_S',
 
 	-- namespaces
 	'C_CurrencyInfo',
