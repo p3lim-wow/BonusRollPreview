@@ -80,7 +80,7 @@ local providerChecker = {
 }
 
 function addon:GetFavoriteTag(itemID)
-	local provider = BonusRollPreviewDB.favoriteProvider
+	local provider = addon:GetOption('favoriteProvider')
 	if not provider then
 		return
 	end

@@ -110,7 +110,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 					self:StartEncounter()
 
 					-- show/hide list and handle
-					self:SetShown(BonusRollPreviewDB.alwaysShow)
+					self:SetShown(addon:GetOption('alwaysShow'))
 					self:UpdatePosition()
 					BonusRollPreviewHandle:Show()
 				end
@@ -159,7 +159,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		-- update anchor position and frame positions after a delay
 		C_Timer.After(3, function()
 			BonusRollPreviewAnchor:ClearAllPoints()
-			BonusRollPreviewAnchor:SetPoint(unpack(BonusRollPreviewDB.anchor))
+			BonusRollPreviewAnchor:SetPoint(unpack(addon:GetOption('anchor')))
 		end)
 	end
 end
@@ -224,7 +224,7 @@ local function shouldShowItem(itemID)
 	end
 
 	local favoriteTag = addon.GetFavoriteTag and addon:GetFavoriteTag(itemID)
-	if BonusRollPreviewDB.favoritesOnly then
+	if addon:GetOption('favoritesOnly') then
 		return favoriteTag ~= nil, favoriteTag
 	end
 
@@ -285,7 +285,7 @@ function BonusRollPreviewMixin:ProcessItem(button, itemInfo)
 	button.Name:SetText(itemInfo.name)
 	button.Slot:SetText(itemInfo.slot)
 	button.Class:SetText(itemInfo.armorType)
-	button.Fav:SetText(BonusRollPreviewDB.favoriteAlert and favoriteTag and favoriteTag or '')
+	button.Fav:SetText(addon:GetOption('favoriteAlert') and favoriteTag and favoriteTag or '')
 
 	return true
 end
@@ -361,7 +361,7 @@ function BonusRollPreviewMixin:UpdateHandlePosition(collapsed)
 	local Handle = BonusRollPreviewHandle
 	Handle:ClearAllPoints()
 
-	local downwards = BonusRollPreviewDB.fillDirection == 'DOWN'
+	local downwards = addon:GetOption('fillDirection') == 'DOWN'
 	if(collapsed) then
 		if(downwards) then
 			Handle:SetPoint('TOP', BonusRollFrame, 'BOTTOM', 0, 2)
@@ -390,7 +390,7 @@ end
 
 function BonusRollPreviewMixin:UpdatePosition()
 	self:ClearAllPoints()
-	if(BonusRollPreviewDB.fillDirection == 'DOWN') then
+	if(addon:GetOption('fillDirection') == 'DOWN') then
 		self:SetPoint('TOP', self:GetParent(), 'BOTTOM')
 	else
 		self:SetPoint('BOTTOM', self:GetParent(), 'TOP')
