@@ -54,9 +54,10 @@ read_globals = {
 	'GameTooltip_Hide',
 
 	-- GlobalStrings
+	'ERR_LOOT_SPEC_CHANGED_S',
+	'PUNCH_LIST_ITEM_CACHE_TOOLTIP',
 	'RETRIEVING_ITEM_INFO',
 	'SELECT_LOOT_SPECIALIZATION',
-	'ERR_LOOT_SPEC_CHANGED_S',
 
 	-- namespaces
 	'C_CurrencyInfo',
@@ -64,6 +65,7 @@ read_globals = {
 	'C_Map',
 	'C_SpecializationInfo',
 	'C_Timer',
+	'C_TooltipInfo',
 	'Enum',
 
 	-- API

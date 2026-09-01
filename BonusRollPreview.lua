@@ -65,6 +65,7 @@ function BonusRollPreviewMixin:OnLoad()
 
 	self.buttons = CreateUnsecuredFramePool('Button', self.ScrollFrame.ScrollChild, 'BonusRollPreviewButtonTemplate', resetButton)
 	self.itemButtons = addon:T()
+	self.journalItems = addon:T()
 end
 
 function BonusRollPreviewMixin:OnEvent(event, ...)
@@ -87,7 +88,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 	elseif(event == 'SPELL_CONFIRMATION_PROMPT') then
 		BonusRollPreviewHandle:Hide()
 
-		local spellID, confirmType, _, _, currencyID, currencyCost, difficultyID = ...
+		local spellID, confirmType, _, _, currencyID, currencyCost, difficultyID, displayItemID, itemContext, treasureContextLevel = ...
 		if(confirmType ~= Enum.ConfirmationPromptUIType.BonusRoll) then
 			return
 		end
@@ -100,6 +101,9 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 					self.difficultyID = difficultyID
 					self.encounterID = encounterID
 					self.instanceID = instanceID
+					self.displayItemID = displayItemID and displayItemID ~= 0 and displayItemID or nil
+					self.itemContext = itemContext
+					self.treasureContextLevel = treasureContextLevel and treasureContextLevel > 0 and treasureContextLevel or nil
 
 					activeBonusRoll = true
 
@@ -138,7 +142,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 					end
 				end
 
-				self:OnEvent('SPELL_CONFIRMATION_PROMPT', info.spellID, info.confirmType, nil, nil, info.currencyID, info.currencyCost, difficultyID or DifficultyUtil.ID.Raid25Normal)
+				self:OnEvent('SPELL_CONFIRMATION_PROMPT', info.spellID, info.confirmType, nil, nil, info.currencyID, info.currencyCost, difficultyID or DifficultyUtil.ID.Raid25Normal, info.displayItemID, info.itemContext, info.treasureContextLevel)
 			end
 		end
 	elseif(event == 'PLAYER_LOGIN') then
@@ -309,23 +313,75 @@ function BonusRollPreviewMixin:UpdateItems()
 	self.buttons:ReleaseAll() -- reset and hide all buttons in the pool
 	self.numShownItems = 0
 	self.itemButtons:wipe()
+	self.journalItems:wipe()
 
 	for index = 1, EJ_GetNumLoot() do
 		local itemInfo = C_EncounterJournal.GetLootInfoByIndex(index)
 		if itemInfo and itemInfo.encounterID == self.encounterID then
-			local button = self:PrepareButton(index, itemInfo.itemID)
+			itemInfo.index = index
+			self.journalItems[itemInfo.name] = itemInfo
+		end
+	end
 
-			if itemInfo and itemInfo.link and itemInfo.link ~= '' then
-				if self:ProcessItem(button, itemInfo) then
-					self.itemButtons:insert(button)
+	if addon:tsize(self.journalItems) > 0 then
+		if self.displayItemID then
+			local item = Item:CreateFromItemID(self.displayItemID)
+			item:ContinueOnItemLoad(GenerateClosure(self.UpdateItemsFromDisplayItem, self))
+			C_Timer.After(0.5, GenerateClosure(self.UpdateItemsFromDisplayItem, self)) -- TODO: deal with cache better than this
+		else
+			for _, itemInfo in next, self.journalItems do
+				local button = self:PrepareButton(itemInfo.index, itemInfo.itemID)
+				if itemInfo.link and itemInfo.link ~= '' then
+					if self:ProcessItem(button, itemInfo) then
+						self.itemButtons:insert(button)
+					end
 				end
 			end
 		end
 	end
 
 	-- update box
-	self:SetHeight(Clamp(10 + (#self.itemButtons * 40), 50, 330))
-	self:UpdateButtonPositions()
+	if #self.itemButtons > 0 then
+		self:SetHeight(Clamp(10 + (#self.itemButtons * 40), 50, 330))
+		self:UpdateButtonPositions()
+	end
+
+	self:UpdateScrolling()
+end
+
+local function stripPunchListName(text)
+	text = text:gsub('|c%x%x%x%x%x%x%x%x', ''):gsub('|r', '')
+	text = text:sub(3)
+	return text
+end
+
+function BonusRollPreviewMixin:UpdateItemsFromDisplayItem()
+	local knockoutItems = {}
+	local headerFound = false
+	local bonusTooltip = C_TooltipInfo.GetItemByID(self.displayItemID, nil, self.itemContext, self.treasureContextLevel)
+	for _, line in next, bonusTooltip.lines do
+		if line.leftText == PUNCH_LIST_ITEM_CACHE_TOOLTIP then
+			headerFound = true
+		elseif headerFound then
+			table.insert(knockoutItems, self.journalItems[stripPunchListName(line.leftText)])
+		end
+	end
+
+	for index, itemInfo in next, knockoutItems do
+		local button = self:PrepareButton(index, itemInfo.itemID)
+		if itemInfo.link and itemInfo.link ~= '' then
+			if self:ProcessItem(button, itemInfo) then
+				self.itemButtons:insert(button)
+			end
+		end
+	end
+
+	-- update box
+	if #self.itemButtons > 0 then
+		self:SetHeight(Clamp(10 + (#self.itemButtons * 40), 50, 330))
+		self:UpdateButtonPositions()
+	end
+
 	self:UpdateScrolling()
 end
 
