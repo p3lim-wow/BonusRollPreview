@@ -1,8 +1,5 @@
 local addonName = ...
 
-local GetSpecialization = GetSpecialization or C_SpecializationInfo.GetSpecialization -- deprecated in 12.x
-local GetSpecializationInfo = GetSpecializationInfo or C_SpecializationInfo.GetSpecializationInfo -- deprecated in 12.x
-
 local Buttons = CreateFrame('Frame', addonName .. 'SpecButtons', BonusRollFrame)
 Buttons:SetPoint('LEFT', BonusRollFrame.SpecIcon, 4, 4)
 Buttons:Hide()
@@ -47,7 +44,7 @@ Zone:SetScript('OnEnter', function(self)
 		if(not self.initialized) then
 			local numSpecs = GetNumSpecializations()
 			for index = 1, numSpecs do
-				local specID, name, _, texture = GetSpecializationInfo(index)
+				local specID, name, _, texture = C_SpecializationInfo.GetSpecializationInfo(index)
 
 				local Button = CreateFrame('Button', '$parentButton' .. index, Buttons)
 				Button:SetPoint('LEFT', index * 28, 0)
@@ -83,13 +80,12 @@ Buttons:SetScript('OnLeave', function(self)
 	end
 end)
 
-
 hooksecurefunc('BonusRollFrame_StartBonusRoll', function()
 	-- Need to force show the SpecIcon when the player
 	-- has no chosen loot specialization.
 	local lootSpecialization = GetLootSpecialization()
 	if(not lootSpecialization or lootSpecialization == 0) then
-		local specID, _, _, texture = GetSpecializationInfo(GetSpecialization() or 0)
+		local specID, _, _, texture = C_SpecializationInfo.GetSpecializationInfo(C_SpecializationInfo.GetSpecialization() or 0)
 		if(specID) then
 			BonusRollFrame.SpecIcon:SetTexture(texture)
 			BonusRollFrame.SpecIcon:Show()

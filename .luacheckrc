@@ -82,8 +82,6 @@ read_globals = {
 	'GetJournalInfoForSpellConfirmation',
 	'GetLootSpecialization',
 	'GetNumSpecializations',
-	'GetSpecialization', -- deprecated
-	'GetSpecializationInfo', -- deprecated
 	'GetSpellConfirmationPromptsInfo',
 	'IsInInstance',
 	'Mixin',

@@ -1,17 +1,5 @@
 local _, addon = ...
 
-local GetSpecialization = GetSpecialization or C_SpecializationInfo.GetSpecialization -- deprecated in 12.x
-local GetSpecializationInfo = GetSpecializationInfo or C_SpecializationInfo.GetSpecializationInfo -- deprecated in 12.x
-
-local confirmationType
-if Enum and Enum.ConfirmationPromptUIType and Enum.ConfirmationPromptUIType.BonusRoll then
-	confirmationType = Enum.ConfirmationPromptUIType.BonusRoll
-elseif LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL then
-	confirmationType = LE_SPELL_CONFIRMATION_PROMPT_TYPE_BONUS_ROLL
-else
-	confirmationType = 1
-end
-
 local LOOT_SPEC_CHANGED_MSG = ERR_LOOT_SPEC_CHANGED_S:gsub('%%s', '.+')
 
 local activeBonusRoll
@@ -98,7 +86,7 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		self:StartEncounter()
 	elseif(event == 'SPELL_CONFIRMATION_PROMPT') then
 		local spellID, confirmType, _, _, currencyID, currencyCost, difficultyID = ...
-		if(confirmType ~= confirmationType) then
+		if(confirmType ~= Enum.ConfirmationPromptUIType.BonusRoll) then
 			return
 		end
 
@@ -344,7 +332,7 @@ function BonusRollPreviewMixin:UpdateItemFilter()
 	local _, classID = UnitClassBase('player')
 	local lootSpecialization = GetLootSpecialization() or 0
 	if(lootSpecialization == 0) then
-		lootSpecialization = (GetSpecializationInfo(GetSpecialization() or 0)) or 0
+		lootSpecialization = (C_SpecializationInfo.GetSpecializationInfo(C_SpecializationInfo.GetSpecialization() or 0)) or 0
 	end
 
 	EJ_SetLootFilter(classID, lootSpecialization)
