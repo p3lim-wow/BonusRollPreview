@@ -85,6 +85,8 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 		-- NOTE: this event seems to be broken in MoP Classic
 		self:StartEncounter()
 	elseif(event == 'SPELL_CONFIRMATION_PROMPT') then
+		BonusRollPreviewHandle:Hide()
+
 		local spellID, confirmType, _, _, currencyID, currencyCost, difficultyID = ...
 		if(confirmType ~= Enum.ConfirmationPromptUIType.BonusRoll) then
 			return
@@ -112,7 +114,6 @@ function BonusRollPreviewMixin:OnEvent(event, ...)
 					-- show/hide list and handle
 					self:SetShown(addon:GetOption('alwaysShow'))
 					self:UpdatePosition()
-					BonusRollPreviewHandle:Show()
 				end
 			end
 		end
@@ -405,8 +406,12 @@ function BonusRollPreviewMixin:ToggleLock()
 end
 
 function BonusRollPreviewMixin:UpdateScrolling()
-	local ScrollFrame = self.ScrollFrame
 	local numButtons = #self.itemButtons
+	if numButtons == 0 then
+		return
+	end
+
+	local ScrollFrame = self.ScrollFrame
 	if numButtons > 8 then
 		ScrollFrame:EnableMouseWheel(true)
 		ScrollFrame.ScrollChild:SetWidth(274 - ScrollFrame.Slider:GetWidth())
@@ -421,6 +426,8 @@ function BonusRollPreviewMixin:UpdateScrolling()
 		ScrollFrame.ScrollChild:SetWidth(274)
 		ScrollFrame.Slider:Hide()
 	end
+
+	BonusRollPreviewHandle:Show()
 end
 
 function BonusRollPreviewMixin:Toggle()
