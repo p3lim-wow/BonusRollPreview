@@ -229,7 +229,7 @@ local function shouldShowItem(itemID)
 	end
 
 	local favoriteTag = addon.GetFavoriteTag and addon:GetFavoriteTag(itemID)
-	if addon:GetOption('favoritesOnly') then
+	if addon.GetAvailableFavoriteProviders and addon:GetOption('favoritesOnly') then
 		return favoriteTag ~= nil, favoriteTag
 	end
 
@@ -290,7 +290,9 @@ function BonusRollPreviewMixin:ProcessItem(button, itemInfo)
 	button.Name:SetText(itemInfo.name)
 	button.Slot:SetText(itemInfo.slot)
 	button.Class:SetText(itemInfo.armorType)
-	button.Fav:SetText(addon:GetOption('favoriteAlert') and favoriteTag and favoriteTag or '')
+
+	local showFavorite = addon.GetAvailableFavoriteProviders and addon:GetOption('favoriteAlert')
+	button.Fav:SetText(showFavorite and favoriteTag and favoriteTag or '')
 
 	return true
 end
