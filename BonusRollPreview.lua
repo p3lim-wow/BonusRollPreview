@@ -233,7 +233,7 @@ local function shouldShowItem(itemID)
 		return favoriteTag ~= nil, favoriteTag
 	end
 
-	local _, _, _, _, _, itemClass, itemSubClass = GetItemInfoInstant(itemID)
+	local _, _, _, _, _, itemClass, itemSubClass = C_Item.GetItemInfoInstant(itemID)
 	if itemClass == Enum.ItemClass.Weapon then
 		return true, favoriteTag
 	elseif itemClass == Enum.ItemClass.Armor then
